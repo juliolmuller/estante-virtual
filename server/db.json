@@ -42,10 +42,10 @@
             "name": "JavaScript - Aprenda a Programar",
             "image": "http://www.editoraviena.com.br/%2Fimagens_02%2Fprodutos%2F2018-10-01_01-51-37-JavaScript.jpg",
             "userId": 13618055,
-            "loan": [{
+            "loan": {
                 "userId": 62945674,
                 "date": "2019-07-27"
-            }]
+            }
         },
         {
             "id": 70618749,
