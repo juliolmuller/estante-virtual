@@ -7,9 +7,8 @@ First, you should execute the npm install in `/server`, after, you should init t
 **Endpoint API:**
 
  Loan Object:
-
+ 
 ```JSON
-
 "loan": {"userId": 3,"date": "03/06/2018"}
 
 ```
