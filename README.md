@@ -6,59 +6,54 @@ First, you should execute the npm install in `/server`, after, you should init t
 
 **Endpoint API:**
 
-Loan Object:
+ Loan Object:
 
-`"loan": {"userId": 3,"date": "03/06/2018"}`
+```JSON
 
-Book Object: 
+"loan": {"userId": 3,"date": "03/06/2018"}
 
-`“book”: {"id": 4,"name": "O Hobbit","userId": 1,"loan": loan}`
+```
+ Book Object:
 
-`“loan”: false, default value.`
+```JSON
+ “book”: {"id": 4,"name": "O Hobbit","userId": 1,"loan": loan}
+ 
+ “loan”: false, default value.
 
-POST    /books          params:  book,    return: 200 ok
+```
 
-GET     /books                                             return:  [ book ]
+| VERB   | ENDPOINT   | PARAMS | RETURN |
+| ------ | ---------- |------ | ------ |
+| POST   | /books     | book  | 200 OK |
+| GET    | /books     |       | [book] |
+| GET    |/books/:id  |       | book   |
+| PUT    |/books/:id  | book  |        |
+| DELETE |/books/:id  |       | 200 OK |
 
-GET     /books/:id                                      return:  book
 
-PUT     /books/:id     params:  book
-
-DELETE  /books/:id                                 return: 200 ok
 
 User Object: 
 
-  “user”: { 
+```javascript 
+    user: {
+      id: 1,
+      name: 'Teste',
+      email: 'teste@teste.com',
+      password: '123456'
+    }
+```    
 
-     "id": 1,
-
-"name": "Teste",
-
-"email": "[teste@teste.com](mailto:teste@teste.com)",
-
-"password": "123456" 
-
-  }
-
-  
-
-POST    /users          params:  user, return: 200 ok
-
-GET     /users/:id                          return:  book
-
-PUT     /users/:id     params:  user
-
-DELETE  /users/:id                                 return: 200 ok
-
-  
-  
+| VERB   | ENDPOINT   | PARAMS | RETURN |
+| ------ | ---------- |------ | ------ |
+| POST   | /users     | user  | 200 ok |
+| GET    | /users/:id |       | book   |
+| PUT    |/users/:id  | user  |        |
+| DELETE |/users/:id  |       |200 ok  |
 
 You can use url parameter like:
 
 * limit: limit data, like: _limit=30
-* 
 * sort: to data order, like: _sort=id
-* 
 * order: asc or desc data
 
 
