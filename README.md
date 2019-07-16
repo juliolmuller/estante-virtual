@@ -1,8 +1,10 @@
-In order to do this activity you have to fork the repository available in [https://gitlab.com/jeanmalves/colaborative-library](https://gitlab.com/jeanmalves/colaborative-library). 
+In order to do this activity you have to fork this repository. 
 
-Endpoint API:
+**Run the server**
 
 First, you should execute the npm install in `/server`, after, you should init the server in `/server` and execute the command `npm run serve`.
+
+**Endpoint API:**
 
 Loan Object:
 
