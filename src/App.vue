@@ -1,20 +1,35 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <router-view/>
   </div>
 </template>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+  /*
+  * Define theme color to be incorporated in Bootstrap styles
+  */
+  $theme-colors: (
+    'hero': #d8621e
+  );
+
+  /**
+  * Import Bootstrap styles framework
+  */
+  @import 'node_modules/bootstrap/scss/bootstrap';
+
+  /**
+  * Additional custom styles
+  */
+  body {
+    background-image: url('./assets/background.jpg');
+    background-position: top center;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #000;
+    width: 100%;
+  }
+
+  .modal-open {
+    overflow: scroll;
+  }
 </style>
