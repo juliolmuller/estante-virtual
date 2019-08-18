@@ -1,4 +1,4 @@
-import ApiConsumer from './ApiConsumer'
+import ApiConsumer from '../ApiConsumer'
 
 export default new class extends ApiConsumer {
 

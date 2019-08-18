@@ -1,4 +1,4 @@
-import api from '../../services/usersApi'
+import api from '@/services/api/users'
 
 export default {
 

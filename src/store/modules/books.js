@@ -1,4 +1,4 @@
-import api from './../../services/booksApi'
+import api from '@/services/api/books'
 
 export default {
 
