@@ -4,33 +4,32 @@ export default class ApiConsumer {
 
   // Instantiate new object
   constructor(api) {
-    this.http = axios.create({
-      baseUrl: `http://localhost:3000/${api}`
-    })
+    this.baseUrl = `http://localhost:3000/${api}`
+    this.http = axios.create()
   }
 
   // Request the entire collection of data
-  async get() {
-    return await this.http.get('/')
+  get() {
+    return this.http.get(this.baseUrl)
   }
 
   // Request one single record from the collection
-  async getOne(id) {
-    return await this.http.get(`/${id}`)
+  getOne(id) {
+    return this.http.get(`${this.baseUrl}/${id}`)
   }
 
   // Insert new record into collection
-  async post(data) {
-    return await this.http.post('/', data)
+  post(data) {
+    return this.http.post(this.baseUrl, data)
   }
 
   // Update record in the collection
-  async put(data) {
-    return await this.http.put(`/${data.id}`, data)
+  put(data) {
+    return this.http.put(`${this.baseUrl}/${data.id}`, data)
   }
 
   // Delete record from the collection
-  async delete(id) {
-    return await this.http.delete(`/${id}`)
+  delete(id) {
+    return this.http.delete(`${this.baseUrl}/${id}`)
   }
 }
