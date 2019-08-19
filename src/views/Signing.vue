@@ -1,6 +1,6 @@
 <template>
   <form class="form-signing text-center" :class="{ 'form-signin': registerred, 'form-signup': !registerred }">
-    <h1 class="h3 mb-3 font-weight-normal"><strong>Estante<span class="badge badge-hero">VIrtual</span></strong></h1>
+    <Logo />
     <label v-if="!registerred" for="signing-name" class="sr-only">Nome do usuário</label>
     <input v-if="!registerred" type="text" id="signing-name" class="form-control" placeholder="Nome do usuário" required autofocus>
     <label for="signing-email" class="sr-only">Endereço de email</label>
@@ -14,16 +14,26 @@
         <input type="checkbox" value="remember-me"> Mantenha-me conectado
       </label>
     </div>
-    <button type="submit" class="mt-3 btn btn-lg btn-hero btn-block" >Entrar</button>
-    <p class="mt-1" v-if="registerred">Não é cadastrado? <a href="#" class="text-hero" @click="access">Registre-se aqui</a></p>
-    <p class="mt-1" v-if="!registerred"><a href="#" class="text-hero" @click="access">Já sou cadastrado</a></p>
+    <div v-if="registerred">>
+      <button type="submit" @submit="signIn" class="mt-3 btn btn-lg btn-hero btn-block" >Entrar</button>
+      <p class="mt-1">Não é cadastrado? <a href="#" class="text-hero" @click="access">Registre-se aqui</a></p>
+    </div>
+    <div v-if="!registerred">
+      <button type="submit" @submit="signUp" class="mt-3 btn btn-lg btn-hero btn-block" >Cadastrar</button>
+      <p class="mt-1"><a href="#" class="text-hero" @click="access">Já sou cadastrado</a></p>
+    </div>
     <p class="mt-3 text-muted">&copy; 2019</p>
   </form>
 </template>
 
 <script>
+  import Logo from '@/components/Logo.vue'
+
   export default {
     name: 'Signing',
+    components: {
+      Logo
+    },
     data() {
       return {
         registerred: true
@@ -33,6 +43,12 @@
       access(e) {
         e.preventDefault()
         this.registerred = !this.registerred
+      },
+      signIn(e) {
+        e.preventDefault()
+      },
+      signUp(e) {
+        e.preventDefault()
       }
     }
   }

@@ -1,12 +1,19 @@
 <template>
   <div class="home">
-    <h1>Home</h1>
+    <SideBar />
+    <Main />
   </div>
 </template>
 
 <script>
+  import SideBar from '@/components/layout/SideBar.vue'
+  import Main from '@/components/layout/Main.vue'
+
   export default {
     name: 'home',
-    components: {}
+    components: {
+      SideBar,
+      Main
+    }
   }
 </script>
