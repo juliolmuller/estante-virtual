@@ -1,12 +1,14 @@
 <template>
-  <div class="sidebar">
-    <Logo class="text-center" />
-    <nav class="mt-5">
-      <router-link class="btn btn-lg btn-light active" to="home">Home</router-link>
-      <router-link class="btn btn-lg btn-light" to="myBooks">Meus Livros</router-link>
-      <router-link class="btn btn-lg btn-light" to="myLoans">Meus Empréstimos</router-link>
-      <router-link class="btn btn-lg btn-light" to="myProfile">Meu Perfil</router-link>
-    </nav>
+  <div>>
+    <div class="sidebar">
+      <Logo />
+      <nav class="mt-5">
+        <router-link :to="{ name: 'home' }" class="btn btn-lg btn-light active">Home</router-link>
+        <router-link :to="{ name: 'myBooks' }" class="btn btn-lg btn-light">Meus Livros</router-link>
+        <router-link :to="{ name: 'myLoans' }" class="btn btn-lg btn-light">Meus Empréstimos</router-link>
+        <router-link :to="{ name: 'myProfile' }" class="btn btn-lg btn-light">Meu Perfil</router-link>
+      </nav>
+    </div>
   </div>
 </template>
 
@@ -22,14 +24,18 @@
 </script>
 
 <style>
+  .navbar {
+    background-color: rgb(255, 255, 255, 0.9);
+  }
+
   .sidebar {
+    background-color: rgb(255, 255, 255, 0.9);
     position: fixed;
     z-index: 1;
     top: 0;
     left: 0;
     height: 100%;
     width: 15%;
-    background-color: rgb(255, 255, 255, 0.9);
     overflow-x: hidden;
     padding-top: 20px;
   }
@@ -42,7 +48,8 @@
     color: #616161;
     display: block;
   }
-  .active, .sidebar a:hover {
+
+  .sidebar a:hover {
     background: #d8621e;
     color: #fff;
   }

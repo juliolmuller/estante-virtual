@@ -22,11 +22,6 @@ export default new Router({
           component: () => import('@/views/Library.vue')
         // },
         // {
-        //   path: 'estante',
-        //   name: 'allBooks',
-        //   component: () => import('@/views/AllBooks.vue')
-        // },
-        // {
         //   path: 'meus-livros',
         //   name: 'myBooks',
         //   component: () => import('@/views/MyBooks.vue')
