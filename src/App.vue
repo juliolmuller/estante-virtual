@@ -27,9 +27,6 @@
     background-size: cover;
     background-color: #000;
     width: 100%;
-  }
-
-  .modal-open {
     overflow: scroll;
   }
 </style>

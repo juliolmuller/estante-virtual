@@ -1,6 +1,6 @@
 <template>
   <div role="main">
-    <main class="conteiner">
+    <main class="container">
       <router-view />
     </main>
   </div>
@@ -21,5 +21,8 @@
     div[role="main"] {
       margin-left: 15%;
     }
+  }
+  .container {
+    background: rgb(255, 255, 255, 0.9);
   }
 </style>
