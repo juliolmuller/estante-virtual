@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <h1 class="px-3 pt-4 pb-3">Escolha o seu livro na estante:</h1>
+  <div>
+    <viewTitle>Escolha o seu livro na estante:</viewTitle>
     <div class="row px-3">
       <div class="col-12 col-md-6">
         <BookSearch />
@@ -17,6 +17,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
+  import ViewTitle from '@/components/ViewTitle.vue'
   import BookSearch from '@/components/BookSearch.vue'
   import BookFilter from '@/components/BookFilter.vue'
   import BookCard from '@/components/BookCard.vue'
@@ -24,6 +25,7 @@
   export default {
     name: 'Library',
     components: {
+      ViewTitle,
       BookSearch,
       BookFilter,
       BookCard
@@ -39,7 +41,5 @@
 </script>
 
 <style scoped>
-  .container {
-    background: rgb(255, 255, 255, 0.9);
-  }
+
 </style>
