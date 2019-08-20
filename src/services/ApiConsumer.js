@@ -11,8 +11,8 @@ export default class ApiConsumer {
 
   // Request the entire collection of data
   get(params) {
-    const query = params ? `?${querystring.stringify(params)}` : ''
-    return this.http.get(this.baseUrl + query)
+    const query = params ? `&${querystring.stringify(params)}` : ''
+    return this.http.get(`${this.baseUrl}?_limit=100${query}`)
   }
 
   // Request one single record from the collection
