@@ -1,15 +1,19 @@
 import api from '@/services/api/users'
 
+// Save default key to access local/session storage
 const storageKey = 'user-data'
 
+// Export module parts (state, getters, mutations & actions)
 export default {
+
   state: {
     userData: undefined
   },
 
   getters: {
     userId: state => state.userData.id,
-    userEmail: state => state.userData.email,
+    userName: state => state.userData.name,
+    userEmail: state => state.userData.email
   },
 
   mutations: {
@@ -18,6 +22,7 @@ export default {
     authenticate(state, userData) {
       state.userData = {
         id: userData.id,
+        name: userData.name,
         email: userData.email
       }
     },
@@ -42,13 +47,15 @@ export default {
     // Submit credentials for loging in
     signIn({ commit }, credentials, keepConnection) {
       if (credentials.email && credentials.password) {
-        const user = api.get().filter(user => (user.email === credentials.email && user.password === credentials.password))[0]
-        if (user) {
-          const storage = keepConnection ? localStorage : sessionStorage
-          storage[storageKey] = JSON.stringify({ id: user.id, email: user.email })
-          commit('authenticate', user)
-          return true
-        }
+        api.get({ email: credentials.email })
+          .then(response => {
+            if (response.data.password === credentials.password) {
+              const storage = keepConnection ? localStorage : sessionStorage
+              storage[storageKey] = JSON.stringify({ id: user.id, email: user.email })
+              commit('authenticate', response.data)
+              return true
+            }
+          })
       }
       return false
     },
