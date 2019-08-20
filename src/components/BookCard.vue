@@ -1,5 +1,5 @@
 <template>
-  <div class="col-1 col-md-3 d-flex align-items-stretch">
+  <div class="col-1 col-md-3 w-100 d-flex align-items-stretch">
     <div class="card my-2 pt-3 border-hero border-radius-0 text-center">
       <div class="d-flex justify-content-center">
         <img :src="book.image" alt="Capa do livro">
@@ -8,7 +8,7 @@
         <p class="card-title font-weight-bold">{{ book.name }}</p>
       </div>
       <div class="card-footer">
-        <button type="button" class="btn btn-hero" :disabled="!!book.loan">Emprestar</button>
+        <button type="button" class="btn btn-hero" :disabled="!!book.loan">Detalhes</button>
       </div>
     </div>
   </div>

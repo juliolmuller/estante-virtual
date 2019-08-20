@@ -19,7 +19,7 @@ export default new Router({
         {
           path: '/',
           name: 'home',
-          component: () => import('@/views/Library.vue')
+          component: () => import('@/views/home/Library.vue')
         // },
         // {
         //   path: 'meus-livros',
