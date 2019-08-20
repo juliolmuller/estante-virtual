@@ -1,4 +1,5 @@
 import axios from 'axios'
+import querystring from 'querystring'
 
 export default class ApiConsumer {
 
@@ -9,8 +10,9 @@ export default class ApiConsumer {
   }
 
   // Request the entire collection of data
-  get() {
-    return this.http.get(this.baseUrl)
+  get(params) {
+    const query = params ? `?${querystring.stringify(params)}` : ''
+    return this.http.get(this.baseUrl + query)
   }
 
   // Request one single record from the collection
