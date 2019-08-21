@@ -15,6 +15,7 @@ export default new function() {
     .has().not().spaces()
 
   // Associate functionalitis to methods
-  this.isPassword = password.validate
-  this.isEmail = EmailValidator.validate
+  this.matchesPassword = password.validate
+  this.matchesEmail = EmailValidator.validate
+  this.matchesName = string => string.length <= 255
 }
