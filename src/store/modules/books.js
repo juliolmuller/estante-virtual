@@ -1,25 +1,38 @@
 import api from '@/services/api/books'
 
+// Export module parts (state, getters, mutations & actions)
 export default {
 
+  /**
+   * List of stored states
+   */
   state: {
     books: [],
     userBooks: [],
     userLoans: []
   },
 
+  /**
+   * List of exposed data
+   */
   getters: {
     allBooks: state => state.books,
     userBooks: state => state.userBooks,
     userLoans: state => state.userLoans
   },
 
+  /**
+   * Methods to mutate stored states
+   */
   mutations: {
     setBooks: (state, books) => state.books = books,
     setUserBooks: (state, books) => state.userBooks = books,
     setUserLoans: (state, books) => state.userLoans = books
   },
 
+  /**
+   * Methods to manipulate stored states
+   */
   actions: {
     fetchBooks({ commit }) {
       api.get()

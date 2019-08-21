@@ -1,10 +1,10 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
 import Signing from '@/views/Signing.vue'
 import store from './store'
 
-// Inject Router module into Vue application
-Vue.use(Router)
+// Inject VueRouter plugin into Vue application
+Vue.use(VueRouter)
 
 // Function to ensure authentication
 const requireAuth = (to, from, next) => {
@@ -20,7 +20,7 @@ const requireAuth = (to, from, next) => {
 }
 
 // Define routes and router configuration
-export default new Router({
+export default new VueRouter({
   mode: 'history',
   routes: [
     {

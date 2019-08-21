@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import books from './modules/books'
 import auth from './modules/auth'
 
-// Inject Vuex module into Vue application
+// Inject Vuex plugin into Vue application
 Vue.use(Vuex)
 
 // Load modules into Store

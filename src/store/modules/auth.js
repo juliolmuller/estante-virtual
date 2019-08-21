@@ -6,10 +6,16 @@ const storageKey = 'user-data'
 // Export module parts (state, getters, mutations & actions)
 export default {
 
+  /**
+   * List of stored states
+   */
   state: {
-    userData: undefined
+    userData: null
   },
 
+  /**
+   * List of exposed data
+   */
   getters: {
     userId: state => state.userData.id,
     userName: state => state.userData.name,
@@ -17,6 +23,9 @@ export default {
     userData: state => state.userData
   },
 
+  /**
+   * Methods to mutate stored states
+   */
   mutations: {
 
     // Save credentials data to state
@@ -34,6 +43,9 @@ export default {
     }
   },
 
+  /**
+   * Methods to manipulate stored states
+   */
   actions: {
 
     // Checks if users is authenticated
