@@ -13,7 +13,8 @@ export default {
   getters: {
     userId: state => state.userData.id,
     userName: state => state.userData.name,
-    userEmail: state => state.userData.email
+    userEmail: state => state.userData.email,
+    serData: state => state.userData
   },
 
   mutations: {
