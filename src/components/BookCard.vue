@@ -8,7 +8,7 @@
         <p class="card-title font-weight-bold">{{ book.name }}</p>
       </div>
       <div class="card-footer">
-        <button type="button" class="btn btn-hero" :disabled="!!book.loan">Detalhes</button>
+        <button type="button" class="btn btn-hero" @click="viewDetails(book.id)">Detalhes</button>
       </div>
     </div>
   </div>
@@ -17,6 +17,11 @@
 <script>
   export default {
     name: 'BookCard',
+    methods: {
+      viewDetails(id) {
+        console.log('Displaying details for book ' + id)
+      }
+    },
     props: {
       book: Object
     }

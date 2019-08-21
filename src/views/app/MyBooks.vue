@@ -1,6 +1,9 @@
 <template>
   <div>
-    <ViewTitle>Meus livros</ViewTitle>
+    <h1>Meus livros</h1>
+    <button type="button" class="btn btn-sm btn-hero mb-4" @click="addBook">
+      Cadastrar Novo Livro
+    </button>
     <Bookcase :books="userBooks">
       Você ainda não possui livros cadastrados.
     </Bookcase>
@@ -9,17 +12,18 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
-  import ViewTitle from '@/components/ViewTitle.vue'
   import Bookcase from '@/components/Bookcase.vue'
 
   export default {
     name: 'MyBooks',
     components: {
-      ViewTitle,
       Bookcase
     },
     methods: {
-      ...mapActions(['fetchUserBooks'])
+      ...mapActions(['fetchUserBooks']),
+      addBook() {
+        console.log("Adding new book...")
+      }
     },
     computed: {
       ...mapGetters(['userId', 'userBooks'])

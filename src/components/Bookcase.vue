@@ -1,9 +1,9 @@
 <template>
-  <div class="mt-2">
-    <h5 v-show="!books.lenght" class="mt-3">
+  <div class="mt-3">
+    <h5 v-show="books.lenght" class="mt-3">
       <slot></slot>
     </h5>
-    <div v-show="books.lenght" class="row">
+    <div v-show="!books.lenght" class="row">
       <BookCard v-for="book in books" :key="book.id" :book="book" />
     </div>
   </div>

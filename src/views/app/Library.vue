@@ -1,7 +1,7 @@
 <template>
   <div>
-    <viewTitle>Escolha o seu livro na estante:</viewTitle>
-    <div class="row">
+    <h1>Escolha o seu livro na estante:</h1>
+    <div class="row mt-5" v-show="!allBooks.lenght">
       <div class="col-12 col-md-6">
         <BookSearch />
       </div>
@@ -17,7 +17,6 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
-  import ViewTitle from '@/components/ViewTitle.vue'
   import BookSearch from '@/components/BookSearch.vue'
   import BookFilter from '@/components/BookFilter.vue'
   import Bookcase from '@/components/Bookcase.vue'
@@ -25,7 +24,6 @@
   export default {
     name: 'Library',
     components: {
-      ViewTitle,
       BookSearch,
       BookFilter,
       Bookcase
