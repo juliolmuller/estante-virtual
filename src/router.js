@@ -42,11 +42,11 @@ export default new Router({
           path: 'meus-livros',
           name: 'myBooks',
           component: () => import('@/views/app/MyBooks.vue')
-        // },
-        // {
-        //   path: 'meus-emprestimos',
-        //   name: 'myLoans',
-        //   component: () => import('@/views/app/MyLoans.vue')
+        },
+        {
+          path: 'meus-emprestimos',
+          name: 'myLoans',
+          component: () => import('@/views/app/MyLoans.vue')
         // },
         // {
         //   path: 'perfil',

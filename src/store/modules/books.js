@@ -11,7 +11,7 @@ export default {
   getters: {
     allBooks: state => state.books,
     userBooks: state => state.userBooks,
-    userLoans: state => state.userBooks
+    userLoans: state => state.userLoans
   },
 
   mutations: {
