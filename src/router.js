@@ -47,11 +47,11 @@ export default new Router({
           path: 'meus-emprestimos',
           name: 'myLoans',
           component: () => import('@/views/app/MyLoans.vue')
-        // },
-        // {
-        //   path: 'perfil',
-        //   name: 'myProfile',
-        //   component: () => import('@/views/app/MyProfile.vue')
+        },
+        {
+          path: 'perfil',
+          name: 'myProfile',
+          component: () => import('@/views/app/MyProfile.vue')
         }
       ]
     }

@@ -14,7 +14,7 @@ export default {
     userId: state => state.userData.id,
     userName: state => state.userData.name,
     userEmail: state => state.userData.email,
-    serData: state => state.userData
+    userData: state => state.userData
   },
 
   mutations: {
