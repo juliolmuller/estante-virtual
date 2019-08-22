@@ -1,4 +1,5 @@
 import api from '@/services/api/users'
+import hash from '@/services/Hash'
 
 // Save default key to access local/session storage
 const storageKey = 'user-data'
@@ -20,7 +21,10 @@ export default {
     userId: state => state.userData.id,
     userName: state => state.userData.name,
     userEmail: state => state.userData.email,
-    userData: state => state.userData
+    userData: state => {
+      const { id, name, email } = state.userData
+      return { id, name, email }
+    }
   },
 
   /**
@@ -33,13 +37,14 @@ export default {
       state.userData = {
         id: userData.id,
         name: userData.name,
-        email: userData.email
+        email: userData.email,
+        hash: hash(userData)
       }
     },
 
     // Flush away credentials state
     destroySession(state) {
-      state.userData = undefined
+      state.userData = null
     }
   },
 
@@ -50,7 +55,7 @@ export default {
 
     // Checks if users is authenticated
     isAuthenticated({ commit }) {
-      let userData = sessionStorage['user-data'] || localStorage['user-data']
+      const userData = sessionStorage['user-data'] || localStorage['user-data']
       if (userData) {
         commit('authenticate', JSON.parse(userData))
       }
@@ -58,27 +63,30 @@ export default {
     },
 
     // Submit credentials for loging in
-    signIn({ commit }, credentials, keepConnection) {
-      if (credentials.email && credentials.password) {
-        api.get({ email: credentials.email })
-          .then(response => {
-            if (response.data.password === credentials.password) {
-              const storage = keepConnection ? localStorage : sessionStorage
-              storage[storageKey] = JSON.stringify({ id: user.id, email: user.email })
-              commit('authenticate', response.data)
-              return true
-            }
-          })
-      }
-      return false
+    signIn({ commit }, email, keepConnection) {
+      api.get({ email })
+        .then(response => {
+          const storage = keepConnection ? localStorage : sessionStorage
+          storage[storageKey] = JSON.stringify({ id: user.id, email: user.email })
+          commit('authenticate', response.data)
+        })
     },
 
     // Submit credentials for signing up
     signUp({ commit }, credentials) {
-      if (credentials.name && credentials.email && credentials.password) {
-        return !!this.api.post(credentials)
+      this.api.post(credentials)
+        .then((response) => commit('authenticate', response.data))
+    },
+
+    // Update user data
+    update({ commit }, credentials) {
+      const { id, name, email } = credentials
+      const userData = { id, name, email }
+      if (credentials.newPassword) {
+        userData.password = credentials.newPassword
       }
-      return false
+      api.put(userData)
+        .then((response) => commit('authenticate', response.data))
     },
 
     // Delete any records in session and local storage
