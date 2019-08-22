@@ -3,8 +3,8 @@
     class="form-signing text-center"
     :style="{
       'max-height': registerred
-        ? `${errorsCount * 24 + 390}px`
-        : `${errorsCount * 24 + 440}px`
+        ? `${errorsCount * 32 + 390}px`
+        : `${errorsCount * 32 + 440}px`
     }"
     @submit="onSubmit"
   >
@@ -82,7 +82,11 @@
     <!-- End of input for password confirmation -->
     <div v-if="registerred" class="mt-2 checkbox">
       <label>
-        <input type="checkbox" value="remember-me"> Mantenha-me conectado
+        <input
+          type="checkbox"
+          value="remember-me"
+          v-model="keepConnection"
+        /> Mantenha-me conectado
       </label>
     </div>
     <div v-if="registerred">
@@ -118,6 +122,8 @@
 <script>
   import { mapActions } from 'vuex'
   import Logo from '@/components/Logo.vue'
+  import api from '@/services/api/users'
+  import validator from '@/services/Validator'
 
   export default {
     name: 'Signing',
@@ -127,15 +133,13 @@
     data() {
       return {
         credentials: {},
+        keepConnection: false,
         registerred: true,
         errors: {}
       }
     },
     methods: {
-      ...mapActions({
-        commitSignIn: 'signIn',
-        commitSignUp: 'signUp'
-      }),
+      ...mapActions(['signIn', 'signUp']),
       toggleSigningOption(e) {
         e.preventDefault()
         if (this.registerred) {
@@ -150,13 +154,44 @@
         this.registerred = !this.registerred
       },
       onSubmit(e) {
+        e.target.disabled = true
         e.preventDefault()
-        console.log(this.credentials)
         if (this.registerred) {
-          console.log('Signing in...')
+          const errors = validator.emailHasErrors(this.credentials.email)
+          if (errors) {
+            this.errors = errors
+          } else {
+            api.get({ email: this.credentials.email })
+              .then(response => {
+                if (!response.data.length || response.data[0].password !== this.credentials.password) {
+                  this.errors = { auth: 'Credenciais inválidas' }
+                } else {
+                  this.signIn(response.data[0])
+                  this.$route.push({ name: 'home' })
+                }
+              })
+          }
         } else {
-          console.log('Signing up...')
+          this.errors = validator.allErrors(this.credentials)
+          if (!Object.keys(this.errors).length) {
+            api.get({ email: this.credentials.email })
+              .then(response => {
+                if (response.data.length) {
+                  this.errors = { auth: 'Email já cadastrado' }
+                } else {
+                  this.signUp({
+                    name: this.credentials.name,
+                    email: this.credentials.email,
+                    password: this.credentials.password
+                  })
+                  this.$route.push({ name: 'home' })
+                }
+              })
+          }
         }
+        this.credentials.password = ''
+        this.credentials.passwordConfirmation = ''
+        e.target.disabled = false
       }
     },
     computed: {

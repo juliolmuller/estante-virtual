@@ -4,6 +4,15 @@ import hash from '@/services/Hash'
 // Save default key to access local/session storage
 const storageKey = 'user-data'
 
+// COmpose data to be stored in the client
+const sanitizeData = (userData) => {
+  return {
+    id: userData.id,
+    name: userData.name,
+    email: userData.email,
+    hash: hash(userData) }
+}
+
 // Export module parts (state, getters, mutations & actions)
 export default {
 
@@ -11,7 +20,7 @@ export default {
    * List of stored states
    */
   state: {
-    userData: null
+    userData: {}
   },
 
   /**
@@ -34,17 +43,12 @@ export default {
 
     // Save credentials data to state
     authenticate(state, userData) {
-      return state.userData = {
-        id: userData.id,
-        name: userData.name,
-        email: userData.email,
-        hash: hash(userData)
-      }
+      return state.userData = userData
     },
 
     // Flush away credentials state
     destroySession(state) {
-      state.userData = null
+      state.userData = {}
     }
   },
 
@@ -63,21 +67,20 @@ export default {
     },
 
     // Submit credentials for loging in
-    signIn({ commit }, email, keepConnection) {
-      api.get({ email })
-        .then(response => {
-          const userData = commit('authenticate', response.data)
-          const storage = keepConnection ? localStorage : sessionStorage
-          storage[storageKey] = JSON.stringify(userData)
-        })
+    signIn({ commit }, credentials, keepConnection) {
+      const userData = sanitizeData(credentials)
+      const storage = keepConnection ? localStorage : sessionStorage
+      storage[storageKey] = JSON.stringify(userData)
+      commit('authenticate', userData)
     },
 
     // Submit credentials for signing up
     signUp({ commit }, credentials) {
-      this.api.post(credentials)
+      api.post(credentials)
         .then(response => {
-          const userData = commit('authenticate', response.data)
+          const userData = sanitizeData(response.data)
           sessionStorage[storageKey] = JSON.stringify(userData)
+          commit('authenticate', userData)
         })
     },
 
