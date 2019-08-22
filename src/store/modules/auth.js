@@ -34,7 +34,7 @@ export default {
 
     // Save credentials data to state
     authenticate(state, userData) {
-      state.userData = {
+      return state.userData = {
         id: userData.id,
         name: userData.name,
         email: userData.email,
@@ -66,16 +66,19 @@ export default {
     signIn({ commit }, email, keepConnection) {
       api.get({ email })
         .then(response => {
+          const userData = commit('authenticate', response.data)
           const storage = keepConnection ? localStorage : sessionStorage
-          storage[storageKey] = JSON.stringify({ id: user.id, email: user.email })
-          commit('authenticate', response.data)
+          storage[storageKey] = JSON.stringify(userData)
         })
     },
 
     // Submit credentials for signing up
     signUp({ commit }, credentials) {
       this.api.post(credentials)
-        .then((response) => commit('authenticate', response.data))
+        .then(response => {
+          const userData = commit('authenticate', response.data)
+          sessionStorage[storageKey] = JSON.stringify(userData)
+        })
     },
 
     // Update user data
