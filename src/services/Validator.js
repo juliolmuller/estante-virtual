@@ -15,20 +15,27 @@ export default (function() {
 
   // Associate functionalitis to methods
   return {
-    passwordHasErrors: string => {
+    passwordHasErrors(string) {
       return password.validate(string)
         ? null
         : { password: 'A senha deve ter entre 8 e 32 caracteres, possuir pelo menos um número e uma letra, sem espaços' }
     },
-    emailHasErrors: string => {
+    emailHasErrors(string) {
       return EmailValidator.validate(string)
         ? null
         : { email: 'Não corresponde a um email válido' }
     },
-    nameHasErrors: string => {
+    nameHasErrors(string) {
       return string.length >= 3 && string.length <= 90
         ? null
         : { name: 'O nome deve ter entre 3 e 90 caracteres' }
+    },
+    allErrors({ password, email, name } = {}) {
+      return {
+        password: password ? this.passwordHasErrors(password) : undefined,
+        email: email ? this.emailHasErrors(email) : undefined,
+        name: name ? this.nameHasErrors(name) : undefined
+      }
     }
   }
 
