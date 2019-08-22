@@ -18,24 +18,33 @@ export default (function() {
     passwordHasErrors(string) {
       return password.validate(string)
         ? null
-        : { password: 'A senha deve ter entre 8 e 32 caracteres, possuir pelo menos um número e uma letra, sem espaços' }
+        : 'A senha deve ter entre 8 e 32 caracteres, possuir pelo menos um número e uma letra, sem espaços'
     },
     emailHasErrors(string) {
       return EmailValidator.validate(string)
         ? null
-        : { email: 'Não corresponde a um email válido' }
+        : 'Não corresponde a um email válido'
     },
     nameHasErrors(string) {
       return string.length >= 3 && string.length <= 90
         ? null
-        : { name: 'O nome deve ter entre 3 e 90 caracteres' }
+        : 'O nome deve ter entre 3 e 90 caracteres'
     },
-    allErrors({ password, email, name } = {}) {
-      return {
-        password: password ? this.passwordHasErrors(password) : undefined,
+    allErrors({ email, name, password, passwordConfirmation } = {}) {
+      const errors = {
         email: email ? this.emailHasErrors(email) : undefined,
-        name: name ? this.nameHasErrors(name) : undefined
+        name: name ? this.nameHasErrors(name) : undefined,
+        password: password ? this.passwordHasErrors(password) : undefined,
+        passwordConfirmation: passwordConfirmation ? (() => {
+          return password === passwordConfirmation ? null : 'As senhas não são idênticas'
+        })() : undefined
       }
+      for (let e in errors) {
+        if (!errors[e]) {
+          delete errors[e]
+        }
+      }
+      return errors
     }
   }
 
