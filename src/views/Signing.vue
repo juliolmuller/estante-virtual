@@ -188,12 +188,12 @@
                     email: this.credentials.email,
                     password: this.credentials.password
                   })
-                  this.$router.push({ name: 'home' })
                 }
               })
               .finally(() => {
                 this.credentials.password = ''
                 this.credentials.passwordConfirmation = ''
+                this.registerred = true
               })
           }
         }

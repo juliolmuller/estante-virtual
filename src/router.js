@@ -12,11 +12,7 @@ const checkCredentials = (to, from, next) => {
     .dispatch('isAuthenticated')
     .then(result => {
       if (result) {
-        if (to.name == 'auth') {
-          next({ name: 'home' })
-        } else {
-          next()
-        }
+        next()
       } else {
         next({ name: 'auth' })
       }
