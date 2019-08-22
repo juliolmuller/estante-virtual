@@ -95,7 +95,7 @@
         <a
           href="#"
           class="text-hero"
-          @click="access"
+          @click="toggleSigningOption"
         >Registre-se aqui</a></p>
     </div>
     <div v-if="!registerred">
@@ -107,7 +107,7 @@
         <a
           href="#"
           class="text-hero"
-          @click="access"
+          @click="toggleSigningOption"
         >Já sou cadastrado</a>
       </p>
     </div>
@@ -136,8 +136,17 @@
         commitSignIn: 'signIn',
         commitSignUp: 'signUp'
       }),
-      access(e) {
+      toggleSigningOption(e) {
         e.preventDefault()
+        if (this.registerred) {
+          this.credentials.password = ''
+        } else {
+          this.credentials = {
+            name: '',
+            password: '',
+            passwordConfirmation: ''
+          }
+        }
         this.registerred = !this.registerred
       },
       onSubmit(e) {
