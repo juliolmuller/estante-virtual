@@ -2,7 +2,7 @@ import PasswordValidator from 'password-validator'
 import EmailValidator from 'email-validator'
 
 // Esport instance of validator service
-export default new function() {
+export default (function() {
 
   // Instantiate and configure password validator
   const password = new PasswordValidator()
@@ -15,7 +15,10 @@ export default new function() {
     .has().not().spaces()
 
   // Associate functionalitis to methods
-  this.matchesPassword = password.validate
-  this.matchesEmail = EmailValidator.validate
-  this.matchesName = string => string.length <= 255
-}
+  return {
+    matchesPassword = password.validate,
+    matchesEmail = EmailValidator.validate,
+    matchesName = string => string.length <= 255
+  }
+
+})()
