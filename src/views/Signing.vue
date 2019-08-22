@@ -167,8 +167,12 @@
                   this.errors = { auth: 'Credenciais inválidas' }
                 } else {
                   this.signIn(response.data[0])
-                  this.$route.push({ name: 'home' })
+                  this.$router.push({ name: 'home' })
                 }
+              })
+              .finally(() => {
+                this.credentials.password = ''
+                this.credentials.passwordConfirmation = ''
               })
           }
         } else {
@@ -184,13 +188,15 @@
                     email: this.credentials.email,
                     password: this.credentials.password
                   })
-                  this.$route.push({ name: 'home' })
+                  this.$router.push({ name: 'home' })
                 }
+              })
+              .finally(() => {
+                this.credentials.password = ''
+                this.credentials.passwordConfirmation = ''
               })
           }
         }
-        this.credentials.password = ''
-        this.credentials.passwordConfirmation = ''
         e.target.disabled = false
       }
     },
