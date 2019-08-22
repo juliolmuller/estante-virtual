@@ -7,12 +7,16 @@ import store from './store'
 Vue.use(VueRouter)
 
 // Function to ensure authentication
-const requireAuth = (to, from, next) => {
+const checkCredentials = (to, from, next) => {
   store
     .dispatch('isAuthenticated')
-    .then(res => {
-      if (res) {
-        next()
+    .then(result => {
+      if (result) {
+        if (to.name == 'auth') {
+          next({ name: 'home' })
+        } else {
+          next()
+        }
       } else {
         next({ name: 'auth' })
       }
@@ -31,7 +35,7 @@ export default new VueRouter({
     {
       path: '/',
       component: () => import('@/views/Home.vue'),
-      beforeEnter: requireAuth,
+      beforeEnter: checkCredentials,
       children: [
         {
           path: '/',
