@@ -1,32 +1,122 @@
 <template>
-  <form class="form-signing text-center" :class="{ 'form-signin': registerred, 'form-signup': !registerred }">
+  <form
+    class="form-signing text-center"
+    :style="{
+      'max-height': registerred
+        ? `${errorsCount * 24 + 390}px`
+        : `${errorsCount * 24 + 440}px`
+    }"
+    @submit="onSubmit"
+  >
     <Logo />
-    <label v-if="!registerred" for="signing-name" class="sr-only">Nome do usuário</label>
-    <input v-if="!registerred" type="text" id="signing-name" class="form-control" placeholder="Nome do usuário" required autofocus>
-    <label for="signing-email" class="sr-only">Endereço de email</label>
-    <input type="email" id="signing-email" class="form-control" placeholder="Endereço de email" required autofocus>
-    <label for="signing-password" class="sr-only">Senha de acesso</label>
-    <input type="password" id="signing-password" class="form-control" placeholder="Senha de acesso" required>
-    <label v-if="!registerred" for="signing-password-confirmation" class="sr-only">Confirmação da senha</label>
-    <input v-if="!registerred" type="password" id="signing-password-confirmation" class="form-control" placeholder="Confirmação da senha" required>
+    <div
+      role="alert"
+      class="alert alert-danger border-danger"
+      :style="{ 'visibility': errorsCount ? 'visible' : 'hidden' }"
+    >
+      <p
+        class="text-danger font-weight-bold m-0"
+        v-for="(value, key) in errors"
+        :key="key"
+      >{{ value }}</p>
+    </div>
+    <!-- Input for name (required only in signup) -->
+    <label
+      for="name"
+      class="sr-only"
+      v-if="!registerred"
+    >Nome do usuário</label>
+    <input
+      type="text"
+      id="name"
+      class="form-control"
+      placeholder="Nome do usuário"
+      required autofocus
+      v-if="!registerred"
+      v-model="credentials.name"
+    />
+    <!-- End of input for name -->
+    <!-- Input for email (required in signin & signup) -->
+    <label
+      for="email"
+      class="sr-only"
+    >Endereço de email</label>
+    <input
+      type="email"
+      id="email"
+      class="form-control"
+      placeholder="Endereço de email"
+      required
+      v-model="credentials.email"
+    />
+    <!-- End of input for email -->
+    <!-- Input for password (required in signin & signup) -->
+    <label
+      for="password"
+      class="sr-only"
+    >Senha de acesso</label>
+    <input
+      type="password"
+      id="password"
+      class="form-control"
+      placeholder="Senha de acesso"
+      required
+      v-model="credentials.password"
+    />
+    <!-- End of input for password -->
+    <!-- Input for password confirmation (required only in signup) -->
+    <label
+       for="passwordConfirmation"
+       class="sr-only"
+       v-if="!registerred"
+      >Confirmação da senha</label>
+    <input
+      v-if="!registerred"
+      type="password"
+      id="passwordConfirmation"
+      class="form-control"
+      placeholder="Confirmação da senha"
+      required
+      v-model="credentials.passwordConfirmation"
+    />
+    <!-- End of input for password confirmation -->
     <div v-if="registerred" class="mt-2 checkbox">
       <label>
         <input type="checkbox" value="remember-me"> Mantenha-me conectado
       </label>
     </div>
-    <div v-if="registerred">>
-      <button type="submit" @submit="signIn" class="mt-3 btn btn-lg btn-hero btn-block" >Entrar</button>
-      <p class="mt-1">Não é cadastrado? <a href="#" class="text-hero" @click="access">Registre-se aqui</a></p>
+    <div v-if="registerred">
+      <button
+        type="submit"
+        class="mt-3 btn btn-lg btn-hero btn-block"
+      >Entrar</button>
+      <p class="mt-1">
+        Não é cadastrado?
+        <a
+          href="#"
+          class="text-hero"
+          @click="access"
+        >Registre-se aqui</a></p>
     </div>
     <div v-if="!registerred">
-      <button type="submit" @submit="signUp" class="mt-3 btn btn-lg btn-hero btn-block" >Cadastrar</button>
-      <p class="mt-1"><a href="#" class="text-hero" @click="access">Já sou cadastrado</a></p>
+      <button
+        type="submit"
+        class="mt-3 btn btn-lg btn-hero btn-block"
+      >Cadastrar</button>
+      <p class="mt-1">
+        <a
+          href="#"
+          class="text-hero"
+          @click="access"
+        >Já sou cadastrado</a>
+      </p>
     </div>
     <p class="mt-3 text-muted">&copy; 2019</p>
   </form>
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
   import Logo from '@/components/Logo.vue'
 
   export default {
@@ -36,19 +126,33 @@
     },
     data() {
       return {
-        registerred: true
+        credentials: {},
+        registerred: true,
+        errors: {}
       }
     },
     methods: {
+      ...mapActions({
+        commitSignIn: 'signIn',
+        commitSignUp: 'signUp'
+      }),
       access(e) {
         e.preventDefault()
         this.registerred = !this.registerred
       },
-      signIn(e) {
+      onSubmit(e) {
         e.preventDefault()
-      },
-      signUp(e) {
-        e.preventDefault()
+        console.log(this.credentials)
+        if (this.registerred) {
+          console.log('Signing in...')
+        } else {
+          console.log('Signing up...')
+        }
+      }
+    },
+    computed: {
+      errorsCount() {
+        return Object.keys(this.errors).length
       }
     }
   }
@@ -67,12 +171,6 @@
     max-width: 330px;
     margin: auto;
     padding: 15px;
-  }
-  .form-signin {
-    max-height: 350px;
-  }
-  .form-signup {
-    max-height: 390px;
   }
   .checkbox {
     font-weight: 400;
