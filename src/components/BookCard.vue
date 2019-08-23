@@ -8,7 +8,9 @@
         <p class="card-title font-weight-bold">{{ book.name }}</p>
       </div>
       <div class="card-footer">
-        <button type="button" class="btn btn-hero" @click="viewDetails(book.id)">Detalhes</button>
+        <router-link :to="{ name: 'bookDetails', params: { id: JSON.stringify(book.id) }}">
+          <button type="button" class="btn btn-hero">Detalhes</button>
+        </router-link>
       </div>
     </div>
   </div>
@@ -17,11 +19,6 @@
 <script>
   export default {
     name: 'BookCard',
-    methods: {
-      viewDetails(id) {
-        console.log('Displaying details for book ' + id)
-      }
-    },
     props: {
       book: Object
     }
