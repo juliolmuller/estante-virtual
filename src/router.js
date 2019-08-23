@@ -39,6 +39,12 @@ export default new VueRouter({
           component: () => import('@/views/app/Library.vue')
         },
         {
+          path: 'livros/:id',
+          name: 'bookDetails',
+          component: () => import('@/views/app/BookDetails.vue'),
+          props: true
+        },
+        {
           path: 'meus-livros',
           name: 'myBooks',
           component: () => import('@/views/app/MyBooks.vue')
