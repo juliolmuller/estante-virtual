@@ -1,27 +1,88 @@
 <template>
   <div>
     <h1 class="mb-4">{{ book.name }}</h1>
-    <div>
-      <div class="float-left">
-        <img :src="book.image" alt="Capa do livro">
+    <form @submit="save">
+      <div class="row">
+        <div class="col-12 col-md-4">
+          <img class="img-fluid" alt="Capa do livro" :src="book.image">
+        </div>
+        <div class="col-12 col-md-8">
+          <div class="form-group">
+            <label for="id">ID:</label>
+            <input
+              type="text"
+              id="id"
+              disabled
+              v-model="book.id"
+              :class="{ ...getClasses, 'text-hero': !this.isEditing }"
+            />
+          </div>
+          <div class="form-group">
+            <label for="name">Título:</label>
+            <input
+              type="text"
+              id="name"
+              v-model="book.name"
+              :class="{ ...getClasses, 'text-hero': !this.isEditing }"
+            />
+          </div>
+          <div class="form-group">
+            <label for="ownerName">Dono do Livro:</label>
+            <input
+              type="text"
+              id="ownerName"
+              v-model="ownerName"
+              :class="{ ...getClasses, 'text-hero': !this.isEditing }"
+            />
+          </div>
+          <div class="form-group">
+            <label for="name">Status:</label>
+            <input
+              type="text"
+              id="name"
+              :class="getClasses"
+              :style="{ 'color': !!book.loan ? 'red' : 'green' }"
+              :value="book.loan ? `Emprestado a ${userName} desde ${(new Date('2019-03-30')).toLocaleDateString()}` : 'Disponível'"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <button
+            type="submit"
+            class="btn btn-hero m-3"
+            v-if="isEditing"
+          >Salvar</button>
+          <button
+            type="button"
+            class="btn btn-hero m-3"
+            v-if="!isEditing && !book.loan"
+            @click="loanBook"
+          >Emprestar Livro</button>
+          <button
+            type="button"
+            class="btn btn-hero m-3"
+            v-if="!isEditing && book.loan"
+            @click="returnBook"
+          >Devolver Livro</button>
+        </div>
       </div>
-      <form @submit="save">
-        <button type="button" class="btn btn-sm btn-hero mb-4">
-          Cadastrar Novo Livro
-        </button>
-      </form>
-    </div>
+    </form>
   </div>
 </template>
 
 <script>
-  import api from '@/services/api/books'
+  import { mapGetters } from 'vuex'
+  import booksApi from '@/services/api/books'
+  import usersApi from '@/services/api/users'
 
   export default {
     name: 'BookDetails',
     data() {
       return {
-        book: {}
+        book: {},
+        ownerName: '',
+        userName: '',
+        isEditing: this.id == 'novo'
       }
     },
     props: {
@@ -31,21 +92,61 @@
       save(e) {
         e.preventDefault()
         console.log('Saving...')
+      },
+      loanBook() {
+        this.book.loan = {
+          userId: this.userId,
+          date: (new Date()).toISOString().substring(0, 10)
+        }
+        booksApi.put(this.book)
+          .then(response => {
+            this.bbok = response.data
+            this.userName = 'você'
+          })
+      },
+      returnBook() {
+        this.book.loan = false
+        booksApi.put(this.book)
+          .then(response => {
+            this.bbok = response.data
+          })
+      }
+    },
+    computed: {
+      ...mapGetters(['userId']),
+      getClasses() {
+        return {
+          'form-control': this.isEditing,
+          'border-hero': this.isEditing,
+          'form-control-plaintext': !this.isEditing,
+          'h4': !this.isEditing,
+          'pt-0': !this.isEditing
+        }
       }
     },
     created() {
-      api.getOne(this.id)
+      booksApi.getOne(this.id)
         .then(response => {
           this.book = response.data
+          usersApi.getOne(this.book.userId)
+            .then(response => {
+              this.ownerName = response.data.name
+            })
+          if (this.book.loan) {
+            if (this.book.loan.userId == this.userId) {
+              this.userName = 'você'
+            } else {
+              usersApi.getOne(this.book.loan.userId)
+                .then(response => {
+                  this.userName = response.data.name
+                })
+            }
+          }
         })
     }
   }
 </script>
 
-<style>
-  div > img {
-    height: 16rem;
-    margin-right: 3rem;
-    text-align: center;
-  }
+<style scoped>
+
 </style>
