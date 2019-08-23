@@ -22,7 +22,18 @@
             <input
               type="text"
               id="name"
+              autofocus
               v-model="book.name"
+              :class="{ ...getClasses, 'text-hero': !this.isEditing }"
+            />
+          </div>
+          <div class="form-group" v-if="isEditing">
+            <label for="image">URL da Capa:</label>
+            <input
+              type="text"
+              id="image"
+              autofocus
+              v-model="book.image"
               :class="{ ...getClasses, 'text-hero': !this.isEditing }"
             />
           </div>
@@ -31,7 +42,8 @@
             <input
               type="text"
               id="ownerName"
-              v-model="ownerName"
+              :disabled="isEditing"
+              :value="ownerName"
               :class="{ ...getClasses, 'text-hero': !this.isEditing }"
             />
           </div>
@@ -62,7 +74,7 @@
           <button
             type="button"
             class="btn btn-info m-3"
-            v-if="!isEditing && book.userId == userId"
+            v-if="!isEditing && book.userId == thisUserId"
             @click="edit"
           >Editar Dados</button>
           <button
@@ -103,7 +115,7 @@
     methods: {
       loanBook() {
         this.book.loan = {
-          userId: this.userId,
+          userId: this.thisUserId,
           date: (new Date()).toISOString().substring(0, 10)
         }
         booksApi.put(this.book)
@@ -121,6 +133,7 @@
       },
       edit() {
         this.isEditing = !this.isEditing
+        this.ownerName = this.thisUserName
       },
       save(e) {
         e.preventDefault()
@@ -133,7 +146,10 @@
       }
     },
     computed: {
-      ...mapGetters(['userId']),
+      ...mapGetters({
+        thisUserId: 'userId',
+        thisUserName: 'userName'
+      }),
       getClasses() {
         return {
           'form-control': this.isEditing,
@@ -153,7 +169,7 @@
               this.ownerName = response.data.name
             })
           if (this.book.loan) {
-            if (this.book.loan.userId == this.userId) {
+            if (this.book.loan.userId == this.thisUserId) {
               this.userName = 'você'
             } else {
               usersApi.getOne(this.book.loan.userId)

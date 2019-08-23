@@ -18,6 +18,9 @@
           v-model="user.name"
           :class="getClasses"
         />
+        <div class="invalid-feedback" v-show="errors.name">
+          {{ errors.name }}
+        </div>
       </div>
       <div class="form-group">
         <label for="email">Email de Contato:</label>
@@ -27,6 +30,9 @@
           v-model="user.email"
           :class="getClasses"
         />
+        <div class="invalid-feedback" v-show="errors.email">
+          {{ errors.email }}
+        </div>
       </div>
       <div class="card border-hero p-3 bg-white w-50" v-show="isEditing">
         <h4 class="mb-4">Mudar Senha</h4>
@@ -36,8 +42,12 @@
             type="password"
             id="oldPassword"
             placeholder="Deve ter no mínimo 8 digitos"
+            v-model="user.oldPassword"
             :class="getClasses"
           />
+          <div class="invalid-feedback" v-show="errors.oldPassword">
+            {{ errors.oldPassword }}
+          </div>
         </div>
         <div class="form-group">
           <label for="newPassword">Nova Senha:</label>
@@ -45,8 +55,12 @@
             type="password"
             id="newPassword"
             placeholder="Deve ter no mínimo 8 digitos"
+            v-model="user.newPassword"
             :class="getClasses"
           />
+          <div class="invalid-feedback" v-show="errors.newPassword">
+            {{ errors.newPassword }}
+          </div>
         </div>
         <div class="form-group">
           <label for="newPasswordConfirmation">Repetir a Nova Senha:</label>
@@ -54,8 +68,12 @@
             type="password"
             id="newPasswordConfirmation"
             placeholder="Deve ser igual a nova senha"
+            v-model="user.newPasswordConfirmation"
             :class="getClasses"
           />
+          <div class="invalid-feedback" v-show="errors.newPassword">
+            Repita inteiramente o valor para a nova senha
+          </div>
         </div>
       </div>
       <button
@@ -73,13 +91,16 @@
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import Bookcase from '@/components/Bookcase.vue'
+  import validator from '@/services/Validator'
+  import api from '@/services/api/users'
 
   export default {
     name: 'MyProfile',
     data() {
       return {
         user: {},
-        isEditing: false
+        isEditing: false,
+        errors: {}
       }
     },
     methods: {
@@ -88,9 +109,10 @@
         this.isEditing = true
       },
       save($event) {
+        $event.target.disabled = true
         $event.preventDefault()
-        console.log('Commiting changes...')
         this.isEditing = false
+        $event.target.disabled = false
       }
     },
     computed: {
@@ -100,9 +122,9 @@
           'form-control': this.isEditing,
           'border-hero': this.isEditing,
           'text-hero': !this.isEditing,
-          'text-bold': !this.isEditing,
           'form-control-plaintext': !this.isEditing,
           'h4': !this.isEditing,
+          'pt-0': !this.isEditing
         }
       }
     },
@@ -110,7 +132,10 @@
       this.user = {
         id: this.userData.id,
         name: this.userData.name,
-        email: this.userData.email
+        email: this.userData.email,
+        oldPassword: '',
+        newPassword: '',
+        newPasswordConfirmation: ''
       }
     }
   }

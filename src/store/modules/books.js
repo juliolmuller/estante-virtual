@@ -9,7 +9,12 @@ export default {
   state: {
     books: [],
     userBooks: [],
-    userLoans: []
+    userLoans: [],
+    searchCriteria: '',
+    filterCriteria: {
+      available: true,
+      unavailable: false
+    }
   },
 
   /**
@@ -18,7 +23,16 @@ export default {
   getters: {
     allBooks: state => state.books,
     userBooks: state => state.userBooks,
-    userLoans: state => state.userLoans
+    userLoans: state => state.userLoans,
+    filterCriteria: state => state.filterCriteria,
+    searchCriteria: state => state.searchCriteria,
+    results: state => {
+      return state.books.filter(book => {
+        return (state.filterCriteria.available && !book.loan) || (state.filterCriteria.unavailable && book.loan)
+      }).filter(book => {
+        return book.name.toLowerCase().indexOf(state.searchCriteria.toLowerCase()) > -1
+      })
+    }
   },
 
   /**
@@ -27,7 +41,9 @@ export default {
   mutations: {
     setBooks: (state, books) => state.books = books,
     setUserBooks: (state, books) => state.userBooks = books,
-    setUserLoans: (state, books) => state.userLoans = books
+    setUserLoans: (state, books) => state.userLoans = books,
+    setFilter: (state, filter) => state.filterCriteria = filter,
+    setSearch: (state, search) => state.searchCriteria = search
   },
 
   /**
@@ -45,6 +61,12 @@ export default {
     fetchUserLoans({ commit }, userId) {
       api.get({ 'loan.userId': userId })
         .then(response => commit('setUserLoans', response.data))
+    },
+    setFilter({ commit }, { available, unavailable }) {
+      commit('setFilter', { available, unavailable })
+    },
+    setSearch({ commit }, searchTerm) {
+      commit('setSearch', searchTerm)
     }
   }
 }

@@ -6,6 +6,8 @@
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex'
+
   export default {
     name: 'BookFilter',
     data() {
@@ -14,13 +16,32 @@
         showUnavailables: false
       }
     },
+    props: {
+      allBooks: Array
+    },
     methods: {
+      ...mapActions(['setFilter']),
       toggleAvailable() {
         this.showAvailables = this.showUnavailables ? !this.showAvailables : true
+        this.setFilter({
+          available: this.showAvailables,
+          unavailable: this.showUnavailables
+        })
       },
       toggleUnavailable() {
         this.showUnavailables = this.showAvailables ? !this.showUnavailables : true
+        this.setFilter({
+          available: this.showAvailables,
+          unavailable: this.showUnavailables
+        })
       }
+    },
+    computed: {
+      ...mapGetters(['filterCriteria'])
+    },
+    mounted() {
+      this.showAvailables = this.filterCriteria.available
+      this.showUnavailables = this.filterCriteria.unavailable
     }
   }
 </script>

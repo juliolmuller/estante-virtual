@@ -9,7 +9,7 @@
         <BookFilter />
       </div>
     </div>
-    <Bookcase :books="allBooks" :count="booksCount">
+    <Bookcase :books="books" :count="booksCount">
       Não há livros cadastrados.
     </Bookcase>
   </div>
@@ -32,7 +32,10 @@
       ...mapActions(['fetchBooks'])
     },
     computed: {
-      ...mapGetters(['allBooks']),
+      ...mapGetters({
+        books: 'results',
+        allBooks: 'allBooks'
+      }),
       booksCount() {
         return this.allBooks.length
       }
