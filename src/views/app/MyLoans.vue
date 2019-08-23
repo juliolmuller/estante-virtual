@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="mb-4">Meus empréstimos</h1>
-    <Bookcase :books="userLoans">
+    <Bookcase :books="userLoans" :count="booksCount">
       Você ainda não possui empréstimos.
     </Bookcase>
   </div>
@@ -20,7 +20,10 @@
       ...mapActions(['fetchUserLoans'])
     },
     computed: {
-      ...mapGetters(['userId', 'userLoans'])
+      ...mapGetters(['userId', 'userLoans']),
+      booksCount() {
+        return this.userLoans.length
+      }
     },
     created() {
       this.fetchUserLoans(this.userId)
