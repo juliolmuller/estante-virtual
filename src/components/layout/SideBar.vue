@@ -1,7 +1,9 @@
 <template>
   <div>>
     <div class="sidebar">
-      <Logo />
+      <div class="text-center">
+        <Logo />
+      </div>
       <nav class="mt-5">
         <router-link :to="{ name: 'home' }" class="btn btn-lg btn-light">Home</router-link>
         <router-link :to="{ name: 'myBooks' }" class="btn btn-lg btn-light">Meus Livros</router-link>
