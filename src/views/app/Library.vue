@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Escolha o seu livro na estante:</h1>
-    <div class="row mt-5" v-show="!allBooks.lenght">
+    <div class="row mt-5" v-show="booksCount">
       <div class="col-12 col-md-6">
         <BookSearch />
       </div>
@@ -9,7 +9,7 @@
         <BookFilter />
       </div>
     </div>
-    <Bookcase :books="allBooks">
+    <Bookcase :books="allBooks" :count="booksCount">
       Não há livros cadastrados.
     </Bookcase>
   </div>
@@ -32,7 +32,10 @@
       ...mapActions(['fetchBooks'])
     },
     computed: {
-      ...mapGetters(['allBooks'])
+      ...mapGetters(['allBooks']),
+      booksCount() {
+        return this.allBooks.length
+      }
     },
     created() {
       this.fetchBooks()
