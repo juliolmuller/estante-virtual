@@ -159,6 +159,7 @@
           this.book.loan = false
           booksApi.post(this.book)
             .then(response => {
+              this.book = response.data
               this.isEditing = false
               e.target.disabled = false
               this.$router.push({ name: 'bookDetails', params: { bookId: JSON.stringify(response.data.id) }})
@@ -166,6 +167,7 @@
         } else {
           booksApi.put(this.book)
             .then(response => {
+              this.book = response.data
               this.isEditing = false
               e.target.disabled = false
             })

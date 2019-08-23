@@ -90,9 +90,6 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
-  import Bookcase from '@/components/Bookcase.vue'
-  import validator from '@/services/Validator'
-  import api from '@/services/api/users'
 
   export default {
     name: 'MyProfile',
@@ -108,11 +105,11 @@
       edit() {
         this.isEditing = true
       },
-      save($event) {
-        $event.target.disabled = true
-        $event.preventDefault()
+      save(e) {
+        e.target.disabled = true
+        e.preventDefault()
         this.isEditing = false
-        $event.target.disabled = false
+        e.target.disabled = false
       }
     },
     computed: {
@@ -140,7 +137,3 @@
     }
   }
 </script>
-
-<style>
-
-</style>

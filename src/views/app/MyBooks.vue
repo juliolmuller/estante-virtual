@@ -30,11 +30,6 @@
     },
     created() {
       this.fetchUserBooks(this.userId)
-      console.log(this.userBooks)
     }
   }
 </script>
-
-<style>
-
-</style>
