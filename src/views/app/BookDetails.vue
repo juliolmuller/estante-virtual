@@ -48,11 +48,6 @@
         </div>
         <div class="row">
           <button
-            type="submit"
-            class="btn btn-hero m-3"
-            v-if="isEditing"
-          >Salvar</button>
-          <button
             type="button"
             class="btn btn-hero m-3"
             v-if="!isEditing && !book.loan"
@@ -64,6 +59,23 @@
             v-if="!isEditing && book.loan"
             @click="returnBook"
           >Devolver Livro</button>
+          <button
+            type="button"
+            class="btn btn-info m-3"
+            v-if="!isEditing && book.userId == userId"
+            @click="edit"
+          >Editar Dados</button>
+          <button
+            type="submit"
+            class="btn btn-primary m-3"
+            v-if="isEditing"
+          >Salvar</button>
+          <button
+            type="button"
+            class="btn btn-danger m-3"
+            v-if="isEditing && bookId != 'novo'"
+            @click="dropBook"
+          >Remover da Estante</button>
         </div>
       </div>
     </form>
@@ -82,17 +94,13 @@
         book: {},
         ownerName: '',
         userName: '',
-        isEditing: this.id == 'novo'
+        isEditing: this.bookId == 'novo'
       }
     },
     props: {
-      id: String
+      bookId: String
     },
     methods: {
-      save(e) {
-        e.preventDefault()
-        console.log('Saving...')
-      },
       loanBook() {
         this.book.loan = {
           userId: this.userId,
@@ -110,6 +118,18 @@
           .then(response => {
             this.bbok = response.data
           })
+      },
+      edit() {
+        this.isEditing = !this.isEditing
+      },
+      save(e) {
+        e.preventDefault()
+        console.log('Saving...')
+      },
+      drop() {
+        if (confirm(`Tem certeza de que deseja remover o livro "${this.book.name}" do catálogo?`)) {
+          console.log('Droping...')
+        }
       }
     },
     computed: {
@@ -125,7 +145,7 @@
       }
     },
     created() {
-      booksApi.getOne(this.id)
+      booksApi.getOne(this.bookId)
         .then(response => {
           this.book = response.data
           usersApi.getOne(this.book.userId)

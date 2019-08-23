@@ -39,7 +39,7 @@ export default new VueRouter({
           component: () => import('@/views/app/Library.vue')
         },
         {
-          path: 'livros/:id',
+          path: 'livros/:bookId',
           name: 'bookDetails',
           component: () => import('@/views/app/BookDetails.vue'),
           props: true
