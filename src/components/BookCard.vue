@@ -8,7 +8,7 @@
         <p class="card-title font-weight-bold">{{ book.name }}</p>
       </div>
       <div class="card-footer">
-        <router-link :to="{ name: 'bookDetails', params: { id: JSON.stringify(book.id) }}">
+        <router-link :to="{ name: 'bookDetails', params: { bookId: JSON.stringify(book.id) }}">
           <button type="button" class="btn btn-hero">Detalhes</button>
         </router-link>
       </div>

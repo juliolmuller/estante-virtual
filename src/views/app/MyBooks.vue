@@ -1,9 +1,9 @@
 <template>
   <div>
     <h1>Meus livros</h1>
-    <button type="button" class="btn btn-sm btn-hero mb-4" @click="addBook">
-      Cadastrar Novo Livro
-    </button>
+    <router-link :to="{ name: 'bookDetails', params: { bookId: 'novo' }}">
+      <button type="button" class="btn btn-sm btn-hero mb-4">Cadastrar Novo Livro</button>
+    </router-link>
     <Bookcase :books="userBooks">
       Você ainda não possui livros cadastrados.
     </Bookcase>
@@ -20,10 +20,7 @@
       Bookcase
     },
     methods: {
-      ...mapActions(['fetchUserBooks']),
-      addBook() {
-        console.log("Adding new book...")
-      }
+      ...mapActions(['fetchUserBooks'])
     },
     computed: {
       ...mapGetters(['userId', 'userBooks'])
