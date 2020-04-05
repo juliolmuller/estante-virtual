@@ -173,7 +173,7 @@
             })
         }
       },
-      drop() {
+      drop(e) {
         if (confirm(`Tem certeza de que deseja remover o livro "${this.book.name}" do catálogo?`)) {
           booksApi.delete(this.book.id)
             .then(response => {

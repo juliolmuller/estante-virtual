@@ -1,10 +1,10 @@
 
-# Colaborative Library (Estante Virtual)
+# Estante Virtual (Collaborative Library)
 
 - **Develepoled by:** [Julio L. Muller](https://github.com/juliolmuller)
 - **Released on:** Aug 22, 2019
-- **Updated on:** Aug 23, 2019
-- **Latest version:** 0.1.0
+- **Updated on:** Apr 5, 2020
+- **Latest version:** 0.1.1
 - **License:** MIT
 
 ## Overview
@@ -34,7 +34,7 @@ npm install
 The web server used by the application is **JSON Server**, a Node based app which raises a server and provides a simple REST API, so we can easily perform `GET`, `POST`, `PUT` & `DELETE` HTTP requestswith data being persisted in a JSON file. To initialize the server, run:
 
 ```bash
-cd server && npm run serve
+cd server && npm start
 ```
 
 ## Build Vue.js Application
