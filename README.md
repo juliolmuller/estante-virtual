@@ -1,10 +1,10 @@
 
 # Estante Virtual (Collaborative Library)
 
-- **Develepoled by:** [Julio L. Muller](https://github.com/juliolmuller)
+- **Developed by:** [Julio L. Muller](https://github.com/juliolmuller)
 - **Released on:** Aug 22, 2019
-- **Updated on:** Apr 5, 2020
-- **Latest version:** 0.1.1
+- **Updated on:** Jul 21, 2020
+- **Latest version:** 0.1.2
 - **License:** MIT
 
 ## Overview
@@ -13,9 +13,9 @@ This is an application developed as a challenge, proposed by the company [HeroSp
 
 ![Collaborative Library](./app-overview.jpg)
 
-## How to Set Up the Enviroment
+## How to Set Up the Environment
 
-This application is compatible to non-production enviroments, since the fake back-end does not provide full services and security for the user data. However, to set it up in your local machine, observe the following steps:
+This application is compatible to non-production environments, since the fake back-end does not provide full services and security for the user data. However, to set it up in your local machine, observe the following steps:
 
 ### Software Required
 
@@ -31,7 +31,7 @@ npm install
 
 ### Run the Server
 
-The web server used by the application is **JSON Server**, a Node based app which raises a server and provides a simple REST API, so we can easily perform `GET`, `POST`, `PUT` & `DELETE` HTTP requestswith data being persisted in a JSON file. To initialize the server, run:
+The web server used by the application is **JSON Server**, a Node based app which raises a server and provides a simple REST API, so we can easily perform `GET`, `POST`, `PUT` & `DELETE` HTTP requests with data being persisted in a JSON file. To initialize the server, run:
 
 ```bash
 cd server && npm start
@@ -64,6 +64,6 @@ Here are the main technologies used to build this project:
 - **Text Editor:** [Visual Studio Code](https://code.visualstudio.com/)
 - **Console Emulator:** [Cmder](https://cmder.net/)
 - **JS Package Manager:** [Node.js](https://nodejs.org/en/)
-- **API Development Enviroment:** [Postman](https://www.getpostman.com/)
+- **API Development Environment:** [Postman](https://www.getpostman.com/)
 - **Versioning Tool:** [Git](https://git-scm.com/)
 - **Remote Repository:** [GitLab](https://gitlab.com/) & [GitHub](https://github.com/)
