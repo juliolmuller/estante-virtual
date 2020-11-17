@@ -16,7 +16,7 @@
   },
   "homepage": "https://gitlab.com/jeanmalves/colaborative-library#README",
   "dependencies": {
-    "json-server": "^0.15.1"
+    "json-server": "^0.16.3"
   },
   "devDependencies": {
     "faker": "^4.1.0",
