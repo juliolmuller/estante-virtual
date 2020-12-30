@@ -7,14 +7,16 @@
   "scripts": {
     "start": "vue-cli-service serve --open",
     "build": "vue-cli-service build --dest docs --modern",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "server": "json-server --watch db.json"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "~0.21.1",
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.21.1",
     "email-validator": "^2.0.4",
     "jquery": "^3.5.1",
+    "json-server": "^0.16.3",
     "md5": "^2.3.0",
     "password-validator": "^5.1.1",
     "portal-vue": "^2.1.7",
