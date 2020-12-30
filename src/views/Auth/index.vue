@@ -118,9 +118,9 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { usersApi } from '../services/api'
-import * as validator from '../services/validator'
-import Logo from '../components/Logo'
+import { usersApi } from '@/services/api'
+import * as validator from '@/services/validator'
+import Logo from '@/components/Logo'
 
 export default {
 

@@ -13,8 +13,8 @@
 
 <script>
 import { mapActions } from 'vuex'
-import SideBar from '../components/layout/SideBar'
-import Main from '../components/layout/Main'
+import SideBar from '@/components/layout/SideBar'
+import Main from '@/components/layout/Main'
 
 export default {
 

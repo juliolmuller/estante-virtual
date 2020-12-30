@@ -14,7 +14,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Bookcase from '../../components/Bookcase'
+import Bookcase from '@/components/Bookcase'
 
 export default {
 

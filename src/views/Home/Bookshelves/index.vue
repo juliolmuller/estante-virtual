@@ -17,9 +17,9 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import BookSearch from '../../components/BookSearch'
-import BookFilter from '../../components/BookFilter'
-import Bookcase from '../../components/Bookcase'
+import BookSearch from '@/components/BookSearch'
+import BookFilter from '@/components/BookFilter'
+import Bookcase from '@/components/Bookcase'
 
 export default {
 

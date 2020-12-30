@@ -112,7 +112,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { booksApi, usersApi } from '../../services/api'
+import { booksApi, usersApi } from '@/services/api'
 
 export default {
 
