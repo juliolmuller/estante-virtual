@@ -10,16 +10,17 @@
 </template>
 
 <script>
-  import BookCard from '@/components/BookCard.vue'
+import BookCard from './BookCard'
 
-  export default {
-    name: 'Bookcase',
-    components: {
-      BookCard
-    },
-    props: {
-      books: Array,
-      count: Number
-    }
-  }
+export default {
+
+  components: {
+    BookCard,
+  },
+
+  props: {
+    books: Array,
+    count: Number,
+  },
+}
 </script>

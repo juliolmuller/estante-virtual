@@ -6,6 +6,7 @@
       v-if="!isEditing"
       @click="goBack"
     >Voltar</button>
+
     <h1 class="mb-4 text-truncate">{{ formTitle }}</h1>
     <form @submit="save">
       <div class="row">
@@ -63,7 +64,10 @@
                   id="name"
                   :class="getClasses"
                   :style="{ 'color': !!book.loan ? 'red' : 'green' }"
-                  :value="book.loan ? `Emprestado a ${userName} desde ${(new Date('2019-03-30')).toLocaleDateString()}` : 'Disponível'"
+                  :value="book.loan
+                    ? `Emprestado a ${userName} desde ${(new Date('2019-03-30')).toLocaleDateString()}`
+                    : 'Disponível'
+                  "
                 />
               </div>
             </div>
@@ -107,129 +111,114 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
-  import booksApi from '@/services/api/books'
-  import usersApi from '@/services/api/users'
+import { mapGetters, mapActions } from 'vuex'
+import { booksApi, usersApi } from '../../services/api'
 
-  export default {
-    name: 'BookDetails',
-    data() {
+export default {
+
+  props: {
+    bookId: String,
+  },
+
+  data: () => ({
+    formTitle: '',
+    book: {},
+    ownerName: '',
+    userName: '',
+    isEditing: false,
+  }),
+
+  computed: {
+    ...mapGetters({
+      thisUserId: 'userId',
+      thisUserName: 'userName',
+    }),
+    getClasses() {
       return {
-        formTitle: '',
-        book: {},
-        ownerName: '',
-        userName: '',
-        isEditing: false
+        'form-control': this.isEditing,
+        'border-hero': this.isEditing,
+        'form-control-plaintext': !this.isEditing,
+        'h4': !this.isEditing,
+        'pt-0': !this.isEditing,
       }
     },
-    props: {
-      bookId: String
+  },
+
+  methods: {
+    ...mapActions(['fetchBooks']),
+    goBack() {
+      this.$router.go(-1)
     },
-    methods: {
-      ...mapActions(['fetchBooks']),
-      goBack() {
-        this.$router.go(-1)
-      },
-      loanBook() {
-        this.book.loan = {
+    async loanBook() {
+      this.book = await booksApi.put({
+        ...this.book,
+        loan: {
           userId: this.thisUserId,
-          date: (new Date()).toISOString().substring(0, 10)
-        }
-        booksApi.put(this.book)
-          .then(response => {
-            this.bbok = response.data
-            this.userName = 'você'
-          })
-      },
-      returnBook() {
+          date: (new Date()).toISOString().substring(0, 10),
+        },
+      })
+      this.userName = 'você'
+    },
+    async returnBook() {
+      this.book.loan = false
+      this.bbok = await booksApi.put(this.book)
+    },
+    edit() {
+      this.isEditing = !this.isEditing
+      this.ownerName = this.thisUserName
+    },
+    async save(event) {
+      event.preventDefault()
+      event.target.disabled = true
+
+      if (this.bookId === 'novo') {
         this.book.loan = false
-        booksApi.put(this.book)
-          .then(response => {
-            this.bbok = response.data
-          })
-      },
-      edit() {
-        this.isEditing = !this.isEditing
-        this.ownerName = this.thisUserName
-      },
-      save(e) {
-        e.target.disabled = true
-        e.preventDefault()
-        if (this.bookId == 'novo') {
-          this.book.loan = false
-          booksApi.post(this.book)
-            .then(response => {
-              this.book = response.data
-              this.isEditing = false
-              e.target.disabled = false
-              this.$router.push({ name: 'bookDetails', params: { bookId: JSON.stringify(response.data.id) }})
-            })
-        } else {
-          booksApi.put(this.book)
-            .then(response => {
-              this.book = response.data
-              this.isEditing = false
-              e.target.disabled = false
-            })
-        }
-      },
-      drop(e) {
-        if (confirm(`Tem certeza de que deseja remover o livro "${this.book.name}" do catálogo?`)) {
-          booksApi.delete(this.book.id)
-            .then(response => {
-              this.isEditing = false
-              e.target.disabled = false
-              this.$router.push({ name: 'bookDetails', params: { bookId: JSON.stringify(response.data.id) }})
-            })
-        }
-      }
-    },
-    computed: {
-      ...mapGetters({
-        thisUserId: 'userId',
-        thisUserName: 'userName'
-      }),
-      getClasses() {
-        return {
-          'form-control': this.isEditing,
-          'border-hero': this.isEditing,
-          'form-control-plaintext': !this.isEditing,
-          'h4': !this.isEditing,
-          'pt-0': !this.isEditing
-        }
-      }
-    },
-    created() {
-      if (this.bookId == 'novo') {
-        this.isEditing = true
-        this.formTitle = 'Novo Livro'
-        this.ownerName = this.thisUserName
-        this.book.userId = this.thisUserId
+        this.book = await booksApi.post(this.book)
+        event.target.disabled = false
+        this.isEditing = false
+        this.$router.push({
+          name: 'bookDetails',
+          params: { bookId: JSON.stringify(this.book.id) },
+        })
       } else {
-        booksApi.getOne(this.bookId)
-          .then(response => {
-            this.book = response.data
-            this.formTitle = response.data.name
-            usersApi.getOne(this.book.userId)
-              .then(response => {
-                this.ownerName = response.data.name
-              })
-            if (this.book.loan) {
-              if (this.book.loan.userId == this.thisUserId) {
-                this.userName = 'você'
-              } else {
-                usersApi.getOne(this.book.loan.userId)
-                  .then(response => {
-                    this.userName = response.data.name
-                  })
-              }
-            }
-          })
+        this.book = await booksApi.put(this.book)
+        event.target.disabled = false
+        this.isEditing = false
+      }
+    },
+    async drop(event) {
+      if (confirm(`Tem certeza de que deseja remover o livro "${this.book.name}" do catálogo?`)) {
+        await booksApi.delete(this.book.id)
+
+        event.target.disabled = false
+        this.isEditing = false
+        this.$router.push({
+          name: 'bookDetails',
+          params: { bookId: JSON.stringify(this.book.id) },
+        })
+      }
+    },
+  },
+
+  async created() {
+    if (this.bookId === 'novo') {
+      this.isEditing = true
+      this.formTitle = 'Novo Livro'
+      this.ownerName = this.thisUserName
+      this.book.userId = this.thisUserId
+    } else {
+      this.book = await booksApi.getOne(this.bookId)
+      this.formTitle = this.book.name
+      this.ownerName = (await usersApi.getOne(this.book.userId)).name
+
+      if (this.book.loan) {
+        if (this.book.loan.userId === this.thisUserId) {
+          this.userName = 'você'
+        } else {
+          this.userName = (await usersApi.getOne(this.book.loan.userId)).name
+        }
       }
     }
-  }
+  },
+}
 </script>
-
-<style scoped>
-
-</style>

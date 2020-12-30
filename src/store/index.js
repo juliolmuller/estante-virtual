@@ -3,13 +3,13 @@ import Vuex from 'vuex'
 import books from './modules/books'
 import auth from './modules/auth'
 
-// Inject Vuex plugin into Vue application
 Vue.use(Vuex)
 
-// Load modules into Store
-export default new Vuex.Store({
+const store = new Vuex.Store({
   modules: {
     books,
-    auth
-  }
+    auth,
+  },
 })
+
+export default store

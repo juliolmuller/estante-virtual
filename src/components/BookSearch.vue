@@ -11,15 +11,15 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 
-  export default {
-    name: 'BookSearch',
-    methods: {
-      ...mapActions(['setSearch']),
-      search(e) {
-        this.setSearch(e.target.value)
-      }
-    }
-  }
+export default {
+
+  methods: {
+    ...mapActions(['setSearch']),
+    search(e) {
+      this.setSearch(e.target.value)
+    },
+  },
+}
 </script>

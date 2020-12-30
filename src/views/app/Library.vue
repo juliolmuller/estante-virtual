@@ -16,32 +16,35 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
-  import BookSearch from '@/components/BookSearch.vue'
-  import BookFilter from '@/components/BookFilter.vue'
-  import Bookcase from '@/components/Bookcase.vue'
+import { mapGetters, mapActions } from 'vuex'
+import BookSearch from '../../components/BookSearch'
+import BookFilter from '../../components/BookFilter'
+import Bookcase from '../../components/Bookcase'
 
-  export default {
-    name: 'Library',
-    components: {
-      BookSearch,
-      BookFilter,
-      Bookcase
+export default {
+
+  components: {
+    BookSearch,
+    BookFilter,
+    Bookcase,
+  },
+
+  computed: {
+    ...mapGetters({
+      books: 'results',
+      allBooks: 'allBooks',
+    }),
+    booksCount() {
+      return this.allBooks.length
     },
-    methods: {
-      ...mapActions(['fetchBooks'])
-    },
-    computed: {
-      ...mapGetters({
-        books: 'results',
-        allBooks: 'allBooks'
-      }),
-      booksCount() {
-        return this.allBooks.length
-      }
-    },
-    created() {
-      this.fetchBooks()
-    }
-  }
+  },
+
+  methods: {
+    ...mapActions(['fetchBooks']),
+  },
+
+  created() {
+    this.fetchBooks()
+  },
+}
 </script>

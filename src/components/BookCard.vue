@@ -17,30 +17,32 @@
 </template>
 
 <script>
-  export default {
-    name: 'BookCard',
-    props: {
-      book: Object
-    }
-  }
+export default {
+
+  props: {
+    book: Object,
+  },
+}
 </script>
 
 <style scoped>
-  img {
-    height: 10rem;
-    text-align: center;
-    overflow: hidden;
-  }
-  .card-body {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3rem;
-    line-height: 1.5rem;
-    max-height: 4.5rem;
-  }
-  button[disabled] {
-    background: #777;
-  }
+img {
+  height: 10rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.card-body {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3rem;
+  line-height: 1.5rem;
+  max-height: 4.5rem;
+}
+
+button[disabled] {
+  background: #777;
+}
 </style>

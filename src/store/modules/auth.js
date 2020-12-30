@@ -1,105 +1,74 @@
-import api from '@/services/api/users'
-import hash from '@/services/Hash'
+import { usersApi } from '../../services/api'
 
-// Save default key to access local/session storage
-const storageKey = 'user-data'
+const STORAGE_KEY = 'user-data'
 
-// COmpose data to be stored in the client
-const sanitizeData = (userData) => {
-  return {
-    id: userData.id,
-    name: userData.name,
-    email: userData.email,
-    hash: hash(userData) }
-}
+const sanitizeData = (userData) => ({
+  id: userData.id,
+  name: userData.name,
+  email: userData.email,
+})
 
-// Export module parts (state, getters, mutations & actions)
 export default {
 
-  /**
-   * List of stored states
-   */
   state: {
-    userData: {}
+    userData: {},
   },
 
-  /**
-   * List of exposed data
-   */
   getters: {
-    userId: state => state.userData.id,
-    userName: state => state.userData.name,
-    userEmail: state => state.userData.email,
-    userData: state => {
-      const { id, name, email } = state.userData
-      return { id, name, email }
-    }
+    userId: (state) => state.userData.id,
+    userName: (state) => state.userData.name,
+    userEmail: (state) => state.userData.email,
+    userData: (state) => ({
+      id: state.userData.id,
+      name: state.userData.name,
+      email: state.userData.name,
+    }),
   },
 
-  /**
-   * Methods to mutate stored states
-   */
   mutations: {
-
-    // Save credentials data to state
     authenticate(state, userData) {
-      return state.userData = userData
+      state.userData = userData
+      return userData
     },
-
-    // Flush away credentials state
     destroySession(state) {
       state.userData = {}
-    }
+    },
   },
 
-  /**
-   * Methods to manipulate stored states
-   */
   actions: {
-
-    // Checks if users is authenticated
     isAuthenticated({ commit }) {
-      const userData = sessionStorage['user-data'] || localStorage['user-data']
+      const userData = sessionStorage.getItem(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY)
+
       if (userData) {
         commit('authenticate', JSON.parse(userData))
       }
-      return !!userData
-    },
 
-    // Submit credentials for loging in
+      return Boolean(userData)
+    },
     signIn({ commit }, credentials, keepConnection) {
       const userData = sanitizeData(credentials)
       const storage = keepConnection ? localStorage : sessionStorage
-      storage[storageKey] = JSON.stringify(userData)
+
+      storage.setItem(STORAGE_KEY, JSON.stringify(userData))
       commit('authenticate', userData)
     },
+    async signUp({ commit }, credentials) {
+      const userData = sanitizeData(await usersApi.post(credentials))
 
-    // Submit credentials for signing up
-    signUp({ commit }, credentials) {
-      api.post(credentials)
-        .then(response => {
-          const userData = sanitizeData(response.data)
-          sessionStorage[storageKey] = JSON.stringify(userData)
-          commit('authenticate', userData)
-        })
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(userData))
+      commit('authenticate', userData)
     },
+    async update({ commit }, credentials) {
+      const { id, name, email, newPassword: password } = credentials
+      const userData = { id, name, email, password }
 
-    // Update user data
-    update({ commit }, credentials) {
-      const { id, name, email } = credentials
-      const userData = { id, name, email }
-      if (credentials.newPassword) {
-        userData.password = credentials.newPassword
-      }
-      api.put(userData)
-        .then((response) => commit('authenticate', response.data))
+      commit('authenticate', await usersApi.put(userData))
     },
-
-    // Delete any records in session and local storage
     signOut({ commit }) {
-      delete sessionStorage[storageKey]
-      delete localStorage[storageKey]
+      sessionStorage.removeItem(STORAGE_KEY)
+      localStorage.removeItem(STORAGE_KEY)
+
       commit('destroySession')
-    }
-  }
+    },
+  },
 }

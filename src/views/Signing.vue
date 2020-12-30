@@ -20,7 +20,7 @@
         :key="key"
       >{{ value }}</p>
     </div>
-    <!-- Input for name (required only in signup) -->
+
     <label
       for="name"
       class="sr-only"
@@ -35,8 +35,7 @@
       v-if="!registerred"
       v-model="credentials.name"
     />
-    <!-- End of input for name -->
-    <!-- Input for email (required in signin & signup) -->
+
     <label
       for="email"
       class="sr-only"
@@ -49,8 +48,7 @@
       required
       v-model="credentials.email"
     />
-    <!-- End of input for email -->
-    <!-- Input for password (required in signin & signup) -->
+
     <label
       for="password"
       class="sr-only"
@@ -63,8 +61,7 @@
       required
       v-model="credentials.password"
     />
-    <!-- End of input for password -->
-    <!-- Input for password confirmation (required only in signup) -->
+
     <label
        for="passwordConfirmation"
        class="sr-only"
@@ -79,7 +76,7 @@
       required
       v-model="credentials.passwordConfirmation"
     />
-    <!-- End of input for password confirmation -->
+
     <div v-if="registerred" class="mt-2 checkbox">
       <label>
         <input
@@ -120,126 +117,138 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import Logo from '@/components/Logo.vue'
-  import api from '@/services/api/users'
-  import validator from '@/services/Validator'
+import { mapActions } from 'vuex'
+import { usersApi } from '../services/api'
+import * as validator from '../services/validator'
+import Logo from '../components/Logo'
 
-  export default {
-    name: 'Signing',
-    components: {
-      Logo
+export default {
+
+  components: {
+    Logo,
+  },
+
+  data: () => ({
+    credentials: {},
+    keepConnection: false,
+    registerred: true,
+    errors: {},
+  }),
+
+  computed: {
+    errorsCount() {
+      return Object.keys(this.errors).length
     },
-    data() {
-      return {
-        credentials: {},
-        keepConnection: false,
-        registerred: true,
-        errors: {}
-      }
-    },
-    methods: {
-      ...mapActions(['signIn', 'signUp']),
-      toggleSigningOption(e) {
-        e.preventDefault()
-        if (this.registerred) {
-          this.credentials.password = ''
-        } else {
-          this.credentials = {
-            name: '',
-            password: '',
-            passwordConfirmation: ''
-          }
+  },
+
+  methods: {
+    ...mapActions([
+      'signIn',
+      'signUp',
+    ]),
+    toggleSigningOption(event) {
+      event.preventDefault()
+
+      if (this.registerred) {
+        this.credentials.password = ''
+      } else {
+        this.credentials = {
+          name: '',
+          password: '',
+          passwordConfirmation: '',
         }
-        this.registerred = !this.registerred
-      },
-      onSubmit(e) {
-        e.target.disabled = true
-        e.preventDefault()
-        if (this.registerred) {
-          const errors = validator.emailHasErrors(this.credentials.email)
-          if (errors) {
-            this.errors = errors
+      }
+      this.registerred = !this.registerred
+    },
+    async onSubmit(event) {
+      event.preventDefault()
+      event.target.disabled = true
+
+      if (this.registerred) {
+        const errors = validator.emailHasErrors(this.credentials.email)
+
+        if (errors) {
+          this.errors = errors
+        } else {
+          const search = await usersApi.get({
+            email: this.credentials.email,
+            password: this.credentials.password,
+          })
+
+          if (search.length) {
+            this.signIn(search[0])
+            this.$router.push({ name: 'home' })
           } else {
-            api.get({ email: this.credentials.email })
-              .then(response => {
-                if (!response.data.length || response.data[0].password !== this.credentials.password) {
-                  this.errors = { auth: 'Credenciais inválidas' }
-                } else {
-                  this.signIn(response.data[0])
-                  this.$router.push({ name: 'home' })
-                }
-              })
-              .finally(() => {
-                this.credentials.password = ''
-                this.credentials.passwordConfirmation = ''
-              })
+            this.errors = { auth: 'Credenciais inválidas' }
           }
-        } else {
-          this.errors = validator.allErrors(this.credentials)
-          if (!Object.keys(this.errors).length) {
-            api.get({ email: this.credentials.email })
-              .then(response => {
-                if (response.data.length) {
-                  this.errors = { auth: 'Email já cadastrado' }
-                } else {
-                  this.signUp({
-                    name: this.credentials.name,
-                    email: this.credentials.email,
-                    password: this.credentials.password
-                  })
-                }
-              })
-              .finally(() => {
-                this.credentials.password = ''
-                this.credentials.passwordConfirmation = ''
-                this.registerred = true
-              })
-          }
+
+          this.credentials.password = ''
+          this.credentials.passwordConfirmation = ''
         }
-        e.target.disabled = false
+      } else {
+        this.errors = validator.allErrors(this.credentials)
+
+        if (!this.errorsCount) {
+          const search = await usersApi.get({ email: this.credentials.email })
+
+          if (search.length) {
+            this.errors = { auth: 'Email já cadastrado' }
+          } else {
+            this.signUp({
+              name: this.credentials.name,
+              email: this.credentials.email,
+              password: this.credentials.password,
+            })
+          }
+
+          this.credentials.password = ''
+          this.credentials.passwordConfirmation = ''
+          this.registerred = true
+        }
       }
+      event.target.disabled = false
     },
-    computed: {
-      errorsCount() {
-        return Object.keys(this.errors).length
-      }
-    }
-  }
+  },
+}
 </script>
 
 <style scoped>
-  .form-signing {
-    background: rgb(255, 255, 255, 0.9);
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    max-width: 330px;
-    margin: auto;
-    padding: 15px;
-  }
-  .checkbox {
-    font-weight: 400;
-  }
-  .form-control {
-    position: relative;
-    box-sizing: border-box;
-    height: auto;
-    padding: 10px;
-    font-size: 16px;
-  }
-  .form-control:focus {
-    z-index: 2;
-  }
-  input {
-    margin-bottom: -1px;
-    border-radius: 0;
-  }
-  input:last-child {
-    margin-bottom: 0;
-  }
+.form-signing {
+  background: rgb(255, 255, 255, 0.9);
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: 330px;
+  margin: auto;
+  padding: 15px;
+}
+
+.checkbox {
+  font-weight: 400;
+}
+
+.form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.form-control:focus {
+  z-index: 2;
+}
+
+input {
+  margin-bottom: -1px;
+  border-radius: 0;
+}
+
+input:last-child {
+  margin-bottom: 0;
+}
 </style>

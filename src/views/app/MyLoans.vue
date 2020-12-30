@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1 class="mb-4">Meus empréstimos</h1>
+
     <Bookcase :books="userLoans" :count="booksCount">
       Você ainda não possui empréstimos.
     </Bookcase>
@@ -8,25 +9,28 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
-  import Bookcase from '@/components/Bookcase.vue'
+import { mapGetters, mapActions } from 'vuex'
+import Bookcase from '../../components/Bookcase'
 
-  export default {
-    name: 'MyLoans',
-    components: {
-      Bookcase
+export default {
+
+  components: {
+    Bookcase,
+  },
+
+  computed: {
+    ...mapGetters(['userId', 'userLoans']),
+    booksCount() {
+      return this.userLoans.length
     },
-    methods: {
-      ...mapActions(['fetchUserLoans'])
-    },
-    computed: {
-      ...mapGetters(['userId', 'userLoans']),
-      booksCount() {
-        return this.userLoans.length
-      }
-    },
-    created() {
-      this.fetchUserLoans(this.userId)
-    }
-  }
+  },
+
+  methods: {
+    ...mapActions(['fetchUserLoans']),
+  },
+
+  created() {
+    this.fetchUserLoans(this.userId)
+  },
+}
 </script>
