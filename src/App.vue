@@ -9,6 +9,7 @@ export default {
 
   beforeCreate() {
     this.$store.dispatch('users/fetchAll')
+    this.$store.dispatch('books/fetchAll')
   },
 }
 </script>

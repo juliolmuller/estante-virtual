@@ -40,6 +40,7 @@ $main-padding: 2rem;
   & > main {
     width: calc(100vw - $sidebar-width - ($main-padding * 2));
     margin: 0 0 0 $sidebar-width;
+    padding: 2rem 2rem 0;
     background: var(--light);
     opacity: 0.95;
 
