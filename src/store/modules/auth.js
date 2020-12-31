@@ -2,14 +2,7 @@ import { usersApi } from '../../services/api'
 
 const STORAGE_KEY = 'user-data'
 
-const sanitizeData = (userData) => ({
-  id: userData.id,
-  name: userData.name,
-  email: userData.email,
-})
-
 export default {
-
   namespaced: 'auth',
 
   state: {
@@ -17,9 +10,6 @@ export default {
   },
 
   getters: {
-    userId: (state) => state.userData.id,
-    userName: (state) => state.userData.name,
-    userEmail: (state) => state.userData.email,
     isAuthenticated: (state) => Boolean(state.userData),
     userData: (state) => state.userData({
       email: state.userData?.email,
@@ -65,30 +55,15 @@ export default {
 
       return true
     },
-    signIn({ commit }, credentials, keepConnection) {
-      const userData = sanitizeData(credentials)
-      const storage = keepConnection ? localStorage : sessionStorage
-
-      storage.setItem(STORAGE_KEY, JSON.stringify(userData))
-      commit('setUserData', userData)
-    },
-    async signUp({ commit }, credentials) {
-      const userData = sanitizeData(await usersApi.post(credentials))
-
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(userData))
-      commit('setUserData', userData)
+    signOut({ commit }) {
+      commit('setUserData')
+      commit('setBrowserStorage')
     },
     async update({ commit }, credentials) {
       const { id, name, email, newPassword: password } = credentials
       const userData = { id, name, email, password }
 
       commit('setUserData', await usersApi.put(userData))
-    },
-    signOut({ commit }) {
-      sessionStorage.removeItem(STORAGE_KEY)
-      localStorage.removeItem(STORAGE_KEY)
-
-      commit('setUserData', {})
     },
   },
 }
