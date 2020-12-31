@@ -17,12 +17,17 @@ export default {
 <style lang="scss">
 /* Define variables to oberwrite/add to Bootstrap theme */
 $border-radius: 0.5rem;
+$grid-breakpoints: (
+  lg: 1000px,
+  xl: 1280px
+);
 $theme-colors: (
-  'hero': #d8621e
+  hero: #d8621e
 );
 
 /* Import Bootstrap framework */
 @import 'node_modules/bootstrap/scss/bootstrap';
+
 /* Additional custom styles */
 html, body, #app {
   width: 100%;
