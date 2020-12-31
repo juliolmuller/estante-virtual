@@ -11,7 +11,7 @@ export default {
 
   getters: {
     isAuthenticated: (state) => Boolean(state.userData),
-    userData: (state) => state.userData({
+    userData: (state) => ({
       email: state.userData?.email,
       name: state.userData?.name,
       id: state.userData?.id,

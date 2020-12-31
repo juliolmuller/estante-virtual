@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import books from './modules/books'
-import auth from './modules/auth'
+import auth from './modules/auth.store'
+import books from './modules/books.store'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules: {
-    books,
     auth,
+    books,
   },
 })
 
