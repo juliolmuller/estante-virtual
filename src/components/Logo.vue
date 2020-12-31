@@ -1,11 +1,13 @@
 <template>
-  <h1 class="h3 mb-3 font-weight-normal">
-    <strong>
-      Estante<span class="badge badge-hero">VIrtual</span>
-    </strong>
-  </h1>
+  <span id="logo" class="h1">
+    Estante<span class="badge badge-hero p-1">Virtual</span>
+  </span>
 </template>
 
-<script>
-export default {}
-</script>
+<style lang="scss">
+#logo {
+  text-decoration: none;
+  color: #111;
+  font-weight: bold;
+}
+</style>

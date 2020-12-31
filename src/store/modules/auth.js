@@ -10,65 +10,85 @@ const sanitizeData = (userData) => ({
 
 export default {
 
+  namespaced: 'auth',
+
   state: {
-    userData: {},
+    userData: null,
   },
 
   getters: {
     userId: (state) => state.userData.id,
     userName: (state) => state.userData.name,
     userEmail: (state) => state.userData.email,
-    userData: (state) => ({
+    isAuthenticated: (state) => Boolean(state.userData),
+    userData: (state) => state.userData({
       id: state.userData.id,
       name: state.userData.name,
-      email: state.userData.name,
+      email: state.userData.email,
     }),
   },
 
   mutations: {
-    authenticate(state, userData) {
+    setUserData(state, userData = null) {
       state.userData = userData
-      return userData
     },
-    destroySession(state) {
-      state.userData = {}
+    setBrowserStorage(state, storage) {
+      if (state.userData) {
+        const dataAsString = JSON.stringify(state.userData)
+
+        storage.setItem(STORAGE_KEY, dataAsString)
+      } else {
+        sessionStorage.removeItem(STORAGE_KEY)
+        localStorage.removeItem(STORAGE_KEY)
+      }
+    },
+    retrieveFromStorage(state) {
+      const savedAtLocal = localStorage.getItem(STORAGE_KEY)
+      const savedAtSession = sessionStorage.getItem(STORAGE_KEY)
+      const parsedData = JSON.parse(savedAtLocal || savedAtSession)
+
+      state.userData = parsedData
     },
   },
 
   actions: {
-    isAuthenticated({ commit }) {
-      const userData = sessionStorage.getItem(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY)
+    async authenticate({ commit }, { email, password, keepConnection }) {
+      const [userData] = await usersApi.get({ email, password })
+      const storage = keepConnection ? localStorage : sessionStorage
 
-      if (userData) {
-        commit('authenticate', JSON.parse(userData))
+      if (!userData) {
+        return false
       }
 
-      return Boolean(userData)
+      commit('setUserData', userData)
+      commit('setBrowserStorage', storage)
+
+      return true
     },
     signIn({ commit }, credentials, keepConnection) {
       const userData = sanitizeData(credentials)
       const storage = keepConnection ? localStorage : sessionStorage
 
       storage.setItem(STORAGE_KEY, JSON.stringify(userData))
-      commit('authenticate', userData)
+      commit('setUserData', userData)
     },
     async signUp({ commit }, credentials) {
       const userData = sanitizeData(await usersApi.post(credentials))
 
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(userData))
-      commit('authenticate', userData)
+      commit('setUserData', userData)
     },
     async update({ commit }, credentials) {
       const { id, name, email, newPassword: password } = credentials
       const userData = { id, name, email, password }
 
-      commit('authenticate', await usersApi.put(userData))
+      commit('setUserData', await usersApi.put(userData))
     },
     signOut({ commit }) {
       sessionStorage.removeItem(STORAGE_KEY)
       localStorage.removeItem(STORAGE_KEY)
 
-      commit('destroySession')
+      commit('setUserData', {})
     },
   },
 }

@@ -7,10 +7,10 @@ import store from './store'
 
 Vue.use(VueRouter)
 
-const checkCredentials = async (to, from, next) => {
-  const isAuthenticated = await store.dispatch('isAuthenticated')
+const checkCredentials = (_to, _from, next) => {
+  store.commit('auth/retrieveFromStorage')
 
-  if (isAuthenticated) {
+  if (store.getters['auth/isAuthenticated']) {
     next()
   } else {
     next({ name: 'SignIn' })
