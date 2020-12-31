@@ -36,7 +36,7 @@ export default {
   .auth-container {
     width: 100%;
     max-width: 350px;
-    background: #dfdfdf;
+    background: var(--light);
     opacity: 0.95;
     padding: 1rem;
     border-radius: 0.5rem;
