@@ -4,6 +4,15 @@
   </div>
 </template>
 
+<script>
+export default {
+
+  beforeCreate() {
+    this.$store.dispatch('users/fetchAll')
+  },
+}
+</script>
+
 <style lang="scss">
 /* Define variables to oberwrite/add to Bootstrap theme */
 $border-radius: 0.5rem;
@@ -13,7 +22,6 @@ $theme-colors: (
 
 /* Import Bootstrap framework */
 @import 'node_modules/bootstrap/scss/bootstrap';
-
 /* Additional custom styles */
 html, body, #app {
   width: 100%;
