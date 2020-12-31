@@ -22,9 +22,9 @@ export default {
     userEmail: (state) => state.userData.email,
     isAuthenticated: (state) => Boolean(state.userData),
     userData: (state) => state.userData({
-      id: state.userData.id,
-      name: state.userData.name,
-      email: state.userData.email,
+      email: state.userData?.email,
+      name: state.userData?.name,
+      id: state.userData?.id,
     }),
   },
 
