@@ -1,13 +1,3 @@
-<template>
-  <div>
-    <h1 class="mb-4">Meus empréstimos</h1>
-
-    <Bookcase :books="userLoans" :count="booksCount">
-      Você ainda não possui empréstimos.
-    </Bookcase>
-  </div>
-</template>
-
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Bookcase from '@/components/Bookcase'
@@ -34,3 +24,13 @@ export default {
   },
 }
 </script>
+
+<template>
+  <div>
+    <h1 class="mb-4">Meus empréstimos</h1>
+
+    <Bookcase :books="userLoans" :count="booksCount">
+      Você ainda não possui empréstimos.
+    </Bookcase>
+  </div>
+</template>

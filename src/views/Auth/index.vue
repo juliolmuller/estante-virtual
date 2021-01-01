@@ -1,3 +1,14 @@
+<script>
+import Logo from '@/components/Logo'
+
+export default {
+
+  components: {
+    Logo,
+  },
+}
+</script>
+
 <template>
   <div id="auth">
     <div class="auth-container">
@@ -13,17 +24,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import Logo from '@/components/Logo'
-
-export default {
-
-  components: {
-    Logo,
-  },
-}
-</script>
 
 <style lang="scss">
 #auth {

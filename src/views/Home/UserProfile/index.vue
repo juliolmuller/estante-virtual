@@ -1,3 +1,54 @@
+<script>
+import { mapGetters, mapActions } from 'vuex'
+
+export default {
+
+  data: () => ({
+    user: {},
+    isEditing: false,
+    errors: {},
+  }),
+
+  computed: {
+    ...mapGetters(['userData', 'userLoans']),
+    getClasses() {
+      return {
+        'form-control': this.isEditing,
+        'border-hero': this.isEditing,
+        'text-hero': !this.isEditing,
+        'form-control-plaintext': !this.isEditing,
+        'h4': !this.isEditing,
+        'pt-0': !this.isEditing,
+      }
+    },
+  },
+
+  methods: {
+    ...mapActions(['fetchUserLoans']),
+    edit() {
+      this.isEditing = true
+    },
+    save(e) {
+      e.target.disabled = true
+      e.preventDefault()
+      this.isEditing = false
+      e.target.disabled = false
+    },
+  },
+
+  created() {
+    this.user = {
+      id: this.userData.id,
+      name: this.userData.name,
+      email: this.userData.email,
+      oldPassword: '',
+      newPassword: '',
+      newPasswordConfirmation: '',
+    }
+  },
+}
+</script>
+
 <template>
   <div>
     <h1 :class="{ 'mb-4': isEditing }">Meus empréstimos</h1>
@@ -89,54 +140,3 @@
     </form>
   </div>
 </template>
-
-<script>
-import { mapGetters, mapActions } from 'vuex'
-
-export default {
-
-  data: () => ({
-    user: {},
-    isEditing: false,
-    errors: {},
-  }),
-
-  computed: {
-    ...mapGetters(['userData', 'userLoans']),
-    getClasses() {
-      return {
-        'form-control': this.isEditing,
-        'border-hero': this.isEditing,
-        'text-hero': !this.isEditing,
-        'form-control-plaintext': !this.isEditing,
-        'h4': !this.isEditing,
-        'pt-0': !this.isEditing,
-      }
-    },
-  },
-
-  methods: {
-    ...mapActions(['fetchUserLoans']),
-    edit() {
-      this.isEditing = true
-    },
-    save(e) {
-      e.target.disabled = true
-      e.preventDefault()
-      this.isEditing = false
-      e.target.disabled = false
-    },
-  },
-
-  created() {
-    this.user = {
-      id: this.userData.id,
-      name: this.userData.name,
-      email: this.userData.email,
-      oldPassword: '',
-      newPassword: '',
-      newPasswordConfirmation: '',
-    }
-  },
-}
-</script>

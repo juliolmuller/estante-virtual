@@ -1,3 +1,54 @@
+<script>
+import { mapActions } from 'vuex'
+
+export default {
+
+  data: () => ({
+    email: '',
+    password: '',
+    keepConnection: false,
+    errors: [],
+    isLoading: false,
+  }),
+
+  watch: {
+    email(value) {
+      this.email = value.toLowerCase()
+    },
+  },
+
+  methods: {
+    ...mapActions('auth', [
+      'authenticate',
+    ]),
+    async handleSubmit() {
+      this.isLoading = true
+
+      try {
+        const success = await this.authenticate({
+          keepConnection: this.keepConnection,
+          password: this.password,
+          email: this.email,
+        })
+
+        if (success) {
+          this.$router.push({ name: 'Home' })
+          return
+        }
+
+        this.errors = ['Email e senha não conferem']
+        this.isLoading = false
+        this.password = ''
+      } catch (error) {
+        console.error(error) // eslint-disable-line no-console
+        this.isLoading = false
+        this.errors = [error.message]
+      }
+    },
+  },
+}
+</script>
+
 <template>
   <form id="sign-in" @submit.prevent="handleSubmit">
     <div
@@ -56,57 +107,6 @@
     </p>
   </form>
 </template>
-
-<script>
-import { mapActions } from 'vuex'
-
-export default {
-
-  data: () => ({
-    email: '',
-    password: '',
-    keepConnection: false,
-    errors: [],
-    isLoading: false,
-  }),
-
-  watch: {
-    email(value) {
-      this.email = value.toLowerCase()
-    },
-  },
-
-  methods: {
-    ...mapActions('auth', [
-      'authenticate',
-    ]),
-    async handleSubmit() {
-      this.isLoading = true
-
-      try {
-        const success = await this.authenticate({
-          keepConnection: this.keepConnection,
-          password: this.password,
-          email: this.email,
-        })
-
-        if (success) {
-          this.$router.push({ name: 'Home' })
-          return
-        }
-
-        this.errors = ['Email e senha não conferem']
-        this.isLoading = false
-        this.password = ''
-      } catch (error) {
-        console.error(error) // eslint-disable-line no-console
-        this.isLoading = false
-        this.errors = [error.message]
-      }
-    },
-  },
-}
-</script>
 
 <style lang="scss">
 #sign-in {

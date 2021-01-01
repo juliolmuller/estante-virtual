@@ -1,26 +1,3 @@
-<template>
-  <aside id="sidebar">
-    <header class="sidebar-header">
-      <RouterLink :to="{ name: 'Home' }">
-        <Logo />
-      </RouterLink>
-    </header>
-
-    <nav class="nav-links">
-      <RouterLink :to="{ name: 'Home' }" exact class="btn btn-light">Home</RouterLink>
-      <RouterLink :to="{ name: 'UserBooks' }" class="btn btn-light">Meus Livros</RouterLink>
-      <RouterLink :to="{ name: 'UserLoans' }" class="btn btn-light">Meus Empréstimos</RouterLink>
-      <RouterLink :to="{ name: 'UserProfile' }" class="btn btn-light">Meu Perfil</RouterLink>
-    </nav>
-
-    <button
-      type="button"
-      class="btn btn-outline-hero"
-      @click="handleSignOut"
-    >Sair</button>
-  </aside>
-</template>
-
 <script>
 import { mapActions } from 'vuex'
 import Logo from '@/components/Logo'
@@ -44,6 +21,29 @@ export default {
   },
 }
 </script>
+
+<template>
+  <aside id="sidebar">
+    <header class="sidebar-header">
+      <RouterLink :to="{ name: 'Home' }">
+        <Logo />
+      </RouterLink>
+    </header>
+
+    <nav class="nav-links">
+      <RouterLink :to="{ name: 'Home' }" exact class="btn btn-light">Home</RouterLink>
+      <RouterLink :to="{ name: 'UserBooks' }" class="btn btn-light">Meus Livros</RouterLink>
+      <RouterLink :to="{ name: 'UserLoans' }" class="btn btn-light">Meus Empréstimos</RouterLink>
+      <RouterLink :to="{ name: 'UserProfile' }" class="btn btn-light">Meu Perfil</RouterLink>
+    </nav>
+
+    <button
+      type="button"
+      class="btn btn-outline-hero"
+      @click="handleSignOut"
+    >Sair</button>
+  </aside>
+</template>
 
 <style lang="scss">
 #sidebar {

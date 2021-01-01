@@ -1,3 +1,62 @@
+<script>
+import { mapActions } from 'vuex'
+import { usersApi } from '@/services/api'
+
+export default {
+
+  data: () => ({
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirmation: '',
+    errors: [],
+    isLoading: false,
+  }),
+
+  watch: {
+    email(value) {
+      this.email = value.toLowerCase()
+    },
+  },
+
+  methods: {
+    ...mapActions('auth', [
+      'authenticate',
+    ]),
+    async handleSubmit() {
+      this.isLoading = true
+
+      const [existingUser] = await usersApi.get({ email: this.email })
+      const passwordMatch = this.password === this.passwordConfirmation
+
+      if (existingUser || !passwordMatch) {
+        this.passwordConfirmation = ''
+        this.password = ''
+        this.errors = []
+        existingUser && this.errors.push('Email já está cadastrado')
+        !passwordMatch && this.errors.push('As senhas não são iguais')
+        this.isLoading = false
+        return
+      }
+
+      try {
+        const userData = await usersApi.post({
+          password: this.password,
+          email: this.email,
+          name: this.name,
+        })
+        await this.authenticate(userData)
+        this.$router.push({ name: 'Home' })
+      } catch (error) {
+        console.error(error) // eslint-disable-line no-console
+        this.isLoading = false
+        this.errors = [error.message]
+      }
+    },
+  },
+}
+</script>
+
 <template>
   <form id="sign-up" @submit.prevent="handleSubmit">
     <div
@@ -71,65 +130,3 @@
     </p>
   </form>
 </template>
-
-<script>
-import { mapActions } from 'vuex'
-import { usersApi } from '@/services/api'
-
-export default {
-
-  data: () => ({
-    name: '',
-    email: '',
-    password: '',
-    passwordConfirmation: '',
-    errors: [],
-    isLoading: false,
-  }),
-
-  watch: {
-    email(value) {
-      this.email = value.toLowerCase()
-    },
-  },
-
-  methods: {
-    ...mapActions('auth', [
-      'authenticate',
-    ]),
-    async handleSubmit() {
-      this.isLoading = true
-
-      const [existingUser] = await usersApi.get({ email: this.email })
-      const passwordMatch = this.password === this.passwordConfirmation
-
-      if (existingUser || !passwordMatch) {
-        this.passwordConfirmation = ''
-        this.password = ''
-        this.errors = []
-        existingUser && this.errors.push('Email já está cadastrado')
-        !passwordMatch && this.errors.push('As senhas não são iguais')
-        this.isLoading = false
-        return
-      }
-
-      try {
-        const userData = await usersApi.post({
-          password: this.password,
-          email: this.email,
-          name: this.name,
-        })
-        await this.authenticate(userData)
-        this.$router.push({ name: 'Home' })
-      } catch (error) {
-        console.error(error) // eslint-disable-line no-console
-        this.isLoading = false
-        this.errors = [error.message]
-      }
-    },
-  },
-}
-</script>
-
-<style lang="scss">
-</style>

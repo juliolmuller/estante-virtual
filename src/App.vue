@@ -1,9 +1,3 @@
-<template>
-  <div id="app">
-    <RouterView />
-  </div>
-</template>
-
 <script>
 export default {
 
@@ -13,6 +7,12 @@ export default {
   },
 }
 </script>
+
+<template>
+  <div id="app">
+    <RouterView />
+  </div>
+</template>
 
 <style lang="scss">
 /* Define variables to oberwrite/add to Bootstrap theme */

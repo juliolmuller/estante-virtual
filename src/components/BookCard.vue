@@ -1,3 +1,12 @@
+<script>
+export default {
+
+  props: {
+    book: Object,
+  },
+}
+</script>
+
 <template>
   <div class="col-1 col-md-3 w-100 d-flex align-items-stretch">
     <div class="card my-2 pt-3 border-hero border-radius-0 text-center">
@@ -15,15 +24,6 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-
-  props: {
-    book: Object,
-  },
-}
-</script>
 
 <style scoped>
 img {

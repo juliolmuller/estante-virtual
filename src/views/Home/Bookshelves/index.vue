@@ -1,3 +1,33 @@
+<script>
+import { mapGetters } from 'vuex'
+import Bookcase from '@/components/Bookcase'
+
+export default {
+
+  components: {
+    Bookcase,
+  },
+
+  data: () => ({
+    search: '',
+    filter: 'available',
+  }),
+
+  computed: {
+    ...mapGetters({
+      booksLoading: 'books/isFetching',
+    }),
+    ...mapGetters('books', [
+      'borrowedBooks',
+      'availableBooks',
+    ]),
+    visibleBooks() {
+      return this[`${this.filter}Books`]
+    },
+  },
+}
+</script>
+
 <template>
   <div id="bookshelves">
     <h2 class="h1">
@@ -37,36 +67,6 @@
     </Bookcase>
   </div>
 </template>
-
-<script>
-import { mapGetters } from 'vuex'
-import Bookcase from '@/components/Bookcase'
-
-export default {
-
-  components: {
-    Bookcase,
-  },
-
-  data: () => ({
-    search: '',
-    filter: 'available',
-  }),
-
-  computed: {
-    ...mapGetters({
-      booksLoading: 'books/isFetching',
-    }),
-    ...mapGetters('books', [
-      'borrowedBooks',
-      'availableBooks',
-    ]),
-    visibleBooks() {
-      return this[`${this.filter}Books`]
-    },
-  },
-}
-</script>
 
 <style lang="scss">
 #bookshelves {
