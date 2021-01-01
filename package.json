@@ -13,12 +13,7 @@
   "dependencies": {
     "axios": "~0.21.1",
     "bootstrap": "^4.5.3",
-    "bootstrap-vue": "^2.21.1",
-    "email-validator": "^2.0.4",
-    "jquery": "^3.5.1",
     "json-server": "^0.16.3",
-    "password-validator": "^5.1.1",
-    "portal-vue": "^2.1.7",
     "vue": "^2.6.12",
     "vue-router": "^3.4.9",
     "vuex": "^3.6.0"
@@ -34,7 +29,7 @@
     "core-js": "^3.8.1",
     "eslint": "^7.16.0",
     "eslint-plugin-vue": "^7.4.0",
-    "sass": "^1.30.0",
+    "sass": "^1.32.0",
     "sass-loader": "^10.1.0",
     "vue-template-compiler": "^2.6.12"
   },
