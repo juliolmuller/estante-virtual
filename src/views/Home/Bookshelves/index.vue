@@ -35,7 +35,7 @@ export default {
     </h2>
 
     <div class="row">
-      <div class="search-container col-12 col-lg-6 col-xl-4">
+      <div class="search-container col-12 col-lg-6 order-lg-2 col-xl-4 offset-xl-3">
         <input
           type="search"
           class="form-control"
@@ -45,7 +45,7 @@ export default {
         <img src="@/assets/search-icon.svg" alt="Ícone de busca" />
       </div>
 
-      <div class="filter-container col-12 col-lg-6 col-xl-5 offset-xl-3">
+      <div class="filter-container col-12 col-lg-6 order-lg-1 col-xl-5">
         <input type="radio" id="filter-1" class="sr-only" value="available" v-model="filter" />
         <input type="radio" id="filter-2" class="sr-only" value="borrowed" v-model="filter" />
         <label
