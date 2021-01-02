@@ -20,9 +20,15 @@ export default {
     ...mapGetters('books', [
       'borrowedBooks',
       'availableBooks',
+      'allBooks',
     ]),
     visibleBooks() {
-      return this[`${this.filter}Books`]
+      const books = this[`${this.filter}Books`]
+      const search = new RegExp(this.search, 'i')
+
+      return !this.search ? books : books.filter(
+        ({ name }) => name.match(search),
+      )
     },
   },
 }
@@ -62,9 +68,13 @@ export default {
     <div class="loading" v-if="booksLoading">
       <img src="@/assets/loading.svg" alt="Carregando..." />
     </div>
-    <Bookcase :books="visibleBooks" :count="visibleBooks.length" v-else>
-      Não há livros cadastrados.
-    </Bookcase>
+    <div class="fallback-msg" v-else-if="!allBooks.length">
+      Não há livros cadastrados
+    </div>
+    <div class="fallback-msg" v-else-if="!visibleBooks.length">
+      Nenhum resultado para "{{ search }}" 🙄
+    </div>
+    <Bookcase :books="visibleBooks" :count="visibleBooks.length" v-else />
   </div>
 </template>
 
@@ -122,6 +132,12 @@ export default {
     & > img {
       margin: auto;
     }
+  }
+
+  .fallback-msg {
+    padding: 3rem;
+    text-align: center;
+    font-size: 1.5rem;
   }
 }
 </style>
