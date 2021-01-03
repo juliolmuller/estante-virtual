@@ -1,11 +1,11 @@
 <script>
 import { mapGetters } from 'vuex'
-import Bookcase from '@/components/Bookcase'
+import BooksDeck from '@/components/BooksDeck'
 
 export default {
 
   components: {
-    Bookcase,
+    BooksDeck,
   },
 
   data: () => ({
@@ -74,7 +74,7 @@ export default {
     <div class="fallback-msg" v-else-if="!visibleBooks.length">
       Nenhum resultado para "{{ search }}" 🙄
     </div>
-    <Bookcase :books="visibleBooks" :count="visibleBooks.length" v-else />
+    <BooksDeck :books="visibleBooks" :count="visibleBooks.length" v-else />
   </div>
 </template>
 

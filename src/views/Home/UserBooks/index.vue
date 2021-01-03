@@ -1,11 +1,11 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Bookcase from '@/components/Bookcase'
+import BooksDeck from '@/components/BooksDeck'
 
 export default {
 
   components: {
-    Bookcase,
+    BooksDeck,
   },
 
   computed: {
@@ -33,8 +33,6 @@ export default {
       <button type="button" class="btn btn-sm btn-hero mb-4">Cadastrar Novo Livro</button>
     </router-link>
 
-    <Bookcase :books="userBooks" :count="booksCount">
-      Você ainda não possui livros cadastrados.
-    </Bookcase>
+    <BooksDeck :books="userBooks" />
   </div>
 </template>

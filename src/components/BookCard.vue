@@ -2,47 +2,71 @@
 export default {
 
   props: {
-    book: Object,
+    id: {
+      type: Number,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
+  },
+
+  computed: {
+    route() {
+      return {
+        name: 'BookDetails',
+        params: {
+          bookId: this.id,
+        },
+      }
+    },
   },
 }
 </script>
 
 <template>
-  <div class="col-1 col-md-3 w-100 d-flex align-items-stretch">
-    <div class="card my-2 pt-3 border-hero border-radius-0 text-center">
-      <div class="d-flex justify-content-center">
-        <img :src="book.image" alt="Capa do livro">
-      </div>
-      <div class="card-body pb-0">
-        <p class="card-title font-weight-bold">{{ book.name }}</p>
+  <div class="book-card">
+    <div class="rounded">
+      <img :src="image" alt="Capa do livro" />
+      <div class="card-body">
+        <h5 class="card-title">
+          {{ title }}
+        </h5>
       </div>
       <div class="card-footer">
-        <router-link :to="{ name: 'bookDetails', params: { bookId: JSON.stringify(book.id) }}">
-          <button type="button" class="btn btn-hero">Detalhes</button>
-        </router-link>
+        <RouterLink :to="route" class="btn btn-hero">
+          Ver Detalhes
+        </RouterLink>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-img {
-  height: 10rem;
-  text-align: center;
-  overflow: hidden;
-}
+<style lang="scss">
+.book-card {
+  padding: 0.5rem;
 
-.card-body {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3rem;
-  line-height: 1.5rem;
-  max-height: 4.5rem;
-}
+  & > div {
+    height: 100%;
+    border: 1px solid var(--hero);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+  }
 
-button[disabled] {
-  background: #777;
+  img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+  }
+
+  a {
+    width: 80%;
+  }
 }
 </style>

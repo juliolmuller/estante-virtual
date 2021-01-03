@@ -1,11 +1,11 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Bookcase from '@/components/Bookcase'
+import BooksDeck from '@/components/BooksDeck'
 
 export default {
 
   components: {
-    Bookcase,
+    BooksDeck,
   },
 
   computed: {
@@ -29,8 +29,6 @@ export default {
   <div>
     <h1 class="mb-4">Meus empréstimos</h1>
 
-    <Bookcase :books="userLoans" :count="booksCount">
-      Você ainda não possui empréstimos.
-    </Bookcase>
+    <BooksDeck :books="userLoans" :count="booksCount" />
   </div>
 </template>
