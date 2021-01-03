@@ -1,10 +1,12 @@
 <script>
 import { mapGetters } from 'vuex'
+import ViewTitle from '@/components/ViewTitle'
 import BooksDeck from '@/components/BooksDeck'
 
 export default {
 
   components: {
+    ViewTitle,
     BooksDeck,
   },
 
@@ -36,9 +38,9 @@ export default {
 
 <template>
   <div id="bookshelves">
-    <h2 class="h1">
+    <ViewTitle>
       Escolha o seu livro na estante
-    </h2>
+    </ViewTitle>
 
     <div class="row">
       <div class="search-container col-12 col-lg-6 order-lg-2 col-xl-4 offset-xl-3">
@@ -80,11 +82,6 @@ export default {
 
 <style lang="scss">
 #bookshelves {
-
-  & > h2 {
-    margin-bottom: 3rem;
-  }
-
   .search-container {
     position: relative;
     margin-bottom: 1rem;
