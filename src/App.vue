@@ -18,6 +18,9 @@ export default {
 /* Define variables to oberwrite/add to Bootstrap theme */
 $border-radius: 0.5rem;
 $grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
   lg: 1000px,
   xl: 1280px
 );
