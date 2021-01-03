@@ -1,5 +1,11 @@
 <script>
+import truncate from '@/filters/truncate'
+
 export default {
+
+  filters: {
+    truncate,
+  },
 
   props: {
     id: {
@@ -31,11 +37,11 @@ export default {
 
 <template>
   <div class="book-card">
-    <div class="rounded">
-      <img :src="image" alt="Capa do livro" />
+    <div class="card rounded">
+      <img :src="image" class="card-img-top" alt="Capa do livro" />
       <div class="card-body">
-        <h5 class="card-title">
-          {{ title }}
+        <h5 class="card-title" :title="title">
+          {{ title | truncate }}
         </h5>
       </div>
       <div class="card-footer">
@@ -51,22 +57,22 @@ export default {
 .book-card {
   padding: 0.5rem;
 
-  & > div {
+  .card {
     height: 100%;
     border: 1px solid var(--hero);
     text-align: center;
     display: flex;
     flex-direction: column;
-  }
 
-  img {
-    width: 100%;
-    height: 200px;
-    object-fit: contain;
-  }
+    img {
+      width: 100%;
+      height: 180px;
+      object-fit: contain;
+    }
 
-  a {
-    width: 80%;
+    a {
+      width: 80%;
+    }
   }
 }
 </style>
