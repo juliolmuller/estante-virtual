@@ -7,6 +7,13 @@ import users from './modules/users.store'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
+
+  getters: {
+    isLoading(_state, getters) {
+      return getters['books/isFetching'] || getters['users/isFetching']
+    },
+  },
+
   modules: {
     auth,
     books,
