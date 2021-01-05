@@ -4,6 +4,7 @@ import ViewTitle from '@/components/ViewTitle'
 import BooksDeck from '@/components/BooksDeck'
 
 export default {
+  name: 'Bookshelves',
 
   components: {
     ViewTitle,

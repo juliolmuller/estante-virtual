@@ -2,6 +2,7 @@
 import SideBar from './SideBar'
 
 export default {
+  name: 'Home',
 
   components: {
     SideBar,
@@ -14,7 +15,9 @@ export default {
     <SideBar />
 
     <main role="main">
-      <RouterView />
+      <KeepAlive include="Bookshelves">
+        <RouterView />
+      </KeepAlive>
 
       <footer class="home-footer">
         <p class="text-muted">
