@@ -35,6 +35,26 @@ export default {
     setBooks(state, books) {
       state.books = books
     },
+    removeBook(state, bookId) {
+      state.books = state.books.filter(({ id }) => bookId !== id)
+    },
+    updateOrPushBook(state, book) {
+      let stateChanged = false
+      const newBooksState = state.books.map((oldBook) => {
+        if (oldBook.id === book.id) {
+          stateChanged = true
+          return book
+        }
+
+        return oldBook
+      })
+
+      if (stateChanged) {
+        state.books = newBooksState
+      } else {
+        state.books = [...state.books, book]
+      }
+    },
   },
 
   actions: {
@@ -43,21 +63,39 @@ export default {
       commit('setBooks', await booksApi.get())
       commit('setFetching', false)
     },
-    create(_, payload) {
-      console.log('books/create', payload)
+    async create({ commit, rootGetters }, { name, image }) {
+      const loan = false
+      const userId = rootGetters['auth/userData'].id
+      const newBook = await booksApi.post({ name, image, userId, loan })
+
+      commit('updateOrPushBook', newBook)
     },
-    update(_, payload) {
-      console.log('books/update', payload)
+    async update({ commit }, { id, name, image, userId, loan }) { // eslint-disable-line object-curly-newline
+      const book = await booksApi.put({
+        id, name, image, userId, loan,
+      })
+
+      commit('updateOrPushBook', book)
     },
-    borrow(_, payload) {
-      // new Date().toISOString().slice(0, 10),
-      console.log('books/borrow', payload)
+    async borrow({ dispatch, rootGetters }, { id }) {
+      // eslint-disable-next-line no-shadow
+      const book = rootGetters['books/allBooks'].find((book) => book.id === id)
+      const date = new Date().toISOString().slice(0, 10)
+      const userId = rootGetters['auth/userData'].id
+      const loan = { date, userId }
+
+      await dispatch('update', { ...book, loan })
     },
-    return(_, payload) {
-      console.log('books/return', payload)
+    async return({ dispatch, rootGetters }, { id }) {
+      // eslint-disable-next-line no-shadow
+      const book = rootGetters['books/allBooks'].find((book) => book.id === id)
+      const loan = false
+
+      await dispatch('update', { ...book, loan })
     },
-    delete(_, payload) {
-      console.log('books/delete', payload)
+    async delete({ commit }, { id }) {
+      await booksApi.delete(id)
+      commit('removeBook', id)
     },
   },
 }
