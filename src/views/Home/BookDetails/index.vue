@@ -24,6 +24,7 @@ export default {
   data: () => ({
     isLoading: false,
     isEditing: false,
+    bookBackup: {},
     book: {},
   }),
 
@@ -53,6 +54,12 @@ export default {
     },
   },
 
+  watch: {
+    book() {
+      this.bookBackup = { ...this.book }
+    },
+  },
+
   methods: {
     ...mapActions('books', {
       createBook: 'create',
@@ -61,6 +68,10 @@ export default {
       returnBook: 'return',
       deleteBook: 'delete',
     }),
+    toggleEditing() {
+      this.isEditing = !this.isEditing
+      this.book = this.bookBackup
+    },
     async handleSubmit() {
       this.isLoading = true
 
@@ -131,9 +142,11 @@ export default {
       return
     }
 
-    this.book = this.books.find((book) => book.id === this.bookId)
+    const book = this.books.find(({ id }) => this.bookId === id)
 
-    if (!this.book) {
+    if (book) {
+      this.book = { ...book }
+    } else {
       this.$router.replace({ name: 'Home' })
     }
   },
@@ -243,15 +256,15 @@ export default {
             <button
               type="button"
               class="btn btn-danger mr-auto"
-              v-if="isEditing && !book.loan && owner.id === user.id && bookId != 'novo'"
+              v-if="isEditing && !book.loan && owner.id === user.id && bookId !== 'novo'"
               :disabled="isLoading"
               @click="handleDelete"
             >Remover da Estante</button>
             <button
               type="button"
               :class="['btn', isEditing ? 'btn-light' : 'btn-secondary']"
-              v-if="!book.loan && owner.id === user.id"
-              @click="isEditing = !isEditing"
+              v-if="!book.loan && owner.id === user.id && bookId !== 'novo'"
+              @click="toggleEditing"
             >{{ isEditing ? 'Cancelar' : 'Editar Dados' }}</button>
             <button
               type="submit"
