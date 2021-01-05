@@ -11,7 +11,18 @@ export default {
   getters: {
     isFetching: (state) => state.isFetching,
     allUsers: (state) => state.users,
-    userById: (state) => (id) => state.users.find((user) => user.id === id),
+    userById(state) {
+      return (id) => {
+        // eslint-disable-next-line no-shadow
+        const user = state.users.find((user) => user.id === Number(id))
+
+        return user && {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        }
+      }
+    },
   },
 
   mutations: {
