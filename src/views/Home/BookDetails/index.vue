@@ -2,6 +2,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import truncate from '@/filters/truncate'
 import ViewTitle from '@/components/ViewTitle'
+import fallbackImg from '@/assets/fallback-image.jpg'
 
 export default {
   name: 'BookDetails',
@@ -71,6 +72,9 @@ export default {
     toggleEditing() {
       this.isEditing = !this.isEditing
       this.book = this.bookBackup
+    },
+    fallbackImage(event) {
+      event.target.src = fallbackImg
     },
     async handleSubmit() {
       this.isLoading = true
@@ -174,7 +178,12 @@ export default {
     <form @submit.prevent="handleSubmit">
       <div class="row">
         <div class="col-12 col-md-4" v-if="book.image">
-          <img class="img-fluid" alt="Capa do livro" :src="book.image" />
+          <img
+            class="img-fluid"
+            alt="Capa do livro"
+            :src="book.image"
+            @error="fallbackImage"
+          />
         </div>
         <div class="col-12 col-md-8">
           <div class="form-group" v-if="bookId !== 'novo'">
