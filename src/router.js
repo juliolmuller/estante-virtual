@@ -45,27 +45,31 @@ const routes = [
         component: () => import('./views/Home/Bookshelves'),
       },
       {
-        path: 'livros/:bookId',
+        path: '/livros/:bookId',
         name: 'BookDetails',
         component: () => import('./views/Home/BookDetails'),
         props: true,
       },
       {
-        path: 'meus-livros',
+        path: '/meus-livros',
         name: 'UserBooks',
         component: () => import('./views/Home/UserBooks'),
       },
       {
-        path: 'meus-emprestimos',
+        path: '/meus-emprestimos',
         name: 'UserLoans',
         component: () => import('./views/Home/UserLoans'),
       },
       {
-        path: 'meu-perfil',
+        path: '/meu-perfil',
         name: 'UserProfile',
         component: () => import('./views/Home/UserProfile'),
       },
     ],
+  },
+  {
+    path: '*',
+    redirect: '/',
   },
 ]
 
