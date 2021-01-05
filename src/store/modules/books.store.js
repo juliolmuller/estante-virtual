@@ -14,12 +14,12 @@ export default {
     availableBooks: (state) => state.books.filter((book) => !book.loan),
     borrowedBooks: (state) => state.books.filter((book) => book.loan),
     userBooks(state, _getters, _rootState, rootGetters) {
-      const userId = rootGetters['auth/userData'].id
+      const userId = rootGetters['auth/userData']?.id
 
       return state.books.filter((book) => book.userId === userId)
     },
     userLoans(state, _getters, _rootState, rootGetters) {
-      const userId = rootGetters['auth/userData'].id
+      const userId = rootGetters['auth/userData']?.id
 
       return state.books.filter((book) => book.loan?.userId === userId)
     },
@@ -42,6 +42,22 @@ export default {
       commit('setFetching', true)
       commit('setBooks', await booksApi.get())
       commit('setFetching', false)
+    },
+    create(_, payload) {
+      console.log('books/create', payload)
+    },
+    update(_, payload) {
+      console.log('books/update', payload)
+    },
+    borrow(_, payload) {
+      // new Date().toISOString().slice(0, 10),
+      console.log('books/borrow', payload)
+    },
+    return(_, payload) {
+      console.log('books/return', payload)
+    },
+    delete(_, payload) {
+      console.log('books/delete', payload)
     },
   },
 }
