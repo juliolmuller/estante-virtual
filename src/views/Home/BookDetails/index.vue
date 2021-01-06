@@ -81,10 +81,12 @@ export default {
 
       try {
         if (this.bookId === 'novo') {
-          const book = await this.createBook(this.book)
-          const route = { name: 'BookDetails', params: { bookId: book.id } }
-
-          this.$router.replace(route)
+          this.book = await this.createBook(this.book)
+          this.isEditing = false
+          this.$router.replace({
+            name: 'BookDetails',
+            params: { bookId: this.book.id },
+          })
         } else {
           await this.updateBook(this.book)
           this.isEditing = false
@@ -143,6 +145,7 @@ export default {
 
     if (this.bookId === 'novo') {
       this.book.userId = this.user.id
+      this.book.image = 'https://'
       this.book.loan = false
       this.isEditing = true
       return
@@ -179,7 +182,7 @@ export default {
 
     <form @submit.prevent="handleSubmit">
       <div class="row">
-        <div class="col-12 col-md-4" v-if="book.image">
+        <div class="col-12 col-md-4">
           <img
             class="img-fluid"
             alt="Capa do livro"

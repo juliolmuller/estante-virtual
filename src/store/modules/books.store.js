@@ -69,6 +69,8 @@ export default {
       const newBook = await booksApi.post({ name, image, userId, loan })
 
       commit('updateOrPushBook', newBook)
+
+      return newBook
     },
     async update({ commit }, { id, name, image, userId, loan }) { // eslint-disable-line object-curly-newline
       const book = await booksApi.put({
