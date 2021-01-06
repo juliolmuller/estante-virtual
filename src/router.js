@@ -5,6 +5,12 @@ import SignIn from './views/Auth/SignIn'
 import SignUp from './views/Auth/SignUp'
 import store from './store'
 
+const Home = () => import('./views/Home')
+const Bookshelves = () => import('./views/Home/Bookshelves')
+const BookDetails = () => import('./views/Home/BookDetails')
+const BooksManager = () => import('./views/Home/BooksManager')
+const UserProfile = () => import('./views/Home/UserProfile')
+
 Vue.use(VueRouter)
 
 const checkCredentials = (_to, _from, next) => {
@@ -36,34 +42,42 @@ const routes = [
   },
   {
     path: '/',
-    component: () => import('./views/Home'),
+    component: Home,
     beforeEnter: checkCredentials,
     children: [
       {
         path: '/',
         name: 'Home',
-        component: () => import('./views/Home/Bookshelves'),
+        component: Bookshelves,
       },
       {
         path: '/livros/:bookId',
         name: 'BookDetails',
-        component: () => import('./views/Home/BookDetails'),
+        component: BookDetails,
         props: true,
       },
       {
         path: '/meus-livros',
         name: 'UserBooks',
-        component: () => import('./views/Home/UserBooks'),
+        component: BooksManager,
+        props: {
+          title: 'Meus Livros',
+          type: 'userBooks',
+        },
       },
       {
         path: '/meus-emprestimos',
         name: 'UserLoans',
-        component: () => import('./views/Home/UserLoans'),
+        component: BooksManager,
+        props: {
+          title: 'Meus Empréstimos',
+          type: 'userLoans',
+        },
       },
       {
         path: '/meu-perfil',
         name: 'UserProfile',
-        component: () => import('./views/Home/UserProfile'),
+        component: UserProfile,
       },
     ],
   },
