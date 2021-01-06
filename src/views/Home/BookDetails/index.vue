@@ -100,6 +100,7 @@ export default {
 
       try {
         await this.borrowBook(this.book)
+        this.book = this.books.find(({ id }) => this.bookId === id)
       } catch (error) {
         throw error
       } finally {
@@ -111,6 +112,7 @@ export default {
 
       try {
         await this.returnBook(this.book)
+        this.book = this.books.find(({ id }) => this.bookId === id)
       } catch (error) {
         throw error
       } finally {
