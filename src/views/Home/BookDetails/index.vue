@@ -25,7 +25,7 @@ export default {
   data: () => ({
     isLoading: false,
     isEditing: false,
-    bookBackup: {},
+    dataBackup: {},
     book: {},
   }),
 
@@ -56,8 +56,8 @@ export default {
   },
 
   watch: {
-    book() {
-      this.bookBackup = { ...this.book }
+    book(newValue) {
+      this.dataBackup = { ...newValue }
     },
   },
 
@@ -71,7 +71,7 @@ export default {
     }),
     toggleEditing() {
       this.isEditing = !this.isEditing
-      this.book = this.bookBackup
+      this.book = { ...this.dataBackup }
     },
     fallbackImage(event) {
       event.target.src = fallbackImg
@@ -293,48 +293,4 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
-#book-details {
-  & > header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    & > [type="button"] {
-      margin-bottom: 3rem;
-
-      & > img {
-        height: 8px;
-      }
-    }
-  }
-
-  & .form-group {
-    margin-bottom: 1rem;
-
-    & label {
-      margin-bottom: 0;
-    }
-  }
-
-  & .form-control {
-    margin: 0.5rem 0 1.5rem;
-    outline: none;
-  }
-
-  & .form-control-plaintext {
-    outline: none;
-    font-size: large;
-  }
-
-  & .action-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    & .btn {
-      margin: auto 0.5rem;
-    }
-  }
-}
-</style>
+<style lang="scss" src="./styles.scss"></style>

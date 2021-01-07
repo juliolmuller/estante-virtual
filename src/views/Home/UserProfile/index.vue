@@ -1,46 +1,76 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import ViewTitle from '@/components/ViewTitle'
 
 export default {
+  name: 'UserProfile',
+
+  components: {
+    ViewTitle,
+  },
 
   data: () => ({
-    user: {},
+    isLoading: false,
     isEditing: false,
-    errors: {},
+    dataBackup: {},
+    user: {},
   }),
 
   computed: {
-    ...mapGetters(['userData', 'userLoans']),
-    getClasses() {
+    ...mapGetters({
+      appLoading: 'isLoading',
+      userById: 'users/userById',
+      userData: 'auth/userData',
+    }),
+    passwordsMatch() {
+      return this.user.newPassword === this.user.newPasswordConfirmation
+    },
+    inputStyle() {
       return {
         'form-control': this.isEditing,
-        'border-hero': this.isEditing,
-        'text-hero': !this.isEditing,
         'form-control-plaintext': !this.isEditing,
-        'h4': !this.isEditing,
-        'pt-0': !this.isEditing,
+        'font-weight-bold': !this.isEditing,
+        'text-hero': !this.isEditing,
       }
     },
   },
 
-  methods: {
-    ...mapActions(['fetchUserLoans']),
-    edit() {
-      this.isEditing = true
-    },
-    save(e) {
-      e.target.disabled = true
-      e.preventDefault()
-      this.isEditing = false
-      e.target.disabled = false
+  watch: {
+    user(newValue) {
+      this.dataBackup = { ...newValue }
     },
   },
 
-  created() {
+  methods: {
+    ...mapActions('auth', {
+      updateUserData: 'update',
+    }),
+    toggleEditing() {
+      this.isEditing = !this.isEditing
+      this.user = { ...this.dataBackup }
+    },
+    async handleSubmit() {
+      this.isLoading = true
+
+      try {
+        await this.updateUserData(this.user)
+        this.isEditing = false
+      } catch (error) {
+        throw error
+      } finally {
+        this.isLoading = false
+      }
+    },
+  },
+
+  async mounted() {
+    await new Promise((resolve) => {
+      while (this.appLoading) {} // eslint-disable-line no-empty
+      resolve()
+    })
+
     this.user = {
-      id: this.userData.id,
-      name: this.userData.name,
-      email: this.userData.email,
+      ...this.userData,
       oldPassword: '',
       newPassword: '',
       newPasswordConfirmation: '',
@@ -50,93 +80,111 @@ export default {
 </script>
 
 <template>
-  <div>
-    <h1 :class="{ 'mb-4': isEditing }">Meus empréstimos</h1>
+  <div id="user-profile">
+    <header>
+      <ViewTitle>
+        Perfil do Usuário
+      </ViewTitle>
 
-    <button
-      type="button"
-      class="btn btn-sm btn-hero mb-4"
-      v-show="!isEditing"
-      @click="edit"
-    >
-      Editar Dados
-    </button>
+      <button
+        type="button"
+        class="btn btn-sm btn-light"
+        v-if="!isEditing"
+        @click="toggleEditing"
+      >
+        Editar Dados
+      </button>
+    </header>
 
-    <form>
+    <form @submit.prevent="handleSubmit">
       <div class="form-group">
-        <label for="name">Nome Completo:</label>
+        <label for="user-id">Código de Cadastro:</label>
         <input
           type="text"
-          id="name"
-          v-model="user.name"
-          :class="getClasses"
+          id="user-id"
+          :class="inputStyle"
+          v-model.number="user.id"
+          readonly
         />
-        <div class="invalid-feedback" v-show="errors.name">
-          {{ errors.name }}
-        </div>
       </div>
       <div class="form-group">
-        <label for="email">Email de Contato:</label>
+        <label for="user-name">Nome Completo:</label>
+        <input
+          type="text"
+          id="user-name"
+          :class="inputStyle"
+          v-model.trim="user.name"
+          :readonly="!isEditing"
+          required
+          autofocus
+        />
+      </div>
+      <div class="form-group">
+        <label for="user-email">E-mail de Contato:</label>
         <input
           type="email"
-          id="email"
-          v-model="user.email"
-          :class="getClasses"
+          id="user-email"
+          :class="inputStyle"
+          v-model.trim="user.email"
+          :readonly="!isEditing"
+          required
         />
-        <div class="invalid-feedback" v-show="errors.email">
-          {{ errors.email }}
-        </div>
       </div>
-      <div class="card border-hero p-3 bg-white w-50" v-show="isEditing">
-        <h4 class="mb-4">Mudar Senha</h4>
-        <div class="form-group">
-          <label for="oldPassword">Senha atual:</label>
-          <input
-            type="password"
-            id="oldPassword"
-            placeholder="Deve ter no mínimo 8 digitos"
-            v-model="user.oldPassword"
-            :class="getClasses"
-          />
-          <div class="invalid-feedback" v-show="errors.oldPassword">
-            {{ errors.oldPassword }}
+      <div class="card border-hero" v-if="isEditing">
+        <h5 class="card-header">Mudar Senha</h5>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="user-password">Senha Atual:</label>
+            <input
+              type="password"
+              id="user-password"
+              :class="inputStyle"
+              v-model.trim="user.oldPassword"
+              :required="Boolean(user.newPassword || user.newPasswordConfirmation)"
+            />
           </div>
-        </div>
-        <div class="form-group">
-          <label for="newPassword">Nova Senha:</label>
-          <input
-            type="password"
-            id="newPassword"
-            placeholder="Deve ter no mínimo 8 digitos"
-            v-model="user.newPassword"
-            :class="getClasses"
-          />
-          <div class="invalid-feedback" v-show="errors.newPassword">
-            {{ errors.newPassword }}
+          <div class="form-group">
+            <label for="user-new-password">Nova Senha:</label>
+            <input
+              type="password"
+              id="user-new-password"
+              :class="inputStyle"
+              v-model.trim="user.newPassword"
+              :required="Boolean(user.oldPassword || user.newPasswordConfirmation)"
+            />
           </div>
-        </div>
-        <div class="form-group">
-          <label for="newPasswordConfirmation">Repetir a Nova Senha:</label>
-          <input
-            type="password"
-            id="newPasswordConfirmation"
-            placeholder="Deve ser igual a nova senha"
-            v-model="user.newPasswordConfirmation"
-            :class="getClasses"
-          />
-          <div class="invalid-feedback" v-show="errors.newPassword">
-            Repita inteiramente o valor para a nova senha
+          <div class="form-group">
+            <label for="user-new-password-confirmation">Repetir a Nova Senha:</label>
+            <input
+              type="password"
+              id="user-new-password-confirmation"
+              :class="inputStyle"
+              v-model.trim="user.newPasswordConfirmation"
+              :required="Boolean(user.oldPassword || user.newPassword)"
+            />
+            <div class="error-feedback" v-if="!passwordsMatch">
+              A nova senha e sua confirmação não conferem.
+            </div>
           </div>
         </div>
       </div>
-      <button
-        type="submit"
-        class="btn btn-hero m-3"
-        v-show="isEditing"
-        @click="save($event)"
-      >
-        Salvar
-      </button>
+
+      <div class="action-btn">
+        <button
+          type="button"
+          class="btn btn-light"
+          v-if="isEditing"
+          @click="toggleEditing"
+        >Cancelar</button>
+        <button
+          type="submit"
+          class="btn btn-hero"
+          :disabled="!passwordsMatch || isLoading"
+          v-if="isEditing"
+        >Concluído</button>
+      </div>
     </form>
   </div>
 </template>
+
+<style lang="scss" src="../BookDetails/styles.scss"></style>
