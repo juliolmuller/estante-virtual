@@ -8,9 +8,9 @@
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build --dest docs --modern",
     "lint": "vue-cli-service lint",
-    "start": "node server.js"
+    "start": "node server.js",
+    "heroku-postbuild": "echo Skipping 'npm run build'"
   },
-  "heroku-run-build-script": false,
   "dependencies": {
     "axios": "~0.21.1",
     "bootstrap": "^4.5.3",
