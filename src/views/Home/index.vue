@@ -30,16 +30,13 @@ export default {
 </template>
 
 <style lang="scss">
-$sidebar-width: 290px;
-$main-padding: 2rem;
-
 #home {
-  padding-bottom: $main-padding;
+  padding-bottom: 2rem;
 
   & > main {
-    width: calc(100% - ($main-padding * 2));
-    margin: $main-padding;
-    padding: $main-padding $main-padding 0;
+    width: calc(100% - 4rem);
+    margin: 2rem;
+    padding: 2rem 2rem 0;
     background: var(--light);
     opacity: 0.95;
   }
@@ -50,15 +47,15 @@ $main-padding: 2rem;
   }
 
   @media (min-width: 1000px) {
-    padding: $main-padding;
+    padding: 2rem;
 
     #sidebar {
-      width: $sidebar-width;
+      width: 290px;
     }
 
     & > main {
-      width: calc(100vw - $sidebar-width - ($main-padding * 2));
-      margin: 0 0 0 $sidebar-width;
+      width: calc(100vw - 290px - 5rem);
+      margin: 0 0 0 290px;
     }
   }
 
@@ -66,7 +63,7 @@ $main-padding: 2rem;
     & > main {
       max-width: 1100px;
       position: relative;
-      left: $sidebar-width / 2;
+      left: calc(290px / 2);
       margin: 0 auto;
     }
   }
