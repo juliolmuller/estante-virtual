@@ -23,8 +23,10 @@ export default {
   methods: {
     setSpacers() {
       const deckWidth = this.$refs.deck.clientWidth
-      const cardsPerRow = parseInt(deckWidth / MIN_WIDTH, 10)
-      const spacersCount = cardsPerRow - (this.books.length % cardsPerRow)
+      const colsCount = parseInt(deckWidth / MIN_WIDTH, 10)
+      const rowsCOunt = Math.ceil(this.books.length / colsCount)
+      const spacersCount = (colsCount * rowsCOunt) - this.books.length
+      console.log(deckWidth, this.books.length, colsCount, rowsCOunt, spacersCount)
 
       this.spacers = new Array(spacersCount || 0).fill().map((_, index) => index)
     },
