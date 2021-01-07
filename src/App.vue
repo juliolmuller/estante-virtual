@@ -1,5 +1,6 @@
 <script>
 export default {
+  name: 'App',
 
   beforeCreate() {
     this.$store.dispatch('users/fetchAll')

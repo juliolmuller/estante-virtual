@@ -2,6 +2,7 @@
 import truncate from '@/filters/truncate'
 
 export default {
+  name: 'BookCard',
 
   filters: {
     truncate,

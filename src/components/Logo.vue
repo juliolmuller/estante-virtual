@@ -4,6 +4,12 @@
   </span>
 </template>
 
+<script>
+export default {
+  name: 'Logo',
+}
+</script>
+
 <style lang="scss">
 #logo {
   text-decoration: none;
