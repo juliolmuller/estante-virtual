@@ -1,25 +1,25 @@
 {
   "users": [
     {
-      "id": 1234,
+      "id": 1001,
       "name": "André K. Antunes",
       "email": "andre@email.com",
       "password": "senha123"
     },
     {
-      "id": 2345,
+      "id": 1002,
       "name": "Aurélio S. Matsunaga",
       "email": "aurelio@email.com",
       "password": "senha123"
     },
     {
-      "id": 3456,
+      "id": 1003,
       "name": "Cassiano K. Vidal",
       "email": "cassiano@email.com",
       "password": "senha123"
     },
     {
-      "id": 4567,
+      "id": 1004,
       "name": "Júlio L. Müller",
       "email": "julio@email.com",
       "password": "senha123"
@@ -27,79 +27,110 @@
   ],
   "books": [
     {
-      "id": 89132676,
+      "id": 500001,
       "name": "Introdução à Programação com Python",
       "image": "https://images-na.ssl-images-amazon.com/images/I/51qoFdDmLqL._SX360_BO1,204,203,200_.jpg",
-      "userId": 1234,
+      "userId": 1003,
       "loan": {
-        "userId": 2345,
-        "date": "2019-06-20"
+        "date": "2019-06-20",
+        "userId": 1001
       }
     },
     {
-      "id": 23839918,
+      "id": 500002,
       "name": "Programação profissional em HTML 5",
       "image": "https://images-na.ssl-images-amazon.com/images/I/51ppKPhP4HL._SR600,315_SCLZZZZZZZ_.jpg",
-      "userId": 2345,
+      "userId": 1002,
       "loan": false
     },
     {
-      "id": 26157405,
-      "name": "JavaScript - Aprenda a Programar",
-      "image": "http://www.editoraviena.com.br/%2Fimagens_02%2Fprodutos%2F2018-10-01_01-51-37-JavaScript.jpg",
-      "userId": 1234,
-      "loan": {
-        "userId": 3456,
-        "date": "2019-07-27"
-      }
-    },
-    {
-      "id": 70618749,
+      "id": 500003,
       "name": "O poder do hábito",
       "image": "https://images-na.ssl-images-amazon.com/images/I/51VFNJGBvqL._SX346_BO1,204,203,200_.jpg",
-      "userId": 3456,
+      "userId": 1002,
       "loan": false
     },
     {
-      "id": 37035418,
+      "id": 500004,
       "name": "Empreendedorismo e jovens empreendedores",
       "image": "https://images-na.ssl-images-amazon.com/images/I/416X75jsQWL._SY346_.jpg",
-      "userId": 3456,
+      "userId": 1001,
       "loan": false
     },
     {
-      "id": 85849640,
+      "id": 500005,
       "name": "Desconstruindo o SEO - A Pirâmide Invertida",
       "image": "https://images-na.ssl-images-amazon.com/images/I/41KyfqjZHLL.jpg",
-      "userId": 1234,
+      "userId": 1001,
       "loan": {
-        "userId": 3456,
-        "date": "2019-03-19"
+        "date": "2019-03-19",
+        "userId": 1002
       }
     },
     {
-      "id": 25173189,
+      "id": 500006,
       "name": "Marketing Digital na Prática: Como criar do zero uma estratégia de marketing digital para promover negócios ou produtos",
       "image": "https://images-na.ssl-images-amazon.com/images/I/41t3nagAjoL._SX341_BO1,204,203,200_.jpg",
-      "userId": 1234,
+      "userId": 1001,
       "loan": false
     },
     {
-      "id": 35761134,
-      "name": "Vue: Step-By-Step Guide To Mastering Vue.js From Beginner To Advanced",
+      "id": 500007,
+      "name": "Vue: Step-By-Step Guide to Mastering Vue.js from Beginner to Advanced",
       "image": "https://images-na.ssl-images-amazon.com/images/I/418NnKr2KKL.jpg",
-      "userId": 2345,
+      "userId": 1003,
       "loan": {
-        "userId": 3456,
-        "date": "2019-06-03"
+        "date": "2020-12-18",
+        "userId": 1004
       }
     },
     {
-      "id": 33828773,
-      "name": "Por que fazemos o que fazemos?",
-      "image": "https://images-na.ssl-images-amazon.com/images/I/51xH0mWSeGL._SX331_BO1,204,203,200_.jpg",
-      "userId": 4567,
+      "id": 500008,
+      "name": "Arquitetura Limpa (Clean Code)",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/41Zd8i94hwL.jpg",
+      "userId": 1003,
       "loan": false
+    },
+    {
+      "id": 500009,
+      "name": "O Guia do Mochileiro das Galáxias",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/51X+P0hPkoL._SX343_BO1,204,203,200_.jpg",
+      "userId": 1004,
+      "loan": {
+        "date": "2021-01-07",
+        "userId": 1002
+      }
+    },
+    {
+      "id": 500010,
+      "name": "O Restaurante no Fim do Universo",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/51CU2FfZ0AL.jpg",
+      "userId": 1004,
+      "loan": false
+    },
+    {
+      "id": 500011,
+      "name": "A Vida, o Universo e Tudo Mais",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/41TTuMIJVoL._SX331_BO1,204,203,200_.jpg",
+      "userId": 1004,
+      "loan": false
+    },
+    {
+      "id": 500012,
+      "name": "Até Mais, e Obrigado pelos Peixes",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/412XNsc14ML._SX332_BO1,204,203,200_.jpg",
+      "userId": 1004,
+      "loan": false
+    },
+    {
+      "id": 500013,
+      "name": "Praticamente Inofensiva",
+      "image": "https://images-na.ssl-images-amazon.com/images/I/5142uTGVKhL._SX331_BO1,204,203,200_.jpg",
+      "userId": 1004,
+      "loan": {
+        "date": "2020-11-30",
+        "userId": 1003
+      }
     }
   ]
 }
