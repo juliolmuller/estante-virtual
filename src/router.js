@@ -14,13 +14,20 @@ const UserProfile = () => import('./views/Home/UserProfile')
 Vue.use(VueRouter)
 
 const checkCredentials = (_to, _from, next) => {
-  store.commit('auth/retrieveFromStorage')
+  (async () => {
+    if (!store.getters['auth/isAuthenticated']) {
+      const { userData, storage } = await store.dispatch('auth/retrieveFromStorage')
 
-  if (store.getters['auth/isAuthenticated']) {
-    next()
-  } else {
-    next({ name: 'SignIn' })
-  }
+      store.commit('auth/setUserData', userData)
+      store.commit('auth/setBrowserStorage', storage)
+    }
+
+    if (store.getters['auth/isAuthenticated']) {
+      next()
+    } else {
+      next({ name: 'SignIn' })
+    }
+  })()
 }
 
 const routes = [

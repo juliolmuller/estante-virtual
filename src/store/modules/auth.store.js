@@ -32,13 +32,6 @@ export default {
         localStorage.removeItem(STORAGE_KEY)
       }
     },
-    retrieveFromStorage(state) {
-      const savedAtLocal = localStorage.getItem(STORAGE_KEY)
-      const savedAtSession = sessionStorage.getItem(STORAGE_KEY)
-      const parsedData = JSON.parse(savedAtLocal || savedAtSession)
-
-      state.userData = parsedData
-    },
   },
 
   actions: {
@@ -54,6 +47,14 @@ export default {
       commit('setBrowserStorage', storage)
 
       return true
+    },
+    retrieveFromStorage() {
+      const savedAtLocal = localStorage.getItem(STORAGE_KEY)
+      const savedAtSession = sessionStorage.getItem(STORAGE_KEY)
+      const userData = JSON.parse(savedAtLocal || savedAtSession)
+      const storage = savedAtLocal ? localStorage : sessionStorage
+
+      return { userData, storage }
     },
     signOut({ commit }) {
       commit('setUserData')
