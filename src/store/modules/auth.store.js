@@ -60,11 +60,16 @@ export default {
       commit('setUserData')
       commit('setBrowserStorage')
     },
-    async update({ commit }, credentials) {
-      const { id, name, email, newPassword: password } = credentials
-      const userData = { id, name, email, password }
+    async update({ dispatch }, { id, name, email, oldPassword, newPassword }) { // eslint-disable-line object-curly-newline
+      const { storage } = await dispatch('retrieveFromStorage')
+      const keepConnection = storage === localStorage
+      const originalUser = await usersApi.getOne(id)
+      const password = oldPassword === originalUser.password
+        ? (newPassword || oldPassword)
+        : originalUser.password
+      const newUser = await usersApi.put({ id, name, email, password })
 
-      commit('setUserData', await usersApi.put(userData))
+      await dispatch('authenticate', { ...newUser, keepConnection })
     },
   },
 }
