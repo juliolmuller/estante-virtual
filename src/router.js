@@ -5,11 +5,11 @@ import SignIn from './views/Auth/SignIn'
 import SignUp from './views/Auth/SignUp'
 import store from './store'
 
-const Home = () => import('./views/Home')
-const Bookshelves = () => import('./views/Home/Bookshelves')
-const BookDetails = () => import('./views/Home/BookDetails')
-const BooksManager = () => import('./views/Home/BooksManager')
-const UserProfile = () => import('./views/Home/UserProfile')
+const Home = () => import(/* webpackPrefetch: true */ './views/Home')
+const Bookshelves = () => import(/* webpackPrefetch: true */ './views/Home/Bookshelves')
+const BookDetails = () => import(/* webpackPrefetch: true */ './views/Home/BookDetails')
+const BooksManager = () => import(/* webpackPrefetch: true */ './views/Home/BooksManager')
+const UserProfile = () => import(/* webpackPrefetch: true */ './views/Home/UserProfile')
 
 Vue.use(VueRouter)
 
