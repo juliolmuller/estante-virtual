@@ -34,32 +34,41 @@ $sidebar-width: 290px;
 $main-padding: 2rem;
 
 #home {
-  padding: $main-padding;
-
-  #sidebar {
-    width: $sidebar-width;
-  }
+  padding-bottom: $main-padding;
 
   & > main {
-    width: calc(100vw - $sidebar-width - ($main-padding * 2));
-    margin: 0 0 0 $sidebar-width;
-    padding: 2rem 2rem 0;
+    width: calc(100% - ($main-padding * 2));
+    margin: $main-padding;
+    padding: $main-padding $main-padding 0;
     background: var(--light);
     opacity: 0.95;
-
-    @media (min-width: 1500px) {
-      & {
-        max-width: 1100px;
-        position: relative;
-        left: $sidebar-width / 2;
-        margin: 0 auto;
-      }
-    }
   }
 
   .home-footer {
     text-align: center;
     line-height: 3rem;
+  }
+
+  @media (min-width: 1000px) {
+    padding: $main-padding;
+
+    #sidebar {
+      width: $sidebar-width;
+    }
+
+    & > main {
+      width: calc(100vw - $sidebar-width - ($main-padding * 2));
+      margin: 0 0 0 $sidebar-width;
+    }
+  }
+
+  @media (min-width: 1500px) {
+    & > main {
+      max-width: 1100px;
+      position: relative;
+      left: $sidebar-width / 2;
+      margin: 0 auto;
+    }
   }
 }
 </style>
