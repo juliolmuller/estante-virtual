@@ -5,10 +5,10 @@
   "license": "MIT",
   "author": "Julio L. Muller",
   "scripts": {
-    "start": "vue-cli-service serve --open",
+    "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build --dest docs --modern",
     "lint": "vue-cli-service lint",
-    "server": "json-server --watch db.json"
+    "start": "node server.js"
   },
   "dependencies": {
     "axios": "~0.21.1",
