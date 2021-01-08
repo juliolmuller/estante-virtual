@@ -113,14 +113,13 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    bottom: 0;
     width: 290px;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     box-shadow: 4px 0 40px 4px;
 
     .btn-signout {
-      width: 100%;
       margin: auto 2rem 3rem;
     }
   }
