@@ -21,6 +21,12 @@ export default {
     spacers: [],
   }),
 
+  watch: {
+    books() {
+      this.setSpacers()
+    },
+  },
+
   methods: {
     setSpacers() {
       const deckWidth = this.$refs.deck.clientWidth
@@ -55,7 +61,7 @@ export default {
       :id="book.id"
     />
     <div
-      class="col"
+      class="col book-card"
       v-for="i in spacers"
       :key="i"
     ></div>
