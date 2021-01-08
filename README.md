@@ -1,69 +1,85 @@
+<h1 align="center">
+  :books: Estante Virtual
+</h1>
 
-# Estante Virtual (Collaborative Library)
+<p align="center">
+  <a href="#pencil-objectives">Objectives</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#trophy-lessons-learned">Lessons Learned</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#rocket-technologies--resources">Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#hammer-setting-up-the-environment">Environment Setup</a>
+</p>
 
-- **Developed by:** [Julio L. Muller](https://github.com/juliolmuller)
-- **Released on:** Aug 22, 2019
-- **Updated on:** Jul 21, 2020
-- **Latest version:** 0.1.2
-- **License:** MIT
+<p align="center">
+  <img src="https://img.shields.io/static/v1?labelColor=000000&color=d8621e&label=created%20at&message=Aug%202019" alt="Creation Date" />
 
-## Overview
+  <img src="https://img.shields.io/github/last-commit/juliolmuller/estante-virtual?label=updated%20at&labelColor=000000&color=d8621e" alt="Update Date" />
 
-This is an application developed as a challenge, proposed by the company [HeroSpark](https://herospark.com/). The application seeks to maintain records of users and books they register and which can be borrowed among the community. It uses a fake back-end to persist the data and allow API consumption with RESTful patterns.
+  <img src="https://img.shields.io/github/v/tag/juliolmuller/estante-virtual?label=latest%20version&labelColor=000000&color=d8621e" alt="Latest Version" />
 
-![Collaborative Library](./app-overview.jpg)
+  <img src="https://img.shields.io/static/v1?labelColor=000000&color=d8621e&label=PRs&message=welcome" alt="Pull Requests Welcome" />
 
-## How to Set Up the Environment
+  <img src="https://img.shields.io/github/license/juliolmuller/estante-virtual?labelColor=000000&color=d8621e" alt="Project License" />
+</p>
 
-This application is compatible to non-production environments, since the fake back-end does not provide full services and security for the user data. However, to set it up in your local machine, observe the following steps:
+![Estante Virtual snapshot](./src/assets/app-overview.jpg)
 
-### Software Required
+This application was proposed by [HeroSpark](https://herospark.com/), as part of their recruitment process for frontend developers. The challenge was to build a fully responsive client application using Vue, Vuex, Bootstrap and SASS to consume a simple REST API served by JSON-Server, with basic authentication, CRUD for books and search/filter mechanisms, abusing of creativity.
 
-Make sure you have [Node.js](https://nodejs.org/) installed and have its package manager (`npm`) added to the enviroment variables.
+[Check out the application running!](https://juliolmuller.github.io/estante-virtual/)
 
-### Dependencies Installation
+## :pencil: Objectives
 
-After downloading or cloning this repository, run the following command line inside your root project directory:
+- [x] Create a web application using Vue.js and Vuex JavaScript frameworks;
+- [x] Use Bootstrap styles framework and integrate SASS;
+- [x] Require basic authentication mechanism for user to navigate in the application;
+- [x] Allow user to sign up, providing basic info like name, email and password;
+- [x] Dispose of borrowed and loanable books, showing its name and a thumbnail;
+- [x] Allow users to search for saved books;
+- [x] Display book details and allowed actions - borrow, return, edit info (if it belongs to user);
+- [x] Allow user to register new books to add to the bookshelf;
+- [x] Dispose list of books user borrowed;
+- [x] Dispose list of books user made available;
+- [x] MUST have a responsive UI;
+- [ ] Implement automated tests;
+
+## :trophy: Lessons Learned
+
+- Build and run a basic REST API using [JSON-Server](https://github.com/typicode/json-server);
+- `async`/`await` syntax to handle asynchronous calls; :heartpulse:
+- Structuring Vuex modules and functionalities;
+- Use *guards* to access certain routes;
+- Integrate SASS to a Vue project;
+- Overwrite Bootstrap defaults and creating new themes using SASS/SCSS;
+- Deploying a JSON-server application to **Heroku**;
+
+## :rocket: Technologies & Resources
+
+**Frontend:**
+- [Vue.js 2](https://vuejs.org)
+- [Vuex 3](https://vuex.vuejs.org/)
+- [VueRouter 3](https://router.vuejs.org/)
+- [Axios](https://github.com/axios/axios) (HTTP client)
+- [Bootstrap 4](https://getbootstrap.com/)
+
+**Backend**
+- [Node.js](https://nodejs.org/en/)
+- [JSON-Server](https://github.com/typicode/json-server)
+- [Heroku Cloud Server](https://heroku.com/) (for deployment)
+
+**Development:**
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Cmder](https://cmder.net/) (terminal emulator)
+- Vue-CLI and NPM scripts;
+
+## :hammer: Setting up the Environment
+
+Before running the application copy/rename file `.env.example` as `.env`. The existent value should work already, so no further configuration should be required. When building for production, however, you may want to add a `.env.production` and copt the same variables you have in `.env`, replacing the *localhost* reference to a valid address on the internet, where the API will be available (e.g.: https://estante-virtual.herokuapp.com).
+
+Make sure to have **Node.js 10+** installed in your machine and its **npm** command available in terminal, then use the following routines:
 
 ```bash
-npm install
+$ npm install     # Download dependencies
+$ npm start       # Run JSON-Server
+$ npm run serve   # Run development server for front-end
+$ npm run build   # Build files for production
 ```
-
-### Run the Server
-
-The web server used by the application is **JSON Server**, a Node based app which raises a server and provides a simple REST API, so we can easily perform `GET`, `POST`, `PUT` & `DELETE` HTTP requests with data being persisted in a JSON file. To initialize the server, run:
-
-```bash
-cd server && npm start
-```
-
-## Build Vue.js Application
-
-To start up your application and build the development files, run the following code:
-
-```bash
-npm run serve
-```
-
-**DONE!!!** Check out the console output to see which port of your *localhost* the application is listening to.
-
-## Technologies
-
-Here are the main technologies used to build this project:
-
-### Back-End
-
-- **Programing Language:** JavaScript
-- **Front-End Framework:** [Vue.js 2](https://vuejs.org/) (with [Vuex](https://vuex.vuejs.org/))
-- **HTTP Client:** [axios](https://github.com/axios/axios)
-- **Web Server:** [JSON Server](https://github.com/typicode/json-server)
-- **Styles Framework:** [Bootstrap 4](https://getbootstrap.com/)
-
-### Dev Tools
-
-- **Text Editor:** [Visual Studio Code](https://code.visualstudio.com/)
-- **Console Emulator:** [Cmder](https://cmder.net/)
-- **JS Package Manager:** [Node.js](https://nodejs.org/en/)
-- **API Development Environment:** [Postman](https://www.getpostman.com/)
-- **Versioning Tool:** [Git](https://git-scm.com/)
-- **Remote Repository:** [GitLab](https://gitlab.com/) & [GitHub](https://github.com/)
