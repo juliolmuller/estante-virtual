@@ -25,7 +25,7 @@
 
 This application was proposed by [HeroSpark](https://herospark.com/), as part of their recruitment process for frontend developers. The challenge was to build a fully responsive client application using Vue, Vuex, Bootstrap and SASS to consume a simple REST API served by JSON-Server, with basic authentication, CRUD for books and search/filter mechanisms, abusing of creativity.
 
-[Check out the application running!](https://juliolmuller.github.io/estante-virtual/)
+[Check out the application running!](https://estantevirtual.vercel.app/)
 
 ## :pencil: Objectives
 
