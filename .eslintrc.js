@@ -4,10 +4,12 @@ module.exports = {
     node: true,
   },
   extends: [
-    'plugin:vue/recommended',
+    'plugin:vue/essential',
     '@lacussoft',
   ],
   ignorePatterns: [
+    'public/*',
+    '!public/**/*.js',
     '!babel.config.js',
   ],
   parserOptions: {
