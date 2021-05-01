@@ -35,24 +35,6 @@
     "sass-loader": "^10.1.1",
     "vue-template-compiler": "^2.6.12"
   },
-  "babel": {
-    "presets": [
-      "@vue/cli-plugin-babel/preset"
-    ]
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/recommended",
-      "@lacussoft"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions"
