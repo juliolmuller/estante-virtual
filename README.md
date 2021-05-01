@@ -51,6 +51,7 @@ This application was proposed by [HeroSpark](https://herospark.com/), as part of
 - Integrate SASS to a Vue project;
 - Overwrite Bootstrap defaults and creating new themes using SASS/SCSS;
 - Deploying a JSON-server application to **Heroku**;
+- Deploying a Vue.js app to Vercel Serverless Cloud;
 
 ## :rocket: Technologies & Resources
 
@@ -73,7 +74,7 @@ This application was proposed by [HeroSpark](https://herospark.com/), as part of
 
 ## :hammer: Setting up the Environment
 
-Before running the application copy/rename file `.env.example` as `.env`. The existent value should work already, so no further configuration should be required. When building for production, however, you may want to add a `.env.production` and copt the same variables you have in `.env`, replacing the *localhost* reference to a valid address on the internet, where the API will be available (e.g.: https://estante-virtual.herokuapp.com).
+Before running the application copy/rename file `.env.example` as `.env`. The existent value should work already, so no further configuration should be required. When building for production, however, you may want to add a `.env.production` and copy the same variables you have in `.env`, replacing the *localhost* reference to a valid address on the internet, where the API will be available (e.g.: https://estante-virtual.herokuapp.com).
 
 Make sure to have **Node.js 10+** installed in your machine and its **npm** command available in terminal, then use the following routines:
 
