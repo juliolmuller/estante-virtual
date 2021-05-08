@@ -4,8 +4,8 @@ module.exports = {
     node: true,
   },
   extends: [
-    'plugin:vue/essential',
-    '@lacussoft',
+    'lacussoft',
+    'lacussoft/vue/v2',
   ],
   ignorePatterns: [
     'public/*',
@@ -15,4 +15,5 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint',
   },
+  rules: {},
 }
