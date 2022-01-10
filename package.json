@@ -6,7 +6,7 @@
   "author": "Julio L. Muller",
   "scripts": {
     "postinstall": "node -e \"require('fs').existsSync('.env') || require('fs').copyFileSync('.env.example', '.env')\"",
-    "serve": "vue-cli-service serve --open",
+    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "start": "node server.js",
