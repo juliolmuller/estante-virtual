@@ -4,7 +4,7 @@ import BookCard from './BookCard'
 const MIN_WIDTH = 250
 
 export default {
-  nmae: 'BooksDeck',
+  name: 'BooksDeck',
 
   components: {
     BookCard,

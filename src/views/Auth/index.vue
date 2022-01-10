@@ -2,6 +2,7 @@
 import Logo from '@/components/Logo'
 
 export default {
+  name: 'AuthPage',
 
   components: {
     Logo,

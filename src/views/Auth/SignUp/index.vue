@@ -3,6 +3,7 @@ import { mapActions } from 'vuex'
 import { usersApi } from '@/services/api'
 
 export default {
+  name: 'SignUpPage',
 
   data: () => ({
     name: '',

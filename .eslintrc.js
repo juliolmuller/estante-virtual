@@ -15,5 +15,7 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint',
   },
-  rules: {},
+  rules: {
+    'import-helpers/order-imports': 'off',
+  },
 }

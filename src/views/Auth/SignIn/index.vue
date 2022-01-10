@@ -2,6 +2,7 @@
 import { mapActions } from 'vuex'
 
 export default {
+  name: 'SignInPage',
 
   data: () => ({
     email: '',
