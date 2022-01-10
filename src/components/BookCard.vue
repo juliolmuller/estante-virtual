@@ -1,12 +1,8 @@
 <script>
-import truncate from '@/filters/truncate'
+import { truncateText } from '@/utils'
 
 export default {
   name: 'BookCard',
-
-  filters: {
-    truncate,
-  },
 
   props: {
     id: {
@@ -32,6 +28,9 @@ export default {
         },
       }
     },
+    truncatedTitle() {
+      return truncateText(this.title)
+    },
   },
 }
 </script>
@@ -42,7 +41,7 @@ export default {
       <img :src="image" class="card-img-top" alt="Capa do livro" />
       <div class="card-body">
         <h5 class="card-title" :title="title">
-          {{ title | truncate }}
+          {{ truncatedTitle }}
         </h5>
       </div>
       <div class="card-footer">

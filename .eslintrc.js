@@ -5,7 +5,7 @@ module.exports = {
   },
   extends: [
     'lacussoft',
-    'lacussoft/vue/v2',
+    'lacussoft/vue',
   ],
   ignorePatterns: [
     'public/*',

@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import Auth from './views/Auth'
 import SignIn from './views/Auth/SignIn'
 import SignUp from './views/Auth/SignUp'
@@ -10,8 +9,6 @@ const Bookshelves = () => import(/* webpackPrefetch: true */ './views/Home/Books
 const BookDetails = () => import(/* webpackPrefetch: true */ './views/Home/BookDetails')
 const BooksManager = () => import(/* webpackPrefetch: true */ './views/Home/BooksManager')
 const UserProfile = () => import(/* webpackPrefetch: true */ './views/Home/UserProfile')
-
-Vue.use(VueRouter)
 
 const checkCredentials = (_to, _from, next) => {
   (async () => {
@@ -30,73 +27,71 @@ const checkCredentials = (_to, _from, next) => {
   })()
 }
 
-const routes = [
-  {
-    path: '/entrar',
-    component: Auth,
-    children: [
-      {
-        path: '/entrar',
-        name: 'SignIn',
-        component: SignIn,
-      },
-      {
-        path: '/cadastrar',
-        name: 'SignUp',
-        component: SignUp,
-      },
-    ],
-  },
-  {
-    path: '/',
-    component: Home,
-    beforeEnter: checkCredentials,
-    children: [
-      {
-        path: '/',
-        name: 'Home',
-        component: Bookshelves,
-      },
-      {
-        path: '/livros/:bookId',
-        name: 'BookDetails',
-        component: BookDetails,
-        props: true,
-      },
-      {
-        path: '/meus-livros',
-        name: 'UserBooks',
-        component: BooksManager,
-        props: {
-          title: 'Meus Livros',
-          type: 'userBooks',
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes: [
+    {
+      path: '/entrar',
+      component: Auth,
+      children: [
+        {
+          path: '/entrar',
+          name: 'SignIn',
+          component: SignIn,
         },
-      },
-      {
-        path: '/meus-emprestimos',
-        name: 'UserLoans',
-        component: BooksManager,
-        props: {
-          title: 'Meus Empréstimos',
-          type: 'userLoans',
+        {
+          path: '/cadastrar',
+          name: 'SignUp',
+          component: SignUp,
         },
-      },
-      {
-        path: '/meu-perfil',
-        name: 'UserProfile',
-        component: UserProfile,
-      },
-    ],
-  },
-  {
-    path: '*',
-    redirect: '/',
-  },
-]
-
-const router = new VueRouter({
-  mode: 'history',
-  routes,
+      ],
+    },
+    {
+      path: '/',
+      component: Home,
+      beforeEnter: checkCredentials,
+      children: [
+        {
+          path: '/',
+          name: 'Home',
+          component: Bookshelves,
+        },
+        {
+          path: '/livros/:bookId',
+          name: 'BookDetails',
+          component: BookDetails,
+          props: true,
+        },
+        {
+          path: '/meus-livros',
+          name: 'UserBooks',
+          component: BooksManager,
+          props: {
+            title: 'Meus Livros',
+            type: 'userBooks',
+          },
+        },
+        {
+          path: '/meus-emprestimos',
+          name: 'UserLoans',
+          component: BooksManager,
+          props: {
+            title: 'Meus Empréstimos',
+            type: 'userLoans',
+          },
+        },
+        {
+          path: '/meu-perfil',
+          name: 'UserProfile',
+          component: UserProfile,
+        },
+      ],
+    },
+    {
+      path: '/(.*)',
+      redirect: '/',
+    },
+  ],
 })
 
 export default router

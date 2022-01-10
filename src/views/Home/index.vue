@@ -15,9 +15,11 @@ export default {
     <SideBar />
 
     <main role="main">
-      <KeepAlive include="Bookshelves">
-        <RouterView />
-      </KeepAlive>
+      <router-view v-slot="{ Component }">
+        <keep-alive include="Bookshelves">
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
 
       <footer class="home-footer">
         <p class="text-muted">

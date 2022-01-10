@@ -1,15 +1,11 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import truncate from '@/filters/truncate'
-import ViewTitle from '@/components/ViewTitle'
 import fallbackImg from '@/assets/fallback-image.jpg'
+import ViewTitle from '@/components/ViewTitle'
+import { truncateText } from '@/utils'
 
 export default {
   name: 'BookDetails',
-
-  filters: {
-    truncate,
-  },
 
   components: {
     ViewTitle,
@@ -52,6 +48,9 @@ export default {
         'font-weight-bold': !this.isEditing,
         'text-hero': !this.isEditing,
       }
+    },
+    truncatedBookName() {
+      return this.bookId === 'novo' ? 'Novo Livro' : truncateText(this.book.name)
     },
   },
 
@@ -166,7 +165,7 @@ export default {
   <div id="book-details">
     <header>
       <ViewTitle>
-        {{ bookId === 'novo' ? 'Novo Livro' : book.name | truncate(80) }}
+        {{ truncatedBookName }}
       </ViewTitle>
 
       <button

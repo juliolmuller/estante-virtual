@@ -17,7 +17,7 @@ export default {
         <Logo />
       </header>
 
-      <RouterView />
+      <router-view />
 
       <footer class="auth-footer text-muted">
         &copy; 2019-{{ new Date().getFullYear() }} <strong>LacusSoft</strong>
