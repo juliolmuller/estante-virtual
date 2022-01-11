@@ -1,14 +1,14 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Auth from './views/Auth'
-import SignIn from './views/Auth/SignIn'
-import SignUp from './views/Auth/SignUp'
+import Auth from './pages/Auth'
+import SignIn from './pages/Auth/SignIn'
+import SignUp from './pages/Auth/SignUp'
 import store from './store'
 
-const Home = () => import(/* webpackPrefetch: true */ './views/Home')
-const Bookshelves = () => import(/* webpackPrefetch: true */ './views/Home/Bookshelves')
-const BookDetails = () => import(/* webpackPrefetch: true */ './views/Home/BookDetails')
-const BooksManager = () => import(/* webpackPrefetch: true */ './views/Home/BooksManager')
-const UserProfile = () => import(/* webpackPrefetch: true */ './views/Home/UserProfile')
+const Home = () => import(/* webpackPrefetch: true */ './pages/Home')
+const Bookshelves = () => import(/* webpackPrefetch: true */ './pages/Home/Bookshelves')
+const BookDetails = () => import(/* webpackPrefetch: true */ './pages/Home/BookDetails')
+const BooksManager = () => import(/* webpackPrefetch: true */ './pages/Home/BooksManager')
+const UserProfile = () => import(/* webpackPrefetch: true */ './pages/Home/UserProfile')
 
 const checkCredentials = (_to, _from, next) => {
   (async () => {
