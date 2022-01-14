@@ -1,18 +1,7 @@
-import { createStore } from 'vuex'
-import auth from './modules/auth.store'
-import books from './modules/books.store'
-import users from './modules/users.store'
+import { createPinia } from 'pinia'
 
-export default createStore({
-  getters: {
-    isLoading(_state, getters) {
-      return getters['books/isFetching'] || getters['users/isFetching']
-    },
-  },
+export default createPinia()
 
-  modules: {
-    auth,
-    books,
-    users,
-  },
-})
+export * from './auth.store'
+export * from './books.store'
+export * from './users.store'
