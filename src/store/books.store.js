@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { booksApi } from '../../services/api'
+import { booksApi } from '@/services/api'
 import { useAuth } from './auth.store'
 
 export const useBooks = defineStore('books', {
@@ -56,21 +56,19 @@ export const useBooks = defineStore('books', {
       })
       this.updateOrPushBook(book)
     },
-    async borrow(bookId) {
+    async borrow(book) {
       const date = new Date().toISOString().slice(0, 10)
-      const book = this.books.find(({ id }) => id === bookId)
       const userId = useAuth().userData?.id
       const loan = { date, userId }
       await this.update({ ...book, loan })
     },
-    async return(bookId) {
-      const book = this.books.find(({ id }) => id === bookId)
+    async return(book) {
       const loan = false
       await this.update({ ...book, loan })
     },
-    async delete(nookId) {
-      await booksApi.delete(nookId)
-      this.books = this.books.filter(({ id }) => id !== nookId)
+    async delete(bookId) {
+      await booksApi.delete(bookId)
+      this.books = this.books.filter(({ id }) => id !== bookId)
     },
   },
 })

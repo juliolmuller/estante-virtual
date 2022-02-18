@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { usersApi } from '../services/api'
+import { usersApi } from '@/services/api'
 
 const STORAGE_KEY = 'user-data'
 
@@ -16,7 +16,7 @@ export const useAuth = defineStore('auth', {
   }),
 
   getters: {
-    isAuthenticated: (state) => Boolean(state.userData.id),
+    isAuthenticated: (state) => Boolean(state.userData?.id),
   },
 
   actions: {
@@ -36,8 +36,8 @@ export const useAuth = defineStore('auth', {
 
         if (!userData) { throw new Error('Email e senha inválidos') }
 
-        this.storage.setItem(STORAGE_KEY, JSON.stringify(this.userData))
         this.userData = userData
+        this.storage.setItem(STORAGE_KEY, JSON.stringify(this.userData))
         return true
       } catch (error) {
         console.error(error) // eslint-disable-line no-console
