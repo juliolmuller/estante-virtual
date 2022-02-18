@@ -1,164 +1,141 @@
-<script>
-import { mapGetters, mapActions } from 'vuex'
+<script setup>
+import { storeToRefs } from 'pinia'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import fallbackImg from '@/assets/fallback-image.jpg'
 import ViewTitle from '@/components/ViewTitle'
 import { truncateText } from '@/utils'
+import { useAuth, useBooks, useUsers } from '@/store'
 
-export default {
-  name: 'BookDetails',
-
-  components: {
-    ViewTitle,
+// eslint-disable-next-line no-undef
+const props = defineProps({
+  bookId: {
+    type: [Number, String],
+    required: true,
   },
+})
 
-  props: {
-    bookId: {
-      type: [Number, String],
-      required: true,
-    },
-  },
+const auth = useAuth()
+const bookStore = useBooks()
+const userStore = useUsers()
+const router = useRouter()
 
-  data: () => ({
-    isLoading: false,
-    isEditing: false,
-    dataBackup: {},
-    book: {},
-  }),
+const { userData } = storeToRefs(auth)
+const isLoading = ref(false)
+const isEditing = ref(false)
+const dataBackup = ref({})
+const book = ref({})
 
-  computed: {
-    ...mapGetters({
-      appLoading: 'isLoading',
-      books: 'books/allBooks',
-      users: 'users/allUsers',
-      user: 'auth/userData',
-    }),
-    owner() {
-      const owner = this.users.find((user) => user.id === this.book.userId) || {}
-      const belongsToUser = this.book.userId === this.user.id
+const owner = computed(() => {
+  const ownerData = userStore.users.find((user) => user.id === book.value.userId) ?? {}
+  const belongsToUser = book.value.userId === auth.userData.id
 
-      return {
-        ...owner,
-        name: belongsToUser ? 'você' : owner.name,
-      }
-    },
-    inputStyle() {
-      return {
-        'form-control': this.isEditing,
-        'form-control-plaintext': !this.isEditing,
-        'font-weight-bold': !this.isEditing,
-        'text-hero': !this.isEditing,
-      }
-    },
-    truncatedBookName() {
-      return this.bookId === 'novo' ? 'Novo Livro' : truncateText(this.book.name)
-    },
-  },
+  return {
+    ...ownerData,
+    name: belongsToUser ? 'você' : ownerData.name,
+  }
+})
 
-  watch: {
-    book(newValue) {
-      this.dataBackup = { ...newValue }
-    },
-  },
+const inputStyle = computed(() => ({
+  'form-control': isEditing.value,
+  'form-control-plaintext': !isEditing.value,
+  'font-weight-bold': !isEditing.value,
+  'text-hero': !isEditing.value,
+}))
 
-  methods: {
-    ...mapActions('books', {
-      createBook: 'create',
-      updateBook: 'update',
-      borrowBook: 'borrow',
-      returnBook: 'return',
-      deleteBook: 'delete',
-    }),
-    toggleEditing() {
-      this.isEditing = !this.isEditing
-      this.book = { ...this.dataBackup }
-    },
-    fallbackImage(event) {
-      event.target.src = fallbackImg
-    },
-    async handleSubmit() {
-      this.isLoading = true
+const truncatedBookName = computed(() => (props.bookId === 'novo'
+  ? 'Novo Livro'
+  : truncateText(book.value.name)))
 
-      try {
-        if (this.bookId === 'novo') {
-          this.book = await this.createBook(this.book)
-          this.isEditing = false
-          this.$router.replace({
-            name: 'BookDetails',
-            params: { bookId: this.book.id },
-          })
-        } else {
-          await this.updateBook(this.book)
-          this.isEditing = false
-        }
-      } catch (error) {
-        throw error
-      } finally {
-        this.isLoading = false
-      }
-    },
-    async handleBorrow() {
-      this.isLoading = true
+watch(book, (newValue) => {
+  dataBackup.value = { ...newValue }
+})
 
-      try {
-        await this.borrowBook(this.book)
-        this.book = this.books.find(({ id }) => this.bookId === id)
-      } catch (error) {
-        throw error
-      } finally {
-        this.isLoading = false
-      }
-    },
-    async handleReturn() {
-      this.isLoading = true
+function toggleEditing() {
+  isEditing.value = !isEditing.value
+  book.value = { ...dataBackup.value }
+}
 
-      try {
-        await this.returnBook(this.book)
-        this.book = this.books.find(({ id }) => this.bookId === id)
-      } catch (error) {
-        throw error
-      } finally {
-        this.isLoading = false
-      }
-    },
-    async handleDelete() {
-      if (confirm(`Tem certeza de que deseja remover o livro "${this.book.name}" do catálogo?`)) {
-        this.isLoading = true
+function handleError(event) {
+  event.target.src = fallbackImg
+}
 
-        try {
-          await this.deleteBook(this.book)
-          this.$router.replace({ name: 'Home' })
-        } catch (error) {
-          throw error
-        } finally {
-          this.isLoading = true
-        }
-      }
-    },
-  },
+async function handleSubmit() {
+  try {
+    isLoading.value = true
 
-  async mounted() {
-    await new Promise((resolve) => {
-      while (this.appLoading) {} // eslint-disable-line no-empty
-      resolve()
-    })
-
-    if (this.bookId === 'novo') {
-      this.book.userId = this.user.id
-      this.book.image = 'https://'
-      this.book.loan = false
-      this.isEditing = true
+    if (props.bookId === 'novo') {
+      book.value = await bookStore.create(book.value)
+      isEditing.value = false
+      router.replace({
+        name: 'BookDetails',
+        params: { bookId: book.value.id },
+      })
       return
     }
 
-    const book = this.books.find(({ id }) => this.bookId === id)
-
-    if (book) {
-      this.book = { ...book }
-    } else {
-      this.$router.replace({ name: 'Home' })
-    }
-  },
+    await bookStore.update(book.value)
+    isEditing.value = false
+  } finally {
+    isLoading.value = false
+  }
 }
+
+async function handleBorrow() {
+  try {
+    isLoading.value = true
+    await bookStore.borrow(book.value)
+    book.value = bookStore.books.find(({ id }) => String(id) === props.bookId)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+async function handleReturn() {
+  try {
+    isLoading.value = true
+    await bookStore.return(book.value)
+    book.value = bookStore.books.find(({ id }) => String(id) === props.bookId)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+async function handleDelete() {
+  if (!confirm(`Tem certeza de que deseja remover o livro "${book.value.name}" do catálogo?`)) {
+    return
+  }
+
+  try {
+    isLoading.value = true
+    await bookStore.delete(book.value.id)
+    router.replace({ name: 'Home' })
+  } finally {
+    isLoading.value = true
+  }
+}
+
+onMounted(async () => {
+  await new Promise((resolve) => {
+    while (bookStore.isLoading) {} // eslint-disable-line no-empty
+    resolve()
+  })
+
+  if (props.bookId === 'novo') {
+    book.value.userId = auth.userData.id
+    book.value.image = 'https://'
+    book.value.loan = false
+    isEditing.value = true
+    return
+  }
+
+  const focusedBook = bookStore.books.find(({ id }) => String(id) === props.bookId)
+  if (focusedBook) {
+    book.value = { ...focusedBook }
+  } else {
+    router.replace({ name: 'Home' })
+  }
+})
 </script>
 
 <template>
@@ -186,11 +163,11 @@ export default {
             class="img-fluid"
             alt="Capa do livro"
             :src="book.image"
-            @error="fallbackImage"
+            @error="handleError"
           />
         </div>
         <div class="col-12 col-md-8">
-          <div class="form-group" v-if="bookId !== 'novo'">
+          <div class="form-group" v-if="props.bookId !== 'novo'">
             <label for="book-id">Código de Cadastro:</label>
             <input
               type="text"
@@ -263,20 +240,20 @@ export default {
               type="button"
               class="btn btn-hero"
               :disabled="isLoading"
-              v-if="!isEditing && book.loan && book.loan.userId === user.id"
+              v-if="!isEditing && book.loan && book.loan.userId === userData.id"
               @click="handleReturn"
             >Devolver Livro</button>
             <button
               type="button"
               class="btn btn-danger mr-auto"
-              v-if="isEditing && !book.loan && owner.id === user.id && bookId !== 'novo'"
+              v-if="isEditing && !book.loan && owner.id === userData.id && props.bookId !== 'novo'"
               :disabled="isLoading"
               @click="handleDelete"
             >Remover da Estante</button>
             <button
               type="button"
               :class="['btn', isEditing ? 'btn-light' : 'btn-secondary']"
-              v-if="!book.loan && owner.id === user.id && bookId !== 'novo'"
+              v-if="!book.loan && owner.id === userData.id && props.bookId !== 'novo'"
               @click="toggleEditing"
             >{{ isEditing ? 'Cancelar' : 'Editar Dados' }}</button>
             <button
@@ -292,4 +269,57 @@ export default {
   </div>
 </template>
 
-<style lang="scss" src="./styles.scss"></style>
+<style lang="scss">
+#book-details {
+  & > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & > [type="button"] {
+      margin-bottom: 3rem;
+
+      & > img {
+        height: 8px;
+      }
+    }
+  }
+
+  & .form-group {
+    margin-bottom: 1rem;
+
+    & label {
+      margin-bottom: 0;
+    }
+  }
+
+  & .form-control {
+    margin: 0.5rem 0 1.5rem;
+    outline: none;
+  }
+
+  & .form-control-plaintext {
+    outline: none;
+    font-size: large;
+  }
+
+  .action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & .btn {
+      margin: 1.5rem 0.5rem;
+    }
+  }
+
+  .error-feedback {
+    margin-top: -1.2rem;
+    margin-left: 0.5rem;
+
+    color: #f00;
+    font-style: italic;
+    font-weight: 600;
+  }
+}
+</style>

@@ -1,53 +1,50 @@
-<script>
+<script setup>
+import { computed } from 'vue'
 import { truncateText } from '@/utils'
 
-export default {
-  name: 'BookCard',
-
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    image: {
-      type: String,
-      required: true,
-    },
+// eslint-disable-next-line no-undef
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
   },
-
-  computed: {
-    route() {
-      return {
-        name: 'BookDetails',
-        params: {
-          bookId: this.id,
-        },
-      }
-    },
-    truncatedTitle() {
-      return truncateText(this.title)
-    },
+  title: {
+    type: String,
+    required: true,
   },
-}
+  image: {
+    type: String,
+    required: true,
+  },
+})
+
+const route = computed(() => {
+  return {
+    name: 'BookDetails',
+    params: {
+      bookId: props.id,
+    },
+  }
+})
+
+const truncatedTitle = computed(() => {
+  return truncateText(props.title)
+})
 </script>
 
 <template>
   <div class="book-card">
     <div class="card rounded">
-      <img :src="image" class="card-img-top" alt="Capa do livro" />
+      <img :src="props.image" class="card-img-top" alt="Capa do livro" />
       <div class="card-body">
-        <h5 class="card-title" :title="title">
+        <h5 class="card-title" :title="props.title">
           {{ truncatedTitle }}
         </h5>
       </div>
       <div class="card-footer">
-        <RouterLink :to="route" class="btn btn-hero">
+        <router-link :to="route" class="btn btn-hero">
           Ver Detalhes
-        </RouterLink>
+        </router-link>
       </div>
     </div>
   </div>
@@ -58,11 +55,12 @@ export default {
   padding: 0.5rem;
 
   .card {
+    display: flex;
+    flex-direction: column;
+
     height: 100%;
     border: 1px solid var(--hero);
     text-align: center;
-    display: flex;
-    flex-direction: column;
 
     img {
       width: 100%;

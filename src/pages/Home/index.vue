@@ -1,13 +1,5 @@
-<script>
-import SideBar from './SideBar'
-
-export default {
-  name: 'Home',
-
-  components: {
-    SideBar,
-  },
-}
+<script setup>
+import SideBar from '@/components/SideBar'
 </script>
 
 <template>
@@ -36,11 +28,11 @@ export default {
   padding-bottom: 2rem;
 
   & > main {
+    opacity: 0.95;
     width: calc(100% - 4rem);
     margin: 2rem;
-    padding: 2rem 2rem 0;
     background: var(--light);
-    opacity: 0.95;
+    padding: 2rem 2rem 0;
   }
 
   .home-footer {
@@ -63,9 +55,10 @@ export default {
 
   @media (min-width: 1500px) {
     & > main {
-      max-width: 1100px;
       position: relative;
       left: calc(290px / 2);
+
+      max-width: 1100px;
       margin: 0 auto;
     }
   }

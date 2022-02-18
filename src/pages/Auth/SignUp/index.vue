@@ -1,61 +1,38 @@
-<script>
-import { mapActions } from 'vuex'
-import { usersApi } from '@/services/api'
+<script setup>
+import { reactive, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '@/store'
 
-export default {
-  name: 'SignUpPage',
+const router = useRouter()
+const auth = useAuth()
 
-  data: () => ({
-    name: '',
-    email: '',
-    password: '',
-    passwordConfirmation: '',
-    errors: [],
-    isLoading: false,
-  }),
+const state = reactive({
+  name: '',
+  email: '',
+  password: '',
+  passwordRepeat: '',
+})
 
-  watch: {
-    email(value) {
-      this.email = value.toLowerCase()
-    },
-  },
+async function handleSubmit() {
+  const isAuthenticated = await auth.signUp(
+    state.name,
+    state.email,
+    state.password,
+    state.passwordRepeat,
+  )
 
-  methods: {
-    ...mapActions('auth', [
-      'authenticate',
-    ]),
-    async handleSubmit() {
-      this.isLoading = true
+  if (isAuthenticated) {
+    router.push({ name: 'Home' })
+    return
+  }
 
-      const [existingUser] = await usersApi.get({ email: this.email })
-      const passwordMatch = this.password === this.passwordConfirmation
-
-      if (existingUser || !passwordMatch) {
-        this.passwordConfirmation = ''
-        this.password = ''
-        this.errors = []
-        existingUser && this.errors.push('Email já está cadastrado')
-        !passwordMatch && this.errors.push('As senhas não são iguais')
-        this.isLoading = false
-        return
-      }
-
-      try {
-        const userData = await usersApi.post({
-          password: this.password,
-          email: this.email,
-          name: this.name,
-        })
-        await this.authenticate(userData)
-        this.$router.push({ name: 'Home' })
-      } catch (error) {
-        console.error(error) // eslint-disable-line no-console
-        this.isLoading = false
-        this.errors = [error.message]
-      }
-    },
-  },
+  state.password = ''
+  state.passwordRepeat = ''
 }
+
+watch(() => state.email, (newValue) => {
+  state.email = newValue.toLocaleLowerCase().trim()
+})
 </script>
 
 <template>
@@ -63,9 +40,9 @@ export default {
     <div
       role="alert"
       class="alert alert-danger border-danger"
-      :style="{ visibility: errors.length ? 'visible' : 'hidden' }"
+      :style="{ visibility: auth.errors.length ? 'visible' : 'hidden' }"
     >
-      <p class="text-danger" v-for="(error, index) in errors" :key="index">
+      <p class="text-danger" v-for="error in auth.errors" :key="error">
         {{ error }}
       </p>
     </div>
@@ -80,7 +57,7 @@ export default {
       placeholder="Nome do usuário"
       required
       autofocus
-      v-model="name"
+      v-model="state.name"
     />
 
     <label for="email" class="sr-only">
@@ -92,7 +69,7 @@ export default {
       class="form-control"
       placeholder="Endereço de email"
       required
-      v-model="email"
+      v-model="state.email"
     />
 
     <label for="password" class="sr-only">
@@ -104,7 +81,7 @@ export default {
       class="form-control"
       placeholder="Senha de acesso"
       required
-      v-model="password"
+      v-model="state.password"
     />
 
     <label for="password-confirmation" class="sr-only">
@@ -116,18 +93,20 @@ export default {
       class="form-control"
       placeholder="Confirmação da senha"
       required
-      v-model="passwordConfirmation"
+      v-model="state.passwordRepeat"
     />
 
     <button
       type="submit"
       class="btn btn-lg btn-hero"
-      :disabled="isLoading"
-    >Cadastrar</button>
+      :disabled="auth.isLoading"
+    >
+      Cadastrar
+    </button>
     <p class="mt-1 text-center">
-      <RouterLink :to="{ name: 'SignIn' }" class="text-hero">
+      <router-link :to="{ name: 'SignIn' }" class="text-hero">
         Já sou cadastrado
-      </RouterLink>
+      </router-link>
     </p>
   </form>
 </template>

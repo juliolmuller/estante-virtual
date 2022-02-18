@@ -4,16 +4,11 @@
   </span>
 </template>
 
-<script>
-export default {
-  name: 'Logo',
-}
-</script>
-
 <style lang="scss">
 #logo {
-  text-decoration: none;
   color: #111;
   font-weight: bold;
+  text-decoration: none;
+  user-select: none;
 }
 </style>

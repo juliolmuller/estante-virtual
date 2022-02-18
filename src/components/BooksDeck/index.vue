@@ -1,60 +1,47 @@
-<script>
-import BookCard from './BookCard'
+<script setup>
+import { onMounted, ref, watch } from 'vue'
+import BookCard from '@/components/BookCard'
 
 const MIN_WIDTH = 250
 
-export default {
-  name: 'BooksDeck',
-
-  components: {
-    BookCard,
+// eslint-disable-next-line no-undef
+const props = defineProps({
+  books: {
+    type: Array,
+    required: true,
   },
+})
 
-  props: {
-    books: {
-      type: Array,
-      required: true,
-    },
-  },
+const containerRef = ref(null)
+const spacers = ref([])
 
-  data: () => ({
-    spacers: [],
-  }),
+function setSpacers() {
+  const deckWidth = containerRef.value.clientWidth
+  const colsCount = parseInt(deckWidth / MIN_WIDTH, 10)
+  const rowsCOunt = Math.ceil(props.books.length / colsCount)
+  const spacersCount = (colsCount * rowsCOunt) - props.books.length
 
-  watch: {
-    books() {
-      this.setSpacers()
-    },
-  },
-
-  methods: {
-    setSpacers() {
-      const deckWidth = this.$refs.deck.clientWidth
-      const colsCount = parseInt(deckWidth / MIN_WIDTH, 10)
-      const rowsCOunt = Math.ceil(this.books.length / colsCount)
-      const spacersCount = (colsCount * rowsCOunt) - this.books.length
-
-      this.spacers = new Array(spacersCount || 0).fill().map((_, index) => index)
-    },
-  },
-
-  mounted() {
-    this.setSpacers()
-
-    window.onresize = () => {
-      if (this?.$refs?.deck) {
-        this.setSpacers()
-      }
-    }
-  },
+  spacers.value = Array(spacersCount || 0).fill().map((_, index) => index)
 }
+
+watch(props.books, () => setSpacers())
+
+onMounted(() => {
+  setSpacers()
+
+  window.onresize = () => {
+    if (containerRef.value) {
+      setSpacers()
+    }
+  }
+})
 </script>
 
 <template>
-  <div class="books-deck row" ref="deck">
+  <div class="books-deck row" ref="containerRef">
     <BookCard
       class="col"
-      v-for="book in books"
+      v-for="book in props.books"
       :key="book.id"
       :image="book.image"
       :title="book.name"

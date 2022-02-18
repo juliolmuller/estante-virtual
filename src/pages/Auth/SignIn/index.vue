@@ -1,53 +1,35 @@
-<script>
-import { mapActions } from 'vuex'
+<script setup>
+import { reactive, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuth } from '@/store'
 
-export default {
-  name: 'SignInPage',
+const router = useRouter()
+const auth = useAuth()
 
-  data: () => ({
-    email: '',
-    password: '',
-    keepConnection: false,
-    errors: [],
-    isLoading: false,
-  }),
+const state = reactive({
+  email: '',
+  password: '',
+  rememberMe: false,
+})
 
-  watch: {
-    email(value) {
-      this.email = value.toLowerCase()
-    },
-  },
+async function handleSubmit() {
+  const isAuthenticated = await auth.signIn(
+    state.email,
+    state.password,
+    state.rememberMe,
+  )
 
-  methods: {
-    ...mapActions('auth', [
-      'authenticate',
-    ]),
-    async handleSubmit() {
-      this.isLoading = true
+  if (isAuthenticated) {
+    router.push({ name: 'Home' })
+    return
+  }
 
-      try {
-        const success = await this.authenticate({
-          keepConnection: this.keepConnection,
-          password: this.password,
-          email: this.email,
-        })
-
-        if (success) {
-          this.$router.push({ name: 'Home' })
-          return
-        }
-
-        this.errors = ['Email e senha não conferem']
-        this.isLoading = false
-        this.password = ''
-      } catch (error) {
-        console.error(error) // eslint-disable-line no-console
-        this.isLoading = false
-        this.errors = [error.message]
-      }
-    },
-  },
+  state.password = ''
 }
+
+watch(() => state.email, (newValue) => {
+  state.email = newValue.toLocaleLowerCase().trim()
+})
 </script>
 
 <template>
@@ -55,9 +37,9 @@ export default {
     <div
       role="alert"
       class="alert alert-danger border-danger"
-      :style="{ visibility: errors.length ? 'visible' : 'hidden' }"
+      :style="{ visibility: auth.errors.length ? 'visible' : 'hidden' }"
     >
-      <p class="text-danger" v-for="(error, index) in errors" :key="index">
+      <p class="text-danger" v-for="error in auth.errors" :key="error">
         {{ error }}
       </p>
     </div>
@@ -72,7 +54,7 @@ export default {
       placeholder="Endereço de email"
       required
       autofocus
-      v-model="email"
+      v-model="state.email"
     />
 
     <label for="password" class="sr-only">
@@ -84,27 +66,30 @@ export default {
       class="form-control"
       placeholder="Senha de acesso"
       required
-      v-model="password"
+      v-model="state.password"
     />
 
     <label class="mt-2 checkbox">
       <input
         type="checkbox"
         value="remember-me"
-        v-model="keepConnection"
+        v-model="state.rememberMe"
       /> Mantenha-me conectado
     </label>
 
     <button
       type="submit"
       class="mt-3 btn btn-lg btn-hero btn-block"
-      :disabled="isLoading"
-    >Entrar</button>
+      :disabled="auth.isLoading"
+    >
+      Entrar
+    </button>
+
     <p class="mt-1 text-center">
       Não é cadastrado?
-      <RouterLink :to="{ name: 'SignUp' }" class="text-hero">
+      <router-link :to="{ name: 'SignUp' }" class="text-hero">
         Registre-se aqui
-      </RouterLink>
+      </router-link>
     </p>
   </form>
 </template>

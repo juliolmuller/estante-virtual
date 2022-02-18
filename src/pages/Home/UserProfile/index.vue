@@ -1,82 +1,59 @@
-<script>
-import { mapGetters, mapActions } from 'vuex'
+<script setup>
+import { computed, onMounted, ref, watch } from 'vue'
 import ViewTitle from '@/components/ViewTitle'
+import { useAuth, useUsers } from '@/store'
 
-export default {
-  name: 'UserProfile',
+const auth = useAuth()
+const userStore = useUsers()
 
-  components: {
-    ViewTitle,
-  },
+const isLoading = ref(false)
+const isEditing = ref(false)
+const dataBackup = ref({})
+const user = ref({})
 
-  data: () => ({
-    isLoading: false,
-    isEditing: false,
-    dataBackup: {},
-    user: {},
-  }),
+const passwordsMatch = computed(() => {
+  return user.value.newPassword === user.value.newPasswordConfirmation
+})
 
-  computed: {
-    ...mapGetters({
-      appLoading: 'isLoading',
-      userById: 'users/userById',
-      userData: 'auth/userData',
-    }),
-    passwordsMatch() {
-      return this.user.newPassword === this.user.newPasswordConfirmation
-    },
-    inputStyle() {
-      return {
-        'form-control': this.isEditing,
-        'form-control-plaintext': !this.isEditing,
-        'font-weight-bold': !this.isEditing,
-        'text-hero': !this.isEditing,
-      }
-    },
-  },
+const inputStyle = computed(() => ({
+  'form-control': isEditing.value,
+  'form-control-plaintext': !isEditing.value,
+  'font-weight-bold': !isEditing.value,
+  'text-hero': !isEditing.value,
+}))
 
-  watch: {
-    user(newValue) {
-      this.dataBackup = { ...newValue }
-    },
-  },
+watch(user, (newValue) => {
+  dataBackup.value = { ...newValue }
+})
 
-  methods: {
-    ...mapActions('auth', {
-      updateUserData: 'update',
-    }),
-    toggleEditing() {
-      this.isEditing = !this.isEditing
-      this.user = { ...this.dataBackup }
-    },
-    async handleSubmit() {
-      this.isLoading = true
-
-      try {
-        await this.updateUserData(this.user)
-        this.isEditing = false
-      } catch (error) {
-        throw error
-      } finally {
-        this.isLoading = false
-      }
-    },
-  },
-
-  async mounted() {
-    await new Promise((resolve) => {
-      while (this.appLoading) {} // eslint-disable-line no-empty
-      resolve()
-    })
-
-    this.user = {
-      ...this.userData,
-      oldPassword: '',
-      newPassword: '',
-      newPasswordConfirmation: '',
-    }
-  },
+function toggleEditing() {
+  isEditing.value = !isEditing.value
+  user.value = { ...dataBackup.value }
 }
+
+async function handleSubmit() {
+  try {
+    isLoading.value = true
+    await auth.updateUserData(user.value)
+    isEditing.value = false
+  } finally {
+    isLoading.value = false
+  }
+}
+
+onMounted(async () => {
+  await new Promise((resolve) => {
+    while (userStore.isLoading) {} // eslint-disable-line no-empty
+    resolve()
+  })
+
+  user.value = {
+    ...auth.userData,
+    oldPassword: '',
+    newPassword: '',
+    newPasswordConfirmation: '',
+  }
+})
 </script>
 
 <template>
@@ -187,4 +164,58 @@ export default {
   </div>
 </template>
 
-<style lang="scss" src="../BookDetails/styles.scss"></style>
+
+<style lang="scss">
+#user-profile {
+  & > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & > [type="button"] {
+      margin-bottom: 3rem;
+
+      & > img {
+        height: 8px;
+      }
+    }
+  }
+
+  & .form-group {
+    margin-bottom: 1rem;
+
+    & label {
+      margin-bottom: 0;
+    }
+  }
+
+  & .form-control {
+    margin: 0.5rem 0 1.5rem;
+    outline: none;
+  }
+
+  & .form-control-plaintext {
+    outline: none;
+    font-size: large;
+  }
+
+  .action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & .btn {
+      margin: 1.5rem 0.5rem;
+    }
+  }
+
+  .error-feedback {
+    margin-top: -1.2rem;
+    margin-left: 0.5rem;
+
+    color: #f00;
+    font-style: italic;
+    font-weight: 600;
+  }
+}
+</style>

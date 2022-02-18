@@ -1,12 +1,21 @@
-<script>
-export default {
-  name: 'App',
+<script setup>
+import { storeToRefs } from 'pinia'
+import { watch } from 'vue'
+import { useAuth, useBooks, useUsers } from '@/store'
 
-  beforeCreate() {
-    this.$store.dispatch('users/fetchAll')
-    this.$store.dispatch('books/fetchAll')
-  },
-}
+const auth = useAuth()
+const bookStore = useBooks()
+const userStore = useUsers()
+const { isAuthenticated } = storeToRefs(auth)
+
+auth.recoverFromStorage()
+
+watch(isAuthenticated, (value) => {
+  if (value) {
+    bookStore.fetchAll()
+    userStore.fetchAll()
+  }
+}, { immediate: true })
 </script>
 
 <template>

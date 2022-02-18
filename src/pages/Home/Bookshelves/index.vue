@@ -1,40 +1,22 @@
-<script>
-import { mapGetters } from 'vuex'
+<script setup>
+import { computed, ref } from 'vue'
 import ViewTitle from '@/components/ViewTitle'
 import BooksDeck from '@/components/BooksDeck'
+import { useBooks } from '@/store'
 
-export default {
-  name: 'Bookshelves',
+const bookStore = useBooks()
 
-  components: {
-    ViewTitle,
-    BooksDeck,
-  },
+const search = ref('')
+const filter = ref('available')
 
-  data: () => ({
-    search: '',
-    filter: 'available',
-  }),
+const visibleBooks = computed(() => {
+  const books = bookStore[`${filter.value}Books`]
+  const actualSearch = new RegExp(search.value, 'i')
 
-  computed: {
-    ...mapGetters({
-      booksLoading: 'books/isFetching',
-    }),
-    ...mapGetters('books', [
-      'borrowedBooks',
-      'availableBooks',
-      'allBooks',
-    ]),
-    visibleBooks() {
-      const books = this[`${this.filter}Books`]
-      const search = new RegExp(this.search, 'i')
-
-      return !this.search ? books : books.filter(
-        ({ name }) => name.match(search),
-      )
-    },
-  },
-}
+  return !search.value ? books : books.filter(
+    ({ name }) => name.match(actualSearch),
+  )
+})
 </script>
 
 <template>
@@ -68,13 +50,13 @@ export default {
       </div>
     </div>
 
-    <div class="loading" v-if="booksLoading">
+    <div class="loading" v-if="bookStore.isLoading">
       <img src="@/assets/loading.svg" alt="Carregando..." />
     </div>
-    <div class="fallback-msg" v-else-if="!allBooks.length">
+    <div class="fallback-msg" v-else-if="bookStore.books.length === 0">
       Não há livros cadastrados
     </div>
-    <div class="fallback-msg" v-else-if="!visibleBooks.length">
+    <div class="fallback-msg" v-else-if="visibleBooks.length === 0">
       Nenhum resultado para "{{ search }}" 🙄
     </div>
     <BooksDeck :books="visibleBooks" :count="visibleBooks.length" v-else />
@@ -95,6 +77,7 @@ export default {
       position: absolute;
       right: 1.5rem;
       top: 0.6rem;
+
       opacity: 0.5;
       transition: opacity 0.7s;
     }
@@ -124,8 +107,8 @@ export default {
   }
 
   .loading {
-    height: 60vh;
     display: flex;
+    height: 60vh;
 
     & > img {
       margin: auto;
@@ -134,8 +117,8 @@ export default {
 
   .fallback-msg {
     padding: 3rem;
-    text-align: center;
     font-size: 1.5rem;
+    text-align: center;
   }
 }
 </style>
