@@ -1,8 +1,8 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import Auth from './pages/Auth'
-import SignIn from './pages/Auth/SignIn'
-import SignUp from './pages/Auth/SignUp'
-import store from './store'
+import { createRouter, createWebHistory } from 'vue-router'
+import Auth from '@/pages/Auth'
+import SignIn from '@/pages/Auth/SignIn'
+import SignUp from '@/pages/Auth/SignUp'
+import store, { useAuth } from '@/store'
 
 const Home = () => import(/* webpackPrefetch: true */ './pages/Home')
 const Bookshelves = () => import(/* webpackPrefetch: true */ './pages/Home/Bookshelves')
@@ -10,25 +10,26 @@ const BookDetails = () => import(/* webpackPrefetch: true */ './pages/Home/BookD
 const BooksManager = () => import(/* webpackPrefetch: true */ './pages/Home/BooksManager')
 const UserProfile = () => import(/* webpackPrefetch: true */ './pages/Home/UserProfile')
 
-const checkCredentials = (_to, _from, next) => {
-  (async () => {
-    if (!store.getters['auth/isAuthenticated']) {
-      const { userData, storage } = await store.dispatch('auth/retrieveFromStorage')
+const checkAuth = (_to, _from, next) => {
+  const auth = useAuth(store)
 
-      store.commit('auth/setUserData', userData)
-      store.commit('auth/setBrowserStorage', storage)
-    }
+  if (auth.isAuthenticated) {
+    next()
+    return
+  }
 
-    if (store.getters['auth/isAuthenticated']) {
-      next()
-    } else {
-      next({ name: 'SignIn' })
-    }
-  })()
+  auth.recoverFromStorage()
+
+  if (auth.isAuthenticated) {
+    next()
+    return
+  }
+
+  next({ name: 'SignIn' })
 }
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: [
     {
       path: '/entrar',
@@ -49,7 +50,7 @@ const router = createRouter({
     {
       path: '/',
       component: Home,
-      beforeEnter: checkCredentials,
+      beforeEnter: checkAuth,
       children: [
         {
           path: '/',
