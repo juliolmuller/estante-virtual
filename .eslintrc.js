@@ -13,7 +13,7 @@ module.exports = {
     '!babel.config.js',
   ],
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@babel/eslint-parser',
   },
   rules: {
     'import-helpers/order-imports': 'off',
