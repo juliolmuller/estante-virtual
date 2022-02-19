@@ -1,5 +1,5 @@
-import querystring from 'querystring'
 import axios from 'axios'
+import { stringifyQuery } from '@/utils'
 
 class ApiConsumer {
   constructor(api) {
@@ -8,8 +8,11 @@ class ApiConsumer {
     })
   }
 
-  async get(params) {
-    const query = params ? querystring.stringify(params) : ''
+  async get(params = {}) {
+    const query = {
+      _limit: 100,
+      ...stringifyQuery(params),
+    }
     const response = await this.http.get(`/?_limit=100&${query}`)
 
     return response.data
