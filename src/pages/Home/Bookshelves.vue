@@ -1,21 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue'
-import ViewTitle from '@/components/ViewTitle'
-import BooksDeck from '@/components/BooksDeck'
-import { useBooks } from '@/store'
+import BooksDeck from '@/components/BooksDeck.vue'
+import ViewTitle from '@/components/ViewTitle.vue'
+import { Book } from '@/models'
+import { useBookStore } from '@/store'
 
-const bookStore = useBooks()
-
+const bookStore = useBookStore()
+const filter = ref<'available' | 'borrowed'>('available')
 const search = ref('')
-const filter = ref('available')
 
 const visibleBooks = computed(() => {
-  const books = bookStore[`${filter.value}Books`]
+  const books = bookStore[`${filter.value}Books`] as Book[]
   const actualSearch = new RegExp(search.value, 'i')
 
-  return !search.value ? books : books.filter(
-    ({ name }) => name.match(actualSearch),
-  )
+  return !search.value ? books : books.filter(({ name }) => {
+    return name.match(actualSearch)
+  })
 })
 </script>
 

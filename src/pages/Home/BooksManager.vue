@@ -1,23 +1,18 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
-import ViewTitle from '@/components/ViewTitle'
-import { useBooks } from '@/store'
+import ViewTitle from '@/components/ViewTitle.vue'
+import { Book } from '@/models'
+import { useBookStore } from '@/store'
 
-// eslint-disable-next-line no-undef
-const props = defineProps({
-  type: {
-    type: String,
-    required: true,
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-})
+export interface BooksManagerProps {
+  title: string
+  type: 'userBooks' | 'userLoans'
+}
 
-const bookStore = useBooks()
+const props = defineProps<BooksManagerProps>()
 
-const books = computed(() => bookStore[props.type] ?? [])
+const bookStore = useBookStore()
+const books = computed<Book[]>(() => bookStore[props.type] ?? [])
 </script>
 
 <template>

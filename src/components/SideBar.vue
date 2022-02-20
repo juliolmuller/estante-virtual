@@ -1,12 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import Logo from '@/components/Logo'
+import Logo from '@/components/Logo.vue'
 import { useAuth } from '@/store'
 
 const auth = useAuth()
 const router = useRouter()
-
 const activated = ref(false)
 
 function handleSignOut() {

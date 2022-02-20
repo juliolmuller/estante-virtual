@@ -1,15 +1,25 @@
 import { defineStore } from 'pinia'
+import { User } from '@/models'
 import { usersApi } from '@/services/api'
 
-export const useUsers = defineStore('users', {
+export interface UserStoreState {
+  isLoading: boolean
+  users: User[]
+}
+
+export interface UserStoreActions {
+  fetchAll: () => void
+}
+
+const useUserStore = defineStore<'users', UserStoreState, any, UserStoreActions>('users', {
   state: () => ({
-    isLoading: false,
+    isLoading: true,
     users: [],
   }),
 
   getters: {
-    userById(state) {
-      return (userId) => {
+    userById(state: UserStoreState) {
+      return (userId: User['id']): User | undefined => {
         const user = state.users.find(({ id }) => id === Number(userId))
 
         return user && {
@@ -29,3 +39,5 @@ export const useUsers = defineStore('users', {
     },
   },
 })
+
+export default useUserStore

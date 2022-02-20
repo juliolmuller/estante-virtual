@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { watch } from 'vue'
-import { useAuth, useBooks, useUsers } from '@/store'
+import { useAuth, useBookStore, useUserStore } from '@/store'
 
 const auth = useAuth()
-const bookStore = useBooks()
-const userStore = useUsers()
+const bookStore = useBookStore()
+const userStore = useUserStore()
 const { isAuthenticated } = storeToRefs(auth)
 
 auth.recoverFromStorage()

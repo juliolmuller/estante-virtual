@@ -1,11 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/store'
 
-const router = useRouter()
 const auth = useAuth()
-
+const router = useRouter()
 const state = reactive({
   email: '',
   password: '',
@@ -13,11 +12,7 @@ const state = reactive({
 })
 
 async function handleSubmit() {
-  const isAuthenticated = await auth.signIn(
-    state.email,
-    state.password,
-    state.rememberMe,
-  )
+  const isAuthenticated = await auth.signIn(state)
 
   if (isAuthenticated) {
     router.push({ name: 'Home' })

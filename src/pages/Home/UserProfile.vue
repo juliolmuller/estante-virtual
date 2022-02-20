@@ -1,18 +1,24 @@
-<script setup>
-import { computed, onMounted, ref, watch } from 'vue'
-import ViewTitle from '@/components/ViewTitle'
-import { useAuth, useUsers } from '@/store'
+<script setup lang="ts">
+import { computed, onMounted, reactive, ref, watch } from 'vue'
+import ViewTitle from '@/components/ViewTitle.vue'
+import { useAuth, useUserStore } from '@/store'
 
 const auth = useAuth()
-const userStore = useUsers()
-
-const isLoading = ref(false)
+const userStore = useUserStore()
+const user = reactive({
+  id: 0,
+  name: '',
+  email: '',
+  oldPassword: '',
+  newPassword: '',
+  newPasswordConfirmation: '',
+})
+const dataBackup = ref<typeof user>()
 const isEditing = ref(false)
-const dataBackup = ref({})
-const user = ref({})
+const isLoading = ref(false)
 
 const passwordsMatch = computed(() => {
-  return user.value.newPassword === user.value.newPasswordConfirmation
+  return user.newPassword === user.newPasswordConfirmation
 })
 
 const inputStyle = computed(() => ({
@@ -28,13 +34,13 @@ watch(user, (newValue) => {
 
 function toggleEditing() {
   isEditing.value = !isEditing.value
-  user.value = { ...dataBackup.value }
+  Object.assign(user, dataBackup.value)
 }
 
 async function handleSubmit() {
   try {
     isLoading.value = true
-    await auth.updateUserData(user.value)
+    await auth.updateUserData(user)
     isEditing.value = false
   } finally {
     isLoading.value = false
@@ -44,15 +50,15 @@ async function handleSubmit() {
 onMounted(async () => {
   await new Promise((resolve) => {
     while (userStore.isLoading) {} // eslint-disable-line no-empty
-    resolve()
+    resolve(null)
   })
 
-  user.value = {
+  Object.assign(user, auth.userData, {
     ...auth.userData,
     oldPassword: '',
     newPassword: '',
     newPasswordConfirmation: '',
-  }
+  })
 })
 </script>
 

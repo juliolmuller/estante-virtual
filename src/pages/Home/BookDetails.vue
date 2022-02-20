@@ -1,38 +1,41 @@
-<script setup>
+<script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import fallbackImg from '@/assets/fallback-image.jpg'
-import ViewTitle from '@/components/ViewTitle'
+import ViewTitle from '@/components/ViewTitle.vue'
+import { Book } from '@/models'
+import { useAuth, useBookStore, useUserStore } from '@/store'
 import { truncateText } from '@/utils'
-import { useAuth, useBooks, useUsers } from '@/store'
 
-// eslint-disable-next-line no-undef
-const props = defineProps({
-  bookId: {
-    type: [Number, String],
-    required: true,
-  },
-})
+export interface BookDetailsProps {
+  bookId: string
+}
+
+const props = defineProps<BookDetailsProps>()
 
 const auth = useAuth()
-const bookStore = useBooks()
-const userStore = useUsers()
+const bookStore = useBookStore()
+const userStore = useUserStore()
 const router = useRouter()
-
 const { userData } = storeToRefs(auth)
-const isLoading = ref(false)
+const book = reactive<Book>({
+  id: 0,
+  name: '',
+  image: 'https://', // this will throw an error and be handled by "handleError"
+  loan: false,
+  userId: 0,
+})
+const dataBackup = ref<Book>()
 const isEditing = ref(false)
-const dataBackup = ref({})
-const book = ref({})
+const isLoading = ref(false)
 
 const owner = computed(() => {
-  const ownerData = userStore.users.find((user) => user.id === book.value.userId) ?? {}
-  const belongsToUser = book.value.userId === auth.userData.id
+  const ownerData = userStore.users.find((user) => user.id === book.userId)
+  const belongsToUser = book.userId === auth.userData?.id
 
   return {
     ...ownerData,
-    name: belongsToUser ? 'você' : ownerData.name,
+    name: belongsToUser ? 'você' : ownerData?.name,
   }
 })
 
@@ -45,7 +48,7 @@ const inputStyle = computed(() => ({
 
 const truncatedBookName = computed(() => (props.bookId === 'novo'
   ? 'Novo Livro'
-  : truncateText(book.value.name)))
+  : truncateText(book.name)))
 
 watch(book, (newValue) => {
   dataBackup.value = { ...newValue }
@@ -53,11 +56,13 @@ watch(book, (newValue) => {
 
 function toggleEditing() {
   isEditing.value = !isEditing.value
-  book.value = { ...dataBackup.value }
+  Object.assign(book, dataBackup.value)
 }
 
-function handleError(event) {
-  event.target.src = fallbackImg
+function handleError({ target }: Event) {
+  if (target instanceof HTMLImageElement) {
+    target.src = '../../assets/fallback-image.jpg'
+  }
 }
 
 async function handleSubmit() {
@@ -65,16 +70,17 @@ async function handleSubmit() {
     isLoading.value = true
 
     if (props.bookId === 'novo') {
-      book.value = await bookStore.create(book.value)
+      const newBook = await bookStore.create(book)
+      Object.assign(book, newBook)
       isEditing.value = false
       router.replace({
         name: 'BookDetails',
-        params: { bookId: book.value.id },
+        params: { bookId: book.id },
       })
       return
     }
 
-    await bookStore.update(book.value)
+    await bookStore.update(book)
     isEditing.value = false
   } finally {
     isLoading.value = false
@@ -84,8 +90,9 @@ async function handleSubmit() {
 async function handleBorrow() {
   try {
     isLoading.value = true
-    await bookStore.borrow(book.value)
-    book.value = bookStore.books.find(({ id }) => String(id) === props.bookId)
+    await bookStore.borrow(book)
+    const focusedBook = bookStore.books.find(({ id }) => String(id) === props.bookId)
+    Object.assign(book, focusedBook)
   } finally {
     isLoading.value = false
   }
@@ -94,21 +101,22 @@ async function handleBorrow() {
 async function handleReturn() {
   try {
     isLoading.value = true
-    await bookStore.return(book.value)
-    book.value = bookStore.books.find(({ id }) => String(id) === props.bookId)
+    await bookStore.return(book)
+    const focusedBook = bookStore.books.find(({ id }) => String(id) === props.bookId)
+    Object.assign(book, focusedBook)
   } finally {
     isLoading.value = false
   }
 }
 
 async function handleDelete() {
-  if (!confirm(`Tem certeza de que deseja remover o livro "${book.value.name}" do catálogo?`)) {
+  if (!confirm(`Tem certeza de que deseja remover o livro "${book.name}" do catálogo?`)) {
     return
   }
 
   try {
     isLoading.value = true
-    await bookStore.delete(book.value.id)
+    await bookStore.delete(book.id)
     router.replace({ name: 'Home' })
   } finally {
     isLoading.value = true
@@ -118,20 +126,20 @@ async function handleDelete() {
 onMounted(async () => {
   await new Promise((resolve) => {
     while (bookStore.isLoading) {} // eslint-disable-line no-empty
-    resolve()
+    resolve(null)
   })
 
   if (props.bookId === 'novo') {
-    book.value.userId = auth.userData.id
-    book.value.image = 'https://'
-    book.value.loan = false
+    book.userId = auth.userData?.id
+    book.image = 'https://'
+    book.loan = false
     isEditing.value = true
     return
   }
 
   const focusedBook = bookStore.books.find(({ id }) => String(id) === props.bookId)
   if (focusedBook) {
-    book.value = { ...focusedBook }
+    Object.assign(book, focusedBook)
   } else {
     router.replace({ name: 'Home' })
   }
@@ -235,33 +243,43 @@ onMounted(async () => {
               :disabled="isLoading"
               v-if="!isEditing && !book.loan"
               @click="handleBorrow"
-            >Emprestar Livro</button>
+            >
+              Emprestar Livro
+            </button>
             <button
               type="button"
               class="btn btn-hero"
               :disabled="isLoading"
-              v-if="!isEditing && book.loan && book.loan.userId === userData.id"
+              v-if="!isEditing && book.loan && book.loan.userId === userData?.id"
               @click="handleReturn"
-            >Devolver Livro</button>
+            >
+              Devolver Livro
+            </button>
             <button
               type="button"
               class="btn btn-danger mr-auto"
-              v-if="isEditing && !book.loan && owner.id === userData.id && props.bookId !== 'novo'"
+              v-if="isEditing && !book.loan && owner.id === userData?.id && props.bookId !== 'novo'"
               :disabled="isLoading"
               @click="handleDelete"
-            >Remover da Estante</button>
+            >
+              Remover da Estante
+            </button>
             <button
               type="button"
               :class="['btn', isEditing ? 'btn-light' : 'btn-secondary']"
-              v-if="!book.loan && owner.id === userData.id && props.bookId !== 'novo'"
+              v-if="!book.loan && owner.id === userData?.id && props.bookId !== 'novo'"
               @click="toggleEditing"
-            >{{ isEditing ? 'Cancelar' : 'Editar Dados' }}</button>
+            >
+              {{ isEditing ? 'Cancelar' : 'Editar Dados' }}
+            </button>
             <button
               type="submit"
               class="btn btn-hero"
               :disabled="isLoading"
               v-if="isEditing"
-            >Concluído</button>
+            >
+              Concluído
+            </button>
           </div>
         </div>
       </div>

@@ -1,31 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import { truncateText } from '@/utils'
 
-// eslint-disable-next-line no-undef
-const props = defineProps({
-  id: {
-    type: Number,
-    required: true,
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-  image: {
-    type: String,
-    required: true,
-  },
-})
+export interface BookCardProps {
+  id: number
+  title: string
+  image: string
+}
 
-const route = computed(() => {
-  return {
-    name: 'BookDetails',
-    params: {
-      bookId: props.id,
-    },
-  }
-})
+const props = defineProps<BookCardProps>()
+
+const route = computed(() => ({
+  name: 'BookDetails',
+  params: {
+    bookId: props.id,
+  },
+}))
 
 const truncatedTitle = computed(() => {
   return truncateText(props.title)
