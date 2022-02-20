@@ -1,24 +1,26 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import ViewTitle from '@/components/ViewTitle.vue'
 import { useAuth, useUserStore } from '@/store'
 
+interface UserFormData {
+  id: number
+  name: string
+  email: string
+  oldPassword: string
+  newPassword: string
+  newPasswordConfirmation: string
+}
+
 const auth = useAuth()
 const userStore = useUserStore()
-const user = reactive({
-  id: 0,
-  name: '',
-  email: '',
-  oldPassword: '',
-  newPassword: '',
-  newPasswordConfirmation: '',
-})
-const dataBackup = ref<typeof user>()
+const user = ref({} as Partial<UserFormData>)
+const dataBackup = ref({} as Partial<UserFormData>)
 const isEditing = ref(false)
 const isLoading = ref(false)
 
 const passwordsMatch = computed(() => {
-  return user.newPassword === user.newPasswordConfirmation
+  return user.value.newPassword === user.value.newPasswordConfirmation
 })
 
 const inputStyle = computed(() => ({
@@ -34,13 +36,13 @@ watch(user, (newValue) => {
 
 function toggleEditing() {
   isEditing.value = !isEditing.value
-  Object.assign(user, dataBackup.value)
+  user.value = { ...dataBackup.value }
 }
 
 async function handleSubmit() {
   try {
     isLoading.value = true
-    await auth.updateUserData(user)
+    await auth.updateUserData(user.value as UserFormData)
     isEditing.value = false
   } finally {
     isLoading.value = false
@@ -53,12 +55,12 @@ onMounted(async () => {
     resolve(null)
   })
 
-  Object.assign(user, auth.userData, {
+  user.value = {
     ...auth.userData,
     oldPassword: '',
     newPassword: '',
     newPasswordConfirmation: '',
-  })
+  }
 })
 </script>
 

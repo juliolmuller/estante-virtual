@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import fallbackImage from '@/assets/fallback-image.jpg'
 import ViewTitle from '@/components/ViewTitle.vue'
@@ -19,20 +19,14 @@ const bookStore = useBookStore()
 const userStore = useUserStore()
 const router = useRouter()
 const { userData } = storeToRefs(auth)
-const book = reactive<Book>({
-  id: 0,
-  name: '',
-  image: 'https://', // this will throw an error and be handled by "handleError"
-  loan: false,
-  userId: 0,
-})
-const dataBackup = ref<Book>()
+const book = ref({} as Book)
+const dataBackup = ref({} as Book)
 const isEditing = ref(false)
 const isLoading = ref(false)
 
 const owner = computed(() => {
-  const ownerData = userStore.users.find((user) => user.id === book.userId)
-  const belongsToUser = book.userId === auth.userData?.id
+  const ownerData = userStore.users.find(({ id }) => id === book.value.userId)
+  const belongsToUser = book.value.userId === auth.userData?.id
 
   return {
     ...ownerData,
@@ -49,7 +43,7 @@ const inputStyle = computed(() => ({
 
 const truncatedBookName = computed(() => (props.bookId === 'novo'
   ? 'Novo Livro'
-  : truncateText(book.name)))
+  : truncateText(book.value.name ?? '')))
 
 watch(book, (newValue) => {
   dataBackup.value = { ...newValue }
@@ -57,7 +51,7 @@ watch(book, (newValue) => {
 
 function toggleEditing() {
   isEditing.value = !isEditing.value
-  Object.assign(book, dataBackup.value)
+  book.value = { ...dataBackup.value }
 }
 
 function handleError({ target }: Event) {
@@ -71,17 +65,16 @@ async function handleSubmit() {
     isLoading.value = true
 
     if (props.bookId === 'novo') {
-      const newBook = await bookStore.create(book)
-      Object.assign(book, newBook)
+      book.value = await bookStore.create(book.value)
       isEditing.value = false
       router.replace({
         name: 'BookDetails',
-        params: { bookId: book.id },
+        params: { bookId: book.value.id },
       })
       return
     }
 
-    await bookStore.update(book)
+    await bookStore.update(book.value)
     isEditing.value = false
   } finally {
     isLoading.value = false
@@ -91,9 +84,9 @@ async function handleSubmit() {
 async function handleBorrow() {
   try {
     isLoading.value = true
-    await bookStore.borrow(book)
+    await bookStore.borrow(book.value)
     const focusedBook = bookStore.books.find(({ id }) => String(id) === props.bookId)
-    Object.assign(book, focusedBook)
+    book.value = focusedBook ?? {} as Book
   } finally {
     isLoading.value = false
   }
@@ -102,22 +95,22 @@ async function handleBorrow() {
 async function handleReturn() {
   try {
     isLoading.value = true
-    await bookStore.return(book)
+    await bookStore.return(book.value)
     const focusedBook = bookStore.books.find(({ id }) => String(id) === props.bookId)
-    Object.assign(book, focusedBook)
+    book.value = focusedBook ?? {} as Book
   } finally {
     isLoading.value = false
   }
 }
 
 async function handleDelete() {
-  if (!confirm(`Tem certeza de que deseja remover o livro "${book.name}" do catálogo?`)) {
+  if (!confirm(`Tem certeza de que deseja remover o livro "${book.value.name}" do catálogo?`)) {
     return
   }
 
   try {
     isLoading.value = true
-    await bookStore.delete(book.id)
+    await bookStore.delete(book.value.id)
     router.replace({ name: 'Home' })
   } finally {
     isLoading.value = true
@@ -131,16 +124,16 @@ onMounted(async () => {
   })
 
   if (props.bookId === 'novo') {
-    book.userId = auth.userData?.id
-    book.image = 'https://'
-    book.loan = false
+    book.value.userId = auth.userData?.id
+    book.value.image = 'https://'
+    book.value.loan = false
     isEditing.value = true
     return
   }
 
   const focusedBook = bookStore.books.find(({ id }) => String(id) === props.bookId)
   if (focusedBook) {
-    Object.assign(book, focusedBook)
+    book.value = focusedBook
   } else {
     router.replace({ name: 'Home' })
   }
