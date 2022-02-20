@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import fallbackImage from '@/assets/fallback-image.jpg'
 import ViewTitle from '@/components/ViewTitle.vue'
 import { Book } from '@/models'
 import { useAuth, useBookStore, useUserStore } from '@/store'
@@ -61,7 +62,7 @@ function toggleEditing() {
 
 function handleError({ target }: Event) {
   if (target instanceof HTMLImageElement) {
-    target.src = '../../assets/fallback-image.jpg'
+    target.src = fallbackImage
   }
 }
 
