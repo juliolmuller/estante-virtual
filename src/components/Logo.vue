@@ -1,19 +1,21 @@
 <template>
-  <span id="logo" class="h1">
-    Estante<span class="badge badge-hero p-1">Virtual</span>
+  <span id="logo" class="h2">
+    Estante<span>Virtual</span>
   </span>
 </template>
 
-<script>
-export default {
-  name: 'Logo',
-}
-</script>
-
 <style lang="scss">
 #logo {
-  text-decoration: none;
   color: #111;
   font-weight: bold;
+  text-decoration: none;
+  user-select: none;
+
+  span {
+    border-radius: 0.5rem;
+    background-color: var(--bs-hero);
+    padding: 0.25rem;
+    color: #fff;
+  }
 }
 </style>

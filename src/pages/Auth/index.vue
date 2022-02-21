@@ -1,12 +1,5 @@
-<script>
-import Logo from '@/components/Logo'
-
-export default {
-
-  components: {
-    Logo,
-  },
-}
+<script setup lang="ts">
+import Logo from '@/components/Logo.vue'
 </script>
 
 <template>
@@ -16,7 +9,7 @@ export default {
         <Logo />
       </header>
 
-      <RouterView />
+      <router-view />
 
       <footer class="auth-footer text-muted">
         &copy; 2019-{{ new Date().getFullYear() }} <strong>LacusSoft</strong>
@@ -27,19 +20,20 @@ export default {
 
 <style lang="scss">
 #auth {
-  width: 100%;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 
+  width: 100%;
+  height: 100%;
+
   .auth-container {
+    opacity: 0.95;
     width: 100%;
     max-width: 350px;
-    background: var(--light);
-    opacity: 0.95;
-    padding: 1rem;
     border-radius: 0.5rem;
+    background: var(--bs-light);
+    padding: 1rem;
   }
 
   .auth-header {
@@ -61,19 +55,23 @@ export default {
   input.form-control {
     margin-bottom: -1px;
     border-radius: 0;
-    padding: 1.2rem 0.6rem;
+    padding: 0.75rem 1.25rem;
+
     line-height: 1.2rem;
     font-size: 1.0rem;
     text-align: center;
+
     transition: all 0.3s;
 
     &:focus {
       position: relative;
       box-shadow: none;
+
       outline: none;
-      border: solid 1px var(--hero);
-      line-height: 1.0rem;
-      font-size: 1.2rem;
+      border: solid 1px var(--bs-hero);
+
+      line-height: 1.1rem;
+      font-size: 1.25rem;
     }
   }
 

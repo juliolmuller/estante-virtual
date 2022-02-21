@@ -1,49 +1,32 @@
-<script>
-import { mapGetters } from 'vuex'
-import ViewTitle from '@/components/ViewTitle'
+<script setup lang="ts">
+import { computed } from 'vue'
+import ViewTitle from '@/components/ViewTitle.vue'
+import { Book } from '@/models'
+import { useBookStore } from '@/store'
 
-export default {
-  name: 'BooksManager',
-
-  components: {
-    ViewTitle,
-  },
-
-  props: {
-    type: {
-      type: String,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-  },
-
-  computed: {
-    ...mapGetters('books', [
-      'userBooks',
-      'userLoans',
-    ]),
-    books() {
-      return this[this.type] || []
-    },
-  },
+export interface BooksManagerProps {
+  title: string
+  type: 'userBooks' | 'userLoans'
 }
+
+const props = defineProps<BooksManagerProps>()
+
+const bookStore = useBookStore()
+const books = computed<Book[]>(() => bookStore[props.type] ?? [])
 </script>
 
 <template>
   <div id="books-manager">
     <header>
       <ViewTitle>
-        {{ title }}
+        {{ props.title }}
       </ViewTitle>
 
-      <RouterLink
+      <router-link
         :to="{ name: 'BookDetails', params: { bookId: 'novo' }}"
-        class="btn btn-hero"
-        v-if="type === 'userBooks'"
-      >+ Cadastrar Novo Livro</RouterLink>
+        class="btn btn-hero text-white"
+        v-if="props.type === 'userBooks'"
+      >+ Cadastrar Novo Livro</router-link>
     </header>
 
     <div class="fallback-msg" v-if="!books.length">
@@ -54,13 +37,13 @@ export default {
       <div class="book-title">
         {{ book.name }}
       </div>
-      <RouterLink
+      <router-link
         :to="{ name: 'BookDetails', params: { bookId: book.id }}"
         class="btn btn-sm btn-secondary"
       >
         <img src="@/assets/pencil.svg" alt="ícone de edição" />
         <span class="d-none d-lg-block">Ver Detalhes...</span>
-      </RouterLink>
+      </router-link>
     </div>
   </div>
 </template>
@@ -82,9 +65,10 @@ export default {
   .books-list {
     display: flex;
     align-items: center;
-    padding: 0.5rem;
-    border-bottom: 1px dotted #333;
+
     border-top: 1px dotted #333;
+    border-bottom: 1px dotted #333;
+    padding: 0.5rem;
 
     & > img {
       width: 4rem;
@@ -95,6 +79,7 @@ export default {
     & > .book-title {
       flex-grow: 1;
       padding: 0 1rem;
+
       text-align: left;
       font-size: x-large;
     }
@@ -118,8 +103,8 @@ export default {
 
   .fallback-msg {
     padding: 3rem;
-    text-align: center;
     font-size: 1.5rem;
+    text-align: center;
   }
 }
 </style>

@@ -1,40 +1,22 @@
-<script>
-import { mapGetters } from 'vuex'
-import ViewTitle from '@/components/ViewTitle'
-import BooksDeck from '@/components/BooksDeck'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import BooksDeck from '@/components/BooksDeck.vue'
+import ViewTitle from '@/components/ViewTitle.vue'
+import { Book } from '@/models'
+import { useBookStore } from '@/store'
 
-export default {
-  name: 'Bookshelves',
+const bookStore = useBookStore()
+const filter = ref<'available' | 'borrowed'>('available')
+const search = ref('')
 
-  components: {
-    ViewTitle,
-    BooksDeck,
-  },
+const visibleBooks = computed(() => {
+  const books = bookStore[`${filter.value}Books`] as Book[]
+  const actualSearch = new RegExp(search.value, 'i')
 
-  data: () => ({
-    search: '',
-    filter: 'available',
-  }),
-
-  computed: {
-    ...mapGetters({
-      booksLoading: 'books/isFetching',
-    }),
-    ...mapGetters('books', [
-      'borrowedBooks',
-      'availableBooks',
-      'allBooks',
-    ]),
-    visibleBooks() {
-      const books = this[`${this.filter}Books`]
-      const search = new RegExp(this.search, 'i')
-
-      return !this.search ? books : books.filter(
-        ({ name }) => name.match(search),
-      )
-    },
-  },
-}
+  return !search.value ? books : books.filter(({ name }) => {
+    return name.match(actualSearch)
+  })
+})
 </script>
 
 <template>
@@ -55,8 +37,8 @@ export default {
       </div>
 
       <div class="filter-container col-12 col-lg-6 order-lg-1 col-xl-5">
-        <input type="radio" id="filter-1" class="sr-only" value="available" v-model="filter" />
-        <input type="radio" id="filter-2" class="sr-only" value="borrowed" v-model="filter" />
+        <input type="radio" id="filter-1" class="visually-hidden" value="available" v-model="filter" />
+        <input type="radio" id="filter-2" class="visually-hidden" value="borrowed" v-model="filter" />
         <label
           for="filter-1"
           :class="['btn', filter === 'available' ? 'btn-hero' : 'btn-outline-hero']"
@@ -68,13 +50,13 @@ export default {
       </div>
     </div>
 
-    <div class="loading" v-if="booksLoading">
+    <div class="loading" v-if="bookStore.isLoading">
       <img src="@/assets/loading.svg" alt="Carregando..." />
     </div>
-    <div class="fallback-msg" v-else-if="!allBooks.length">
+    <div class="fallback-msg" v-else-if="bookStore.books.length === 0">
       Não há livros cadastrados
     </div>
-    <div class="fallback-msg" v-else-if="!visibleBooks.length">
+    <div class="fallback-msg" v-else-if="visibleBooks.length === 0">
       Nenhum resultado para "{{ search }}" 🙄
     </div>
     <BooksDeck :books="visibleBooks" :count="visibleBooks.length" v-else />
@@ -88,13 +70,14 @@ export default {
     margin-bottom: 1rem;
 
     input {
-      border: 1px solid var(--hero);
+      border: 1px solid var(--bs-hero);
     }
 
     img {
       position: absolute;
       right: 1.5rem;
       top: 0.6rem;
+
       opacity: 0.5;
       transition: opacity 0.7s;
     }
@@ -111,6 +94,10 @@ export default {
     & > label {
       flex-grow: 1;
 
+      &:hover, &.btn-hero {
+        color: #fff;
+      }
+
       &:first-of-type {
         border-bottom-right-radius: 0;
         border-top-right-radius: 0;
@@ -124,8 +111,8 @@ export default {
   }
 
   .loading {
-    height: 60vh;
     display: flex;
+    height: 60vh;
 
     & > img {
       margin: auto;
@@ -134,8 +121,8 @@ export default {
 
   .fallback-msg {
     padding: 3rem;
-    text-align: center;
     font-size: 1.5rem;
+    text-align: center;
   }
 }
 </style>

@@ -81,6 +81,6 @@ Make sure to have **Node.js 10+** installed in your machine and its **npm** comm
 ```bash
 $ npm install     # Download dependencies
 $ npm start       # Run JSON-Server
-$ npm run serve   # Run development server for front-end
+$ npm run dev     # Run development server for front-end
 $ npm run build   # Build files for production
 ```

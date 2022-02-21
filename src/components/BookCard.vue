@@ -1,54 +1,40 @@
-<script>
-import truncate from '@/filters/truncate'
+<script setup lang="ts">
+import { computed } from 'vue'
+import { truncateText } from '@/utils'
 
-export default {
-  name: 'BookCard',
-
-  filters: {
-    truncate,
-  },
-
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    image: {
-      type: String,
-      required: true,
-    },
-  },
-
-  computed: {
-    route() {
-      return {
-        name: 'BookDetails',
-        params: {
-          bookId: this.id,
-        },
-      }
-    },
-  },
+export interface BookCardProps {
+  id: number
+  title: string
+  image: string
 }
+
+const props = defineProps<BookCardProps>()
+
+const route = computed(() => ({
+  name: 'BookDetails',
+  params: {
+    bookId: props.id,
+  },
+}))
+
+const truncatedTitle = computed(() => {
+  return truncateText(props.title)
+})
 </script>
 
 <template>
   <div class="book-card">
     <div class="card rounded">
-      <img :src="image" class="card-img-top" alt="Capa do livro" />
+      <img :src="props.image" class="card-img-top" alt="Capa do livro" />
       <div class="card-body">
-        <h5 class="card-title" :title="title">
-          {{ title | truncate }}
+        <h5 class="card-title" :title="props.title">
+          {{ truncatedTitle }}
         </h5>
       </div>
       <div class="card-footer">
-        <RouterLink :to="route" class="btn btn-hero">
+        <router-link :to="route" class="btn btn-hero my-2">
           Ver Detalhes
-        </RouterLink>
+        </router-link>
       </div>
     </div>
   </div>
@@ -59,11 +45,12 @@ export default {
   padding: 0.5rem;
 
   .card {
-    height: 100%;
-    border: 1px solid var(--hero);
-    text-align: center;
     display: flex;
     flex-direction: column;
+
+    height: 100%;
+    border: 1px solid var(--bs-hero);
+    text-align: center;
 
     img {
       width: 100%;
@@ -73,6 +60,7 @@ export default {
 
     a {
       width: 80%;
+      color: #fff;
     }
   }
 }

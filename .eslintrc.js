@@ -5,15 +5,18 @@ module.exports = {
   },
   extends: [
     'lacussoft',
-    'lacussoft/vue/v2',
+    'lacussoft/vue',
+    'lacussoft/typescript',
+    '@vue/typescript/recommended',
   ],
   ignorePatterns: [
     'public/*',
     '!public/**/*.js',
     '!babel.config.js',
   ],
-  parserOptions: {
-    parser: 'babel-eslint',
+  rules: {
+    '@typescript-eslint/no-explicit-any': 'off',
+    'import-helpers/order-imports': 'off',
+    'vue/valid-define-props': 'error',
   },
-  rules: {},
 }

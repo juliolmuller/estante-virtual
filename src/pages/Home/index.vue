@@ -1,13 +1,5 @@
-<script>
-import SideBar from './SideBar'
-
-export default {
-  name: 'Home',
-
-  components: {
-    SideBar,
-  },
-}
+<script setup lang="ts">
+import SideBar from '@/components/SideBar.vue'
 </script>
 
 <template>
@@ -15,9 +7,11 @@ export default {
     <SideBar />
 
     <main role="main">
-      <KeepAlive include="Bookshelves">
-        <RouterView />
-      </KeepAlive>
+      <router-view v-slot="{ Component }">
+        <keep-alive include="Bookshelves">
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
 
       <footer class="home-footer">
         <p class="text-muted">
@@ -34,11 +28,11 @@ export default {
   padding-bottom: 2rem;
 
   & > main {
+    opacity: 0.95;
     width: calc(100% - 4rem);
     margin: 2rem;
+    background: var(--bs-light);
     padding: 2rem 2rem 0;
-    background: var(--light);
-    opacity: 0.95;
   }
 
   .home-footer {
@@ -61,9 +55,10 @@ export default {
 
   @media (min-width: 1500px) {
     & > main {
-      max-width: 1100px;
       position: relative;
       left: calc(290px / 2);
+
+      max-width: 1100px;
       margin: 0 auto;
     }
   }

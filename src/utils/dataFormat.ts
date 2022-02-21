@@ -1,11 +1,16 @@
 
+export interface TruncateTextOptions {
+  clamp?: string
+  length?: number
+}
+
 const DEFAULT_TRUNC_LENGTH = 60
+const DEFAULT_TRUNC_CLAMP = '...'
 
-const truncate = (value, length = DEFAULT_TRUNC_LENGTH, clamp = '...') => {
-  if (!value || typeof value !== 'string') {
-    return value
-  }
-
+export function truncateText(value: string, {
+  clamp = DEFAULT_TRUNC_CLAMP,
+  length = DEFAULT_TRUNC_LENGTH,
+}: TruncateTextOptions = {}) {
   if (value.length <= length) {
     return value
   }
@@ -23,5 +28,3 @@ const truncate = (value, length = DEFAULT_TRUNC_LENGTH, clamp = '...') => {
 
   return shortValue + clamp
 }
-
-export default truncate
