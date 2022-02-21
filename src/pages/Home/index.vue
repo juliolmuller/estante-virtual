@@ -31,7 +31,7 @@ import SideBar from '@/components/SideBar.vue'
     opacity: 0.95;
     width: calc(100% - 4rem);
     margin: 2rem;
-    background: var(--light);
+    background: var(--bs-light);
     padding: 2rem 2rem 0;
   }
 

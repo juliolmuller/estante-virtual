@@ -32,7 +32,7 @@ import Logo from '@/components/Logo.vue'
     width: 100%;
     max-width: 350px;
     border-radius: 0.5rem;
-    background: var(--light);
+    background: var(--bs-light);
     padding: 1rem;
   }
 
@@ -55,7 +55,7 @@ import Logo from '@/components/Logo.vue'
   input.form-control {
     margin-bottom: -1px;
     border-radius: 0;
-    padding: 1.2rem 0.6rem;
+    padding: 0.75rem 1.25rem;
 
     line-height: 1.2rem;
     font-size: 1.0rem;
@@ -68,10 +68,10 @@ import Logo from '@/components/Logo.vue'
       box-shadow: none;
 
       outline: none;
-      border: solid 1px var(--hero);
+      border: solid 1px var(--bs-hero);
 
-      line-height: 1.0rem;
-      font-size: 1.2rem;
+      line-height: 1.1rem;
+      font-size: 1.25rem;
     }
   }
 

@@ -58,18 +58,22 @@ function handleSignOut() {
   opacity: 0.95;
 
   width: 100%;
-  background: var(--light);
+  background: var(--bs-light);
   margin-bottom: 2rem;
+
+  a {
+    text-decoration: none;
+
+    &:hover, &:active {
+      text-decoration: none;
+    }
+  }
 
   .side-bar-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 2rem 1.5rem;
-
-    a:hover, a:active {
-      text-decoration: none;
-    }
   }
 
   .nav-links a {
@@ -79,7 +83,6 @@ function handleSignOut() {
     color: #616161;
     font-size: 25px;
     text-align: left;
-    text-decoration: none;
 
     &.router-link-exact-active {
       background: #d8814f;
@@ -87,7 +90,7 @@ function handleSignOut() {
     }
 
     &:hover, &.router-link-exact-active:hover {
-      background: var(--hero);
+      background: var(--bs-hero);
       color: #fff;
     }
   }
@@ -103,6 +106,10 @@ function handleSignOut() {
 
     font-size: 1.2rem;
     font-weight: bold;
+
+    &:hover {
+      color: #fff;
+    }
   }
 
   @media (min-width: 1000px) {

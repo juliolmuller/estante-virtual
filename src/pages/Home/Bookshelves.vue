@@ -37,8 +37,8 @@ const visibleBooks = computed(() => {
       </div>
 
       <div class="filter-container col-12 col-lg-6 order-lg-1 col-xl-5">
-        <input type="radio" id="filter-1" class="sr-only" value="available" v-model="filter" />
-        <input type="radio" id="filter-2" class="sr-only" value="borrowed" v-model="filter" />
+        <input type="radio" id="filter-1" class="visually-hidden" value="available" v-model="filter" />
+        <input type="radio" id="filter-2" class="visually-hidden" value="borrowed" v-model="filter" />
         <label
           for="filter-1"
           :class="['btn', filter === 'available' ? 'btn-hero' : 'btn-outline-hero']"
@@ -70,7 +70,7 @@ const visibleBooks = computed(() => {
     margin-bottom: 1rem;
 
     input {
-      border: 1px solid var(--hero);
+      border: 1px solid var(--bs-hero);
     }
 
     img {
@@ -93,6 +93,10 @@ const visibleBooks = computed(() => {
 
     & > label {
       flex-grow: 1;
+
+      &:hover, &.btn-hero {
+        color: #fff;
+      }
 
       &:first-of-type {
         border-bottom-right-radius: 0;

@@ -163,7 +163,7 @@ onMounted(async () => {
         >Cancelar</button>
         <button
           type="submit"
-          class="btn btn-hero"
+          class="btn btn-hero text-white"
           :disabled="!passwordsMatch || isLoading"
           v-if="isEditing"
         >Concluído</button>

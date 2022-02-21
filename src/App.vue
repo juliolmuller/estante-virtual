@@ -25,23 +25,35 @@ watch(isAuthenticated, (value) => {
 </template>
 
 <style lang="scss">
-/* Define variables to oberwrite/add to Bootstrap theme */
+// Bootstrap's utilities functions
+@import 'node_modules/bootstrap/scss/functions';
+
+// Bootstrap's variables to be overridden
 $border-radius: 0.5rem;
 $grid-breakpoints: (
   xs: 0,
   sm: 576px,
   md: 768px,
   lg: 1000px,
-  xl: 1280px
+  xl: 1280px,
+  xxl: 1400px
 );
-$theme-colors: (
+
+// Bootstrap's utilities
+@import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/mixins';
+@import 'node_modules/bootstrap/scss/root';
+
+// Colors to merge to Bootstrap's theme
+$custom-colors: (
   hero: #d8621e
 );
+$theme-colors: map-merge($theme-colors, $custom-colors);
 
-/* Import Bootstrap framework */
+// Bootstrap's required styles
 @import 'node_modules/bootstrap/scss/bootstrap';
 
-/* Additional custom styles */
+// Additional global styles
 html, body, #app {
   width: 100%;
   height: 100%;

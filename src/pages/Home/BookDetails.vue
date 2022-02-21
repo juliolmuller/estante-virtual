@@ -251,7 +251,7 @@ onMounted(async () => {
             </button>
             <button
               type="button"
-              class="btn btn-danger mr-auto"
+              class="btn btn-danger me-auto"
               v-if="isEditing && !book.loan && owner.id === userData?.id && props.bookId !== 'novo'"
               :disabled="isLoading"
               @click="handleDelete"
@@ -322,6 +322,10 @@ onMounted(async () => {
 
     & .btn {
       margin: 1.5rem 0.5rem;
+
+      &.btn-hero {
+        color: #fff;
+      }
     }
   }
 

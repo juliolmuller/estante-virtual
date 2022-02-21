@@ -24,7 +24,7 @@ const books = computed<Book[]>(() => bookStore[props.type] ?? [])
 
       <router-link
         :to="{ name: 'BookDetails', params: { bookId: 'novo' }}"
-        class="btn btn-hero"
+        class="btn btn-hero text-white"
         v-if="props.type === 'userBooks'"
       >+ Cadastrar Novo Livro</router-link>
     </header>

@@ -32,7 +32,7 @@ const truncatedTitle = computed(() => {
         </h5>
       </div>
       <div class="card-footer">
-        <router-link :to="route" class="btn btn-hero">
+        <router-link :to="route" class="btn btn-hero my-2">
           Ver Detalhes
         </router-link>
       </div>
@@ -49,7 +49,7 @@ const truncatedTitle = computed(() => {
     flex-direction: column;
 
     height: 100%;
-    border: 1px solid var(--hero);
+    border: 1px solid var(--bs-hero);
     text-align: center;
 
     img {
@@ -60,6 +60,7 @@ const truncatedTitle = computed(() => {
 
     a {
       width: 80%;
+      color: #fff;
     }
   }
 }

@@ -41,7 +41,7 @@ watch(() => state.email, (newValue) => {
       </p>
     </div>
 
-    <label for="name" class="sr-only">
+    <label for="name" class="visually-hidden">
       Nome do usuário
     </label>
     <input
@@ -54,7 +54,7 @@ watch(() => state.email, (newValue) => {
       v-model="state.name"
     />
 
-    <label for="email" class="sr-only">
+    <label for="email" class="visually-hidden">
       Endereço de email
     </label>
     <input
@@ -66,7 +66,7 @@ watch(() => state.email, (newValue) => {
       v-model="state.email"
     />
 
-    <label for="password" class="sr-only">
+    <label for="password" class="visually-hidden">
       Senha de acesso
     </label>
     <input
@@ -78,7 +78,7 @@ watch(() => state.email, (newValue) => {
       v-model="state.password"
     />
 
-    <label for="password-confirmation" class="sr-only">
+    <label for="password-confirmation" class="visually-hidden">
       Confirmação da senha
     </label>
     <input
@@ -92,13 +92,13 @@ watch(() => state.email, (newValue) => {
 
     <button
       type="submit"
-      class="btn btn-lg btn-hero"
+      class="btn btn-lg btn-hero text-white"
       :disabled="auth.isLoading"
     >
       Cadastrar
     </button>
     <p class="mt-1 text-center">
-      <router-link :to="{ name: 'SignIn' }" class="text-hero">
+      <router-link :to="{ name: 'SignIn' }">
         Já sou cadastrado
       </router-link>
     </p>

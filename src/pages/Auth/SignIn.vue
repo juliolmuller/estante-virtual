@@ -30,8 +30,8 @@ watch(() => state.email, (newValue) => {
 <template>
   <form id="sign-in" @submit.prevent="handleSubmit">
     <div
-      role="alert"
       class="alert alert-danger border-danger"
+      role="alert"
       :style="{ visibility: auth.errors.length ? 'visible' : 'hidden' }"
     >
       <p class="text-danger" v-for="error in auth.errors" :key="error">
@@ -39,7 +39,7 @@ watch(() => state.email, (newValue) => {
       </p>
     </div>
 
-    <label for="email" class="sr-only">
+    <label for="email" class="visually-hidden">
       Endereço de email
     </label>
     <input
@@ -52,7 +52,7 @@ watch(() => state.email, (newValue) => {
       v-model="state.email"
     />
 
-    <label for="password" class="sr-only">
+    <label for="password" class="visually-hidden">
       Senha de acesso
     </label>
     <input
@@ -74,7 +74,7 @@ watch(() => state.email, (newValue) => {
 
     <button
       type="submit"
-      class="mt-3 btn btn-lg btn-hero btn-block"
+      class="mt-3 btn btn-lg btn-hero btn-block text-white"
       :disabled="auth.isLoading"
     >
       Entrar
@@ -82,7 +82,7 @@ watch(() => state.email, (newValue) => {
 
     <p class="mt-1 text-center">
       Não é cadastrado?
-      <router-link :to="{ name: 'SignUp' }" class="text-hero">
+      <router-link :to="{ name: 'SignUp' }">
         Registre-se aqui
       </router-link>
     </p>
