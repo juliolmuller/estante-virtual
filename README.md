@@ -21,7 +21,7 @@
   <img src="https://img.shields.io/github/license/juliolmuller/estante-virtual?labelColor=000000&color=d8621e" alt="Project License" />
 </p>
 
-![Estante Virtual snapshot](./src/assets/app-overview.jpg)
+![Estante Virtual snapshot](./.github/app-overview.jpg)
 
 This application was proposed by [HeroSpark](https://herospark.com/), as part of their recruitment process for frontend developers. The challenge was to build a fully responsive client application using Vue, Vuex, Bootstrap and SASS to consume a simple REST API served by JSON-Server, with basic authentication, CRUD for books and search/filter mechanisms, abusing of creativity.
 
@@ -52,35 +52,38 @@ This application was proposed by [HeroSpark](https://herospark.com/), as part of
 - Overwrite Bootstrap defaults and creating new themes using SASS/SCSS;
 - Deploying a JSON-server application to **Heroku**;
 - Deploying a Vue.js app to Vercel Serverless Cloud;
+- Migrating project from Vue 2 to Vue 3, using Composition API and `script setup`;
+- Migrating project from Vuex to Pinia;
+- Migrating project to TypeScript;
 
 ## :rocket: Technologies & Resources
 
 **Frontend:**
-- [Vue.js 2](https://vuejs.org)
-- [Vuex 3](https://vuex.vuejs.org/)
-- [VueRouter 3](https://router.vuejs.org/)
+- [Vue.js ~~v2~~ v3](https://vuejs.org)
+- [~~Vuex v3~~](https://vuex.vuejs.org/) [Pinia v2](https://pinia.vuejs.org/)
+- [VueRouter ~~v3~~ v4](https://router.vuejs.org/)
 - [Axios](https://github.com/axios/axios) (HTTP client)
-- [Bootstrap 4](https://getbootstrap.com/)
+- [Bootstrap ~~v4~~ v5](https://getbootstrap.com/)
 
 **Backend**
-- [Node.js](https://nodejs.org/en/)
+- [Node.js LTS v16](https://nodejs.org/en/)
 - [JSON-Server](https://github.com/typicode/json-server)
 - [Heroku Cloud Server](https://heroku.com/) (for deployment)
 
 **Development:**
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Cmder](https://cmder.net/) (terminal emulator)
-- Vue-CLI and NPM scripts;
+- [Vue CLI ~~v4~~ v5](https://cli.vuejs.org/) and [Yarn](https://yarnpkg.com/)/NPM scripts routines
 
 ## :hammer: Setting up the Environment
 
 Before running the application copy/rename file `.env.example` as `.env`. The existent value should work already, so no further configuration should be required. When building for production, however, you may want to add a `.env.production` and copy the same variables you have in `.env`, replacing the *localhost* reference to a valid address on the internet, where the API will be available (e.g.: https://estante-virtual.herokuapp.com).
 
-Make sure to have **Node.js 10+** installed in your machine and its **npm** command available in terminal, then use the following routines:
+Make sure to have **Node.js 12+** installed in your machine and **yarn** (or **npm**) commands available in your terminal, then use the following routines:
 
 ```bash
-$ npm install     # Download dependencies
-$ npm start       # Run JSON-Server
-$ npm run dev     # Run development server for front-end
-$ npm run build   # Build files for production
+$ yarn         # Download dependencies
+$ yarn start   # Run JSON-Server
+$ yarn dev     # Run development server for front-end
+$ yarn build   # Build files for production
 ```
