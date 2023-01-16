@@ -1,7 +1,7 @@
-const database = require('./db.json')
+const database = require('./server.json')
 const jsonServer = require('json-server')
 const server = jsonServer.create()
-const router = jsonServer.router('db.json')
+const router = jsonServer.router('server.json')
 const middleware = jsonServer.defaults()
 const PORT = process.env.PORT || 8081 // eslint-disable-line no-magic-numbers
 
