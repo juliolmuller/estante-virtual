@@ -50,7 +50,7 @@ This application was proposed by [HeroSpark](https://herospark.com/), as part of
 - Use *guards* to access certain routes;
 - Integrate SASS to a Vue project;
 - Overwrite Bootstrap defaults and creating new themes using SASS/SCSS;
-- Deploying a JSON-server application to **Heroku**;
+- Deploying a JSON-server application to ~~Heroku~~ **Railway**;
 - Deploying a Vue.js app to Vercel Serverless Cloud;
 - Migrating project from Vue 2 to Vue 3, using Composition API and `script setup`;
 - Migrating project from Vuex to Pinia;
@@ -59,21 +59,21 @@ This application was proposed by [HeroSpark](https://herospark.com/), as part of
 ## :rocket: Technologies & Resources
 
 **Frontend:**
-- [Vue.js ~~v2~~ v3](https://vuejs.org)
-- [~~Vuex v3~~](https://vuex.vuejs.org/) [Pinia v2](https://pinia.vuejs.org/)
-- [VueRouter ~~v3~~ v4](https://router.vuejs.org/)
+- [Vue.js v3](https://vuejs.org) (originally developed in v2)
+- [Pinia v2](https://pinia.vuejs.org/) (originally developed in [Vuex v3](https://vuex.vuejs.org/))
+- [VueRouter v4](https://router.vuejs.org/) (originally developed in v3)
 - [Axios](https://github.com/axios/axios) (HTTP client)
-- [Bootstrap ~~v4~~ v5](https://getbootstrap.com/)
+- [Bootstrap v5](https://getbootstrap.com/) (originally developed in v4)
 
 **Backend**
-- [Node.js LTS v16](https://nodejs.org/en/)
+- [Node.js LTS v18](https://nodejs.org/en/) (originally developed in v12)
 - [JSON-Server](https://github.com/typicode/json-server)
-- [Heroku Cloud Server](https://heroku.com/) (for deployment)
+- [Railway Cloud Server](https://railway.app/) (previously deployed on [Heroku](https://heroku.com/))
 
 **Development:**
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Cmder](https://cmder.net/) (terminal emulator)
-- [Vue CLI ~~v4~~ v5](https://cli.vuejs.org/) and [Yarn](https://yarnpkg.com/)/NPM scripts routines
+- [Vue CLI v5](https://cli.vuejs.org/) and [Yarn](https://yarnpkg.com/)/NPM scripts routines (originally developed in v4)
 
 ## :hammer: Setting up the Environment
 
