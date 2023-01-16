@@ -21,7 +21,7 @@
   <img src="https://img.shields.io/github/license/juliolmuller/estante-virtual?labelColor=000000&color=d8621e" alt="Project License" />
 </p>
 
-![Estante Virtual snapshot](./.github/app-overview.jpg)
+![Estante Virtual snapshot](https://user-images.githubusercontent.com/44725817/212589260-eed61b60-dda6-47e5-b986-b86173b7bda5.png)
 
 This application was proposed by [HeroSpark](https://herospark.com/), as part of their recruitment process for frontend developers. The challenge was to build a fully responsive client application using Vue, Vuex, Bootstrap and SASS to consume a simple REST API served by JSON-Server, with basic authentication, CRUD for books and search/filter mechanisms, abusing of creativity.
 
