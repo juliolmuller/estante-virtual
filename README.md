@@ -50,7 +50,7 @@ This application was proposed by [HeroSpark](https://herospark.com/), as part of
 - Use *guards* to access certain routes;
 - Integrate SASS to a Vue project;
 - Overwrite Bootstrap defaults and creating new themes using SASS/SCSS;
-- Deploying a JSON-server application to ~~Heroku~~ **Railway**;
+- Deploying a JSON-server application to ~~Heroku~~ ~~Railway~~ **Render**;
 - Deploying a Vue.js app to Vercel Serverless Cloud;
 - Migrating project from Vue 2 to Vue 3, using Composition API and `script setup`;
 - Migrating project from Vuex to Pinia;
@@ -68,7 +68,7 @@ This application was proposed by [HeroSpark](https://herospark.com/), as part of
 **Backend**
 - [Node.js LTS v18](https://nodejs.org/en/) (originally developed in v12)
 - [JSON-Server](https://github.com/typicode/json-server)
-- [Railway Cloud Server](https://railway.app/) (previously deployed on [Heroku](https://heroku.com/))
+- [Render Cloud Server](https://render.com/) (previously deployed on [Heroku](https://heroku.com/) and [Railway](https://railway.app/))
 
 **Development:**
 - [Visual Studio Code](https://code.visualstudio.com/)
