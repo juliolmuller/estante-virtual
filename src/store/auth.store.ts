@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { User } from '@/models'
-import { usersApi } from '@/services/api'
+import type { User } from '~/models'
+import { usersApi } from '~/services/api'
 
 const STORAGE_KEY = 'user-data'
 

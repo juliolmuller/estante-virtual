@@ -1,12 +1,12 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
-import { Model } from '@/models'
+import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios'
+import type { Model } from '~/models'
 
 class ApiConsumer<TModel extends Model> {
   private http: AxiosInstance
 
   constructor(uri: string) {
     this.http = axios.create({
-      baseURL: `${process.env.VUE_APP_API_URL}/${uri}`,
+      baseURL: `${import.meta.env.VITE_API_URL}/${uri}`,
     })
   }
 

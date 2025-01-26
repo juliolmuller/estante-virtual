@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import ViewTitle from '@/components/ViewTitle.vue'
-import { useAuth, useUserStore } from '@/store'
+import ViewTitle from '~/components/ViewTitle.vue'
+import { useAuth, useUserStore } from '~/store'
 
 interface UserFormData {
   id: number

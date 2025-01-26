@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuth } from '@/store'
+import { useAuth } from '~/store'
 
 const auth = useAuth()
 const router = useRouter()

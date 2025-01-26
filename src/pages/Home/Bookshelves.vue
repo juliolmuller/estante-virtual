@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import BooksDeck from '@/components/BooksDeck.vue'
-import ViewTitle from '@/components/ViewTitle.vue'
-import { Book } from '@/models'
-import { useBookStore } from '@/store'
+import BooksDeck from '~/components/BooksDeck.vue'
+import ViewTitle from '~/components/ViewTitle.vue'
+import type { Book } from '~/models'
+import { useBookStore } from '~/store'
 
 const bookStore = useBookStore()
 const filter = ref<'available' | 'borrowed'>('available')
@@ -33,7 +33,7 @@ const visibleBooks = computed(() => {
           placeholder="Pesquisar por título..."
           v-model="search"
         />
-        <img src="@/assets/search-icon.svg" alt="Ícone de busca" />
+        <img src="/img/search-icon.svg" alt="Ícone de busca" />
       </div>
 
       <div class="filter-container col-12 col-lg-6 order-lg-1 col-xl-5">
@@ -51,7 +51,7 @@ const visibleBooks = computed(() => {
     </div>
 
     <div class="loading" v-if="bookStore.isLoading">
-      <img src="@/assets/loading.svg" alt="Carregando..." />
+      <img src="/img/loading.svg" alt="Carregando..." />
     </div>
     <div class="fallback-msg" v-else-if="bookStore.books.length === 0">
       Não há livros cadastrados

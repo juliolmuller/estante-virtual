@@ -1,12 +1,12 @@
-import { createRouter, createWebHistory, NavigationGuard, RouteRecordRaw } from 'vue-router'
-import Auth from '@/pages/Auth/index.vue'
-import SignIn from '@/pages/Auth/SignIn.vue'
-import SignUp from '@/pages/Auth/SignUp.vue'
-import store, { useAuth } from '@/store'
+import { createRouter, createWebHistory, type NavigationGuard, type RouteRecordRaw } from 'vue-router'
+import Auth from '~/pages/Auth/index.vue'
+import SignIn from '~/pages/Auth/SignIn.vue'
+import SignUp from '~/pages/Auth/SignUp.vue'
+import store, { useAuth } from '~/store'
 
-const Home = () => import(/* webpackPrefetch: true */ '@/pages/Home/index.vue')
-const Bookshelves = () => import(/* webpackPrefetch: true */ '@/pages/Home/Bookshelves.vue')
-const BookDetails = () => import(/* webpackPrefetch: true */ '@/pages/Home/BookDetails.vue')
+const Home = () => import(/* webpackPrefetch: true */ '~/pages/Home/index.vue')
+const Bookshelves = () => import(/* webpackPrefetch: true */ '~/pages/Home/Bookshelves.vue')
+const BookDetails = () => import(/* webpackPrefetch: true */ '~/pages/Home/BookDetails.vue')
 const BooksManager = () => import(/* webpackPrefetch: true */ './pages/Home/BooksManager.vue')
 const UserProfile = () => import(/* webpackPrefetch: true */ './pages/Home/UserProfile.vue')
 

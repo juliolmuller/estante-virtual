@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { watch } from 'vue'
-import { useAuth, useBookStore, useUserStore } from '@/store'
+import { useAuth, useBookStore, useUserStore } from '~/store'
 
 const auth = useAuth()
 const bookStore = useBookStore()
@@ -26,7 +26,7 @@ watch(isAuthenticated, (value) => {
 
 <style lang="scss">
 // Bootstrap's utilities functions
-@import 'node_modules/bootstrap/scss/functions';
+@import 'bootstrap/scss/_functions';
 
 // Bootstrap's variables to be overridden
 $border-radius: 0.5rem;
@@ -40,9 +40,9 @@ $grid-breakpoints: (
 );
 
 // Bootstrap's utilities
-@import 'node_modules/bootstrap/scss/variables';
-@import 'node_modules/bootstrap/scss/mixins';
-@import 'node_modules/bootstrap/scss/root';
+@import 'bootstrap/scss/_variables';
+@import 'bootstrap/scss/_mixins';
+@import 'bootstrap/scss/_root';
 
 // Colors to merge to Bootstrap's theme
 $custom-colors: (
@@ -51,7 +51,7 @@ $custom-colors: (
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
 // Bootstrap's required styles
-@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'bootstrap/scss/bootstrap';
 
 // Additional global styles
 html, body, #app {
@@ -60,7 +60,7 @@ html, body, #app {
 }
 
 body {
-  background-image: url('./assets/background.jpg');
+  background-image: url('/img/background.jpg');
   background-position: top center;
   background-attachment: fixed;
   background-size: cover;
