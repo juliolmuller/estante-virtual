@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
-import BookCard from '@/components/BookCard.vue'
-import { Book } from '@/models'
+import BookCard from '~/components/BookCard.vue'
+import type { Book } from '~/models'
 
 export interface BOoksDeckProps {
   books: Book[]

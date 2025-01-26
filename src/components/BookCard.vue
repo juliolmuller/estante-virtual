@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { truncateText } from '@/utils'
+import { truncateText } from '~/utils'
 
 export interface BookCardProps {
   id: number

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { Book } from '@/models'
-import { booksApi } from '@/services/api'
+import type { Book } from '~/models'
+import { booksApi } from '~/services/api'
 import useAuth from './auth.store'
 
 export interface BookStoreState {

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import ViewTitle from '@/components/ViewTitle.vue'
-import { Book } from '@/models'
-import { useBookStore } from '@/store'
+import ViewTitle from '~/components/ViewTitle.vue'
+import type { Book } from '~/models'
+import { useBookStore } from '~/store'
 
 export interface BooksManagerProps {
   title: string
@@ -41,7 +41,7 @@ const books = computed<Book[]>(() => bookStore[props.type] ?? [])
         :to="{ name: 'BookDetails', params: { bookId: book.id }}"
         class="btn btn-sm btn-secondary"
       >
-        <img src="@/assets/pencil.svg" alt="ícone de edição" />
+        <img src="/img/pencil.svg" alt="ícone de edição" />
         <span class="d-none d-lg-block">Ver Detalhes...</span>
       </router-link>
     </div>

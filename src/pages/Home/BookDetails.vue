@@ -2,11 +2,11 @@
 import { storeToRefs } from 'pinia'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import fallbackImage from '@/assets/fallback-image.jpg'
-import ViewTitle from '@/components/ViewTitle.vue'
-import { Book } from '@/models'
-import { useAuth, useBookStore, useUserStore } from '@/store'
-import { truncateText } from '@/utils'
+import fallbackImage from '/img/fallback-image.jpg'
+import ViewTitle from '~/components/ViewTitle.vue'
+import type { Book } from '~/models'
+import { useAuth, useBookStore, useUserStore } from '~/store'
+import { truncateText } from '~/utils'
 
 export interface BookDetailsProps {
   bookId: string
@@ -153,7 +153,7 @@ onMounted(async () => {
         v-if="!isEditing"
         @click="$router.go(-1)"
       >
-        <img src="@/assets/left-arrow.svg" alt="ícone de retornar" />
+        <img src="/img/left-arrow.svg" alt="ícone de retornar" />
         Voltar
       </button>
     </header>
