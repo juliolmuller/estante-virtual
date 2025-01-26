@@ -1,9 +1,10 @@
 {
   "name": "estante-virtual",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "private": true,
   "license": "MIT",
   "author": "Julio L. Muller",
+  "homepage": "https://estantevirtual.vercel.app/",
   "scripts": {
     "postinstall": "node -e \"require('fs').existsSync('.env') || require('fs').copyFileSync('.env.example', '.env')\"",
     "prepare": "husky install",
