@@ -1,1 +1,1 @@
-export * from './dataFormat'
+export * from './dataFormat';

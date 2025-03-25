@@ -1,25 +1,26 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { truncateText } from '~/utils'
+import { computed } from 'vue';
+
+import { truncateText } from '~/utils';
 
 export interface BookCardProps {
-  id: number
-  title: string
-  image: string
+  id: number;
+  image: string;
+  title: string;
 }
 
-const props = defineProps<BookCardProps>()
+const props = defineProps<BookCardProps>();
 
 const route = computed(() => ({
   name: 'BookDetails',
   params: {
     bookId: props.id,
   },
-}))
+}));
 
 const truncatedTitle = computed(() => {
-  return truncateText(props.title)
-})
+  return truncateText(props.title);
+});
 </script>
 
 <template>
@@ -32,9 +33,7 @@ const truncatedTitle = computed(() => {
         </h5>
       </div>
       <div class="card-footer">
-        <router-link :to="route" class="btn btn-hero my-2">
-          Ver Detalhes
-        </router-link>
+        <router-link :to="route" class="btn btn-hero my-2">Ver Detalhes</router-link>
       </div>
     </div>
   </div>

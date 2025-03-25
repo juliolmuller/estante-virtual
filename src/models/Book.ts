@@ -1,11 +1,13 @@
-import type { Model } from './Model'
+import type { Model } from './Model';
 
 export interface Book extends Model {
-  name: string
-  image: string
-  userId?: number
-  loan: false | {
-    date: string
-    userId: number
-  }
+  image: string;
+  loan:
+    | {
+        date: string;
+        userId: number;
+      }
+    | false;
+  name: string;
+  userId?: number;
 }

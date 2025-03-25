@@ -1,3 +1,3 @@
-export * from './Model'
-export * from './Book'
-export * from './User'
+export * from './Book';
+export * from './Model';
+export * from './User';

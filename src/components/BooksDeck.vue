@@ -1,56 +1,55 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
-import BookCard from '~/components/BookCard.vue'
-import type { Book } from '~/models'
+import { onMounted, ref, watch } from 'vue';
+
+import BookCard from '~/components/BookCard.vue';
+import type { Book } from '~/models';
 
 export interface BOoksDeckProps {
-  books: Book[]
+  books: Book[];
 }
 
-const props = defineProps<BOoksDeckProps>()
+const props = defineProps<BOoksDeckProps>();
 
-const MIN_WIDTH = 250
+const MIN_WIDTH = 250;
 
-const containerRef = ref<HTMLDivElement>()
-const spacers = ref<number[]>([])
+const containerRef = ref<HTMLDivElement>();
+const spacers = ref<number[]>([]);
 
 function setSpacers() {
-  const deckWidth = containerRef.value?.clientWidth as number
-  const colsCount = Math.round(deckWidth / MIN_WIDTH)
-  const rowsCOunt = Math.ceil(props.books.length / colsCount)
-  const spacersCount = (colsCount * rowsCOunt) - props.books.length
+  const deckWidth = containerRef.value?.clientWidth as number;
+  const colsCount = Math.round(deckWidth / MIN_WIDTH);
+  const rowsCOunt = Math.ceil(props.books.length / colsCount);
+  const spacersCount = colsCount * rowsCOunt - props.books.length;
 
-  spacers.value = Array(spacersCount || 0).fill(null).map((_, index) => index)
+  spacers.value = Array(spacersCount || 0)
+    .fill(null)
+    .map((_, index) => index);
 }
 
-watch(props.books, () => setSpacers())
+watch(props.books, () => setSpacers());
 
 onMounted(() => {
-  setSpacers()
+  setSpacers();
 
   window.onresize = () => {
     if (containerRef.value) {
-      setSpacers()
+      setSpacers();
     }
-  }
-})
+  };
+});
 </script>
 
 <template>
-  <div class="books-deck row" ref="containerRef">
+  <div ref="containerRef" class="books-deck row">
     <BookCard
-      class="col"
       v-for="book in props.books"
+      :id="book.id"
       :key="book.id"
+      class="col"
       :image="book.image"
       :title="book.name"
-      :id="book.id"
     />
-    <div
-      class="col book-card"
-      v-for="i in spacers"
-      :key="i"
-    ></div>
+    <div v-for="i in spacers" :key="i" class="col book-card" />
   </div>
 </template>
 

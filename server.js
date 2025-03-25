@@ -1,20 +1,21 @@
-const database = require('./server.json')
-const jsonServer = require('json-server')
-const server = jsonServer.create()
-const router = jsonServer.router('server.json')
-const middleware = jsonServer.defaults()
-const PORT = process.env.PORT || 8081 // eslint-disable-line no-magic-numbers
+import jsonServer from 'json-server';
 
-server.use(middleware)
-server.use(router)
+import database from './server.json' with { type: 'json' };
+
+const server = jsonServer.create();
+const router = jsonServer.router('server.json');
+const middleware = jsonServer.defaults();
+const PORT = process.env.PORT || 8081;
+
+server.use(middleware);
+server.use(router);
 
 server.listen(PORT, () => {
-  /* eslint-disable no-console */
-  console.log(`    JSON-Server is running at port ${PORT}`)
-  console.log('')
-  console.log('    Available endpoints:')
+  console.info(`    JSON-Server is running at port ${PORT}`);
+  console.info('');
+  console.info('    Available endpoints:');
 
   Object.keys(database).forEach((endpoint) => {
-    console.log(`        http://localhost:${PORT}/${endpoint}`)
-  })
-})
+    console.info(`        http://localhost:${PORT}/${endpoint}`);
+  });
+});

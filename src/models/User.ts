@@ -1,7 +1,7 @@
-import type { Model } from './Model'
+import type { Model } from './Model';
 
 export interface User extends Model {
-  name: string
-  email: string
-  password?: string
+  email: string;
+  name: string;
+  password?: string;
 }

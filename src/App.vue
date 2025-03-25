@@ -1,21 +1,26 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { watch } from 'vue'
-import { useAuth, useBookStore, useUserStore } from '~/store'
+import { storeToRefs } from 'pinia';
+import { watch } from 'vue';
 
-const auth = useAuth()
-const bookStore = useBookStore()
-const userStore = useUserStore()
-const { isAuthenticated } = storeToRefs(auth)
+import { useAuth, useBookStore, useUserStore } from '~/store';
 
-auth.recoverFromStorage()
+const auth = useAuth();
+const bookStore = useBookStore();
+const userStore = useUserStore();
+const { isAuthenticated } = storeToRefs(auth);
 
-watch(isAuthenticated, (value) => {
-  if (value) {
-    bookStore.fetchAll()
-    userStore.fetchAll()
-  }
-}, { immediate: true })
+auth.recoverFromStorage();
+
+watch(
+  isAuthenticated,
+  (value) => {
+    if (value) {
+      bookStore.fetchAll();
+      userStore.fetchAll();
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
@@ -36,7 +41,7 @@ $grid-breakpoints: (
   md: 768px,
   lg: 1000px,
   xl: 1280px,
-  xxl: 1400px
+  xxl: 1400px,
 );
 
 // Bootstrap's utilities
@@ -46,7 +51,7 @@ $grid-breakpoints: (
 
 // Colors to merge to Bootstrap's theme
 $custom-colors: (
-  hero: #d8621e
+  hero: #d8621e,
 );
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
@@ -54,7 +59,9 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 @import 'bootstrap/scss/bootstrap';
 
 // Additional global styles
-html, body, #app {
+html,
+body,
+#app {
   width: 100%;
   height: 100%;
 }

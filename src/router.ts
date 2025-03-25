@@ -1,32 +1,38 @@
-import { createRouter, createWebHistory, type NavigationGuard, type RouteRecordRaw } from 'vue-router'
-import Auth from '~/pages/Auth/index.vue'
-import SignIn from '~/pages/Auth/SignIn.vue'
-import SignUp from '~/pages/Auth/SignUp.vue'
-import store, { useAuth } from '~/store'
+import {
+  createRouter,
+  createWebHistory,
+  type NavigationGuard,
+  type RouteRecordRaw,
+} from 'vue-router';
 
-const Home = () => import(/* webpackPrefetch: true */ '~/pages/Home/index.vue')
-const Bookshelves = () => import(/* webpackPrefetch: true */ '~/pages/Home/Bookshelves.vue')
-const BookDetails = () => import(/* webpackPrefetch: true */ '~/pages/Home/BookDetails.vue')
-const BooksManager = () => import(/* webpackPrefetch: true */ './pages/Home/BooksManager.vue')
-const UserProfile = () => import(/* webpackPrefetch: true */ './pages/Home/UserProfile.vue')
+import Auth from '~/pages/Auth/index.vue';
+import SignIn from '~/pages/Auth/SignIn.vue';
+import SignUp from '~/pages/Auth/SignUp.vue';
+import store, { useAuth } from '~/store';
+
+const Home = () => import(/* webpackPrefetch: true */ '~/pages/Home/index.vue');
+const Bookshelves = () => import(/* webpackPrefetch: true */ '~/pages/Home/Bookshelves.vue');
+const BookDetails = () => import(/* webpackPrefetch: true */ '~/pages/Home/BookDetails.vue');
+const BooksManager = () => import(/* webpackPrefetch: true */ './pages/Home/BooksManager.vue');
+const UserProfile = () => import(/* webpackPrefetch: true */ './pages/Home/UserProfile.vue');
 
 const checkAuthentication: NavigationGuard = (_to, _from, next) => {
-  const auth = useAuth(store)
+  const auth = useAuth(store);
 
   if (auth.isAuthenticated) {
-    next()
-    return
+    next();
+    return;
   }
 
-  auth.recoverFromStorage()
+  auth.recoverFromStorage();
 
   if (auth.isAuthenticated) {
-    next()
-    return
+    next();
+    return;
   }
 
-  next({ name: 'SignIn' })
-}
+  next({ name: 'SignIn' });
+};
 
 const routes: RouteRecordRaw[] = [
   {
@@ -90,9 +96,9 @@ const routes: RouteRecordRaw[] = [
     path: '/(.*)',
     redirect: '/',
   },
-]
+];
 
 export default createRouter({
   history: createWebHistory(),
   routes,
-})
+});

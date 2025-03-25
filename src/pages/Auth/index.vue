@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Logo from '~/components/Logo.vue'
+import Logo from '~/components/Logo.vue';
 </script>
 
 <template>
@@ -58,7 +58,7 @@ import Logo from '~/components/Logo.vue'
     padding: 0.75rem 1.25rem;
 
     line-height: 1.2rem;
-    font-size: 1.0rem;
+    font-size: 1rem;
     text-align: center;
 
     transition: all 0.3s;
@@ -75,7 +75,7 @@ import Logo from '~/components/Logo.vue'
     }
   }
 
-  button[type="submit"] {
+  button[type='submit'] {
     width: 100%;
     margin-top: 2rem;
     transition: background-color 0.3s;

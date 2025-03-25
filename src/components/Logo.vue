@@ -1,7 +1,5 @@
 <template>
-  <span id="logo" class="h2">
-    Estante<span>Virtual</span>
-  </span>
+  <span id="logo" class="h2">Estante<span>Virtual</span></span>
 </template>
 
 <style lang="scss">

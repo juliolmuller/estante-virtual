@@ -1,65 +1,81 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import BooksDeck from '~/components/BooksDeck.vue'
-import ViewTitle from '~/components/ViewTitle.vue'
-import type { Book } from '~/models'
-import { useBookStore } from '~/store'
+import { computed, ref } from 'vue';
 
-const bookStore = useBookStore()
-const filter = ref<'available' | 'borrowed'>('available')
-const search = ref('')
+import BooksDeck from '~/components/BooksDeck.vue';
+import ViewTitle from '~/components/ViewTitle.vue';
+import type { Book } from '~/models';
+import { useBookStore } from '~/store';
+
+const bookStore = useBookStore();
+const filter = ref<'available' | 'borrowed'>('available');
+const search = ref('');
 
 const visibleBooks = computed(() => {
-  const books = bookStore[`${filter.value}Books`] as Book[]
-  const actualSearch = new RegExp(search.value, 'i')
+  const books = bookStore[`${filter.value}Books`] as Book[];
+  const actualSearch = new RegExp(search.value, 'i');
 
-  return !search.value ? books : books.filter(({ name }) => {
-    return name.match(actualSearch)
-  })
-})
+  return !search.value
+    ? books
+    : books.filter(({ name }) => {
+        return name.match(actualSearch);
+      });
+});
 </script>
 
 <template>
   <div id="bookshelves">
-    <ViewTitle>
-      Escolha o seu livro na estante
-    </ViewTitle>
+    <ViewTitle> Escolha o seu livro na estante </ViewTitle>
 
     <div class="row">
       <div class="search-container col-12 col-lg-6 order-lg-2 col-xl-4 offset-xl-3">
         <input
+          v-model="search"
           type="search"
           class="form-control"
           placeholder="Pesquisar por título..."
-          v-model="search"
         />
         <img src="/img/search-icon.svg" alt="Ícone de busca" />
       </div>
 
       <div class="filter-container col-12 col-lg-6 order-lg-1 col-xl-5">
-        <input type="radio" id="filter-1" class="visually-hidden" value="available" v-model="filter" />
-        <input type="radio" id="filter-2" class="visually-hidden" value="borrowed" v-model="filter" />
+        <input
+          id="filter-1"
+          v-model="filter"
+          type="radio"
+          class="visually-hidden"
+          value="available"
+        />
+        <input
+          id="filter-2"
+          v-model="filter"
+          type="radio"
+          class="visually-hidden"
+          value="borrowed"
+        />
         <label
           for="filter-1"
           :class="['btn', filter === 'available' ? 'btn-hero' : 'btn-outline-hero']"
-        >Livros Disponíveis</label>
+          >Livros Disponíveis</label
+        >
         <label
           for="filter-2"
           :class="['btn', filter === 'borrowed' ? 'btn-hero' : 'btn-outline-hero']"
-        >Livros Emprestados</label>
+        >
+          Livros Emprestados
+        </label>
       </div>
     </div>
 
-    <div class="loading" v-if="bookStore.isLoading">
+    <div v-if="bookStore.isLoading" class="loading">
       <img src="/img/loading.svg" alt="Carregando..." />
     </div>
-    <div class="fallback-msg" v-else-if="bookStore.books.length === 0">
+    <div v-else-if="bookStore.books.length === 0" class="fallback-msg">
       Não há livros cadastrados
     </div>
-    <div class="fallback-msg" v-else-if="visibleBooks.length === 0">
+    <div v-else-if="visibleBooks.length === 0" class="fallback-msg">
       Nenhum resultado para "{{ search }}" 🙄
     </div>
-    <BooksDeck :books="visibleBooks" :count="visibleBooks.length" v-else />
+    <BooksDeck v-else :books="visibleBooks" :count="visibleBooks.length" />
   </div>
 </template>
 
@@ -94,7 +110,8 @@ const visibleBooks = computed(() => {
     & > label {
       flex-grow: 1;
 
-      &:hover, &.btn-hero {
+      &:hover,
+      &.btn-hero {
         color: #fff;
       }
 
