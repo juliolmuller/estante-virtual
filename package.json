@@ -13,7 +13,9 @@
     "dev": "vite --open",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "eslint --fix src/ server.js eslint.config.js vite.config.js",
+    "lint": "bun run lint:node && bun run lint:app",
+    "lint:app": "eslint -c src/eslint.config.js --fix src/",
+    "lint:node": "eslint --fix server.js eslint.config.js vite.config.js",
     "start": "node server.js"
   },
   "dependencies": {
