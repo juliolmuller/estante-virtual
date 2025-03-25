@@ -5,6 +5,7 @@
   "license": "MIT",
   "author": "Julio L. Muller",
   "homepage": "https://estantevirtual.vercel.app/",
+  "type": "module",
   "scripts": {
     "postinstall": "node -e \"require('fs').existsSync('.env') || require('fs').copyFileSync('.env.example', '.env')\"",
     "prepare": "husky",
@@ -12,7 +13,7 @@
     "dev": "vite --open",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "eslint --fix src/",
+    "lint": "eslint --fix src/ server.js eslint.config.js vite.config.js",
     "start": "node server.js"
   },
   "dependencies": {
@@ -30,13 +31,14 @@
     "@vue/tsconfig": "^0.7.0",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^7.32.0",
-    "eslint-config-lacussoft": "^2.3.0",
+    "eslint": "^9.23.0",
+    "eslint-config-jlm": "^0.6.9",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.0",
+    "prettier": "^3.5.3",
     "rollup-plugin-analyzer": "^4.0.0",
     "sass": "^1.86.0",
-    "typescript": "~5.6.3",
+    "typescript": "^5.8.2",
     "vite": "^6.2.3",
     "vue-tsc": "^2.2.8"
   }
