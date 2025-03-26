@@ -1,31 +1,37 @@
-import { defineStore } from 'pinia';
+import { defineStore, type _GettersTree as GettersTree } from 'pinia';
 
-import type { User } from '~/models';
+import { type User } from '~/models';
 import { usersApi } from '~/services/api';
 
-const STORAGE_KEY = 'user-data';
+interface SignInCredentials {
+  email: string;
+  password: string;
+  rememberMe?: boolean;
+}
 
-export interface AUthStoreState {
+interface SignUpCredentials {
+  email: string;
+  name: string;
+  password: string;
+  passwordRepeat: string;
+}
+
+interface AUthStoreState {
   errors: string[];
   isLoading: boolean;
   storage: Storage;
   userData: null | User;
 }
 
+export interface AUthStoreGetters extends GettersTree<AUthStoreState> {
+  isAuthenticated: (state: AUthStoreState) => boolean;
+}
+
 export interface AUthStoreActions {
   recoverFromStorage: () => void;
-  signIn: (credentials: {
-    email: string;
-    password: string;
-    rememberMe?: boolean;
-  }) => Promise<boolean>;
+  signIn: (credentials: SignInCredentials) => Promise<boolean>;
   signOut: () => void;
-  signUp: (authData: {
-    email: string;
-    name: string;
-    password: string;
-    passwordRepeat: string;
-  }) => Promise<boolean>;
+  signUp: (authData: SignUpCredentials) => Promise<boolean>;
   updateUserData: (authData: {
     email: string;
     id: number;
@@ -35,7 +41,9 @@ export interface AUthStoreActions {
   }) => Promise<void>;
 }
 
-const useAuth = defineStore<'auth', AUthStoreState, any, AUthStoreActions>('auth', {
+const STORAGE_KEY = 'user-data';
+
+const useAuth = defineStore<'auth', AUthStoreState, AUthStoreGetters, AUthStoreActions>('auth', {
   state: () => ({
     errors: [],
     isLoading: false,
@@ -44,13 +52,16 @@ const useAuth = defineStore<'auth', AUthStoreState, any, AUthStoreActions>('auth
   }),
 
   getters: {
-    isAuthenticated: (state: AUthStoreState) => Boolean(state.userData?.id),
+    isAuthenticated(state) {
+      return Boolean(state.userData?.id);
+    },
   },
 
   actions: {
     recoverFromStorage() {
       const userDataFromLocal = localStorage.getItem(STORAGE_KEY) as string;
       const userDataFromSession = sessionStorage.getItem(STORAGE_KEY) as string;
+
       this.userData = JSON.parse(userDataFromLocal || userDataFromSession);
       this.storage = userDataFromLocal ? localStorage : sessionStorage;
     },
@@ -68,10 +79,15 @@ const useAuth = defineStore<'auth', AUthStoreState, any, AUthStoreActions>('auth
 
         this.userData = userData;
         this.storage.setItem(STORAGE_KEY, JSON.stringify(this.userData));
+
         return true;
-      } catch (error: any) {
+      } catch (error) {
         console.error(error);
-        this.errors = [error.message];
+
+        if (error instanceof Error) {
+          this.errors = [error.message];
+        }
+
         return false;
       } finally {
         this.isLoading = false;
@@ -98,10 +114,15 @@ const useAuth = defineStore<'auth', AUthStoreState, any, AUthStoreActions>('auth
         }
 
         await usersApi.create({ name, email, password });
-        return await this.signIn({ email, password });
-      } catch (error: any) {
+
+        return this.signIn({ email, password });
+      } catch (error) {
         console.error(error);
-        this.errors = [error.message];
+
+        if (error instanceof Error) {
+          this.errors = [error.message];
+        }
+
         return false;
       } finally {
         this.isLoading = false;
@@ -118,6 +139,7 @@ const useAuth = defineStore<'auth', AUthStoreState, any, AUthStoreActions>('auth
         oldPassword === originalUser?.password
           ? newPassword || oldPassword
           : originalUser?.password;
+
       this.userData = await usersApi.update(id, { name, email, password });
       this.storage.setItem(STORAGE_KEY, JSON.stringify(this.userData));
     },
