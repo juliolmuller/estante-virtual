@@ -66,24 +66,25 @@ This application was proposed by [HeroSpark](https://herospark.com/), as part of
 - [Bootstrap v5](https://getbootstrap.com/) (originally developed in v4)
 
 **Backend**
-- [Node.js LTS v18](https://nodejs.org/en/) (originally developed in v12)
+- [Node.js LTS v22](https://nodejs.org/) (originally developed in v12)
+- [Bun.js v1.2.24](https://bun.sh/)
 - [JSON-Server](https://github.com/typicode/json-server)
 - [Render Cloud Server](https://render.com/) (previously deployed on [Heroku](https://heroku.com/) and [Railway](https://railway.app/))
 
 **Development:**
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Cmder](https://cmder.net/) (terminal emulator)
-- [Vue CLI v5](https://cli.vuejs.org/) and [Yarn](https://yarnpkg.com/)/NPM scripts routines (originally developed in v4)
+- [Vite](https://vite.dev/) and [bun](https://bun.shm/)/NPM scripts routines (originally developed in v4)
 
 ## :hammer: Setting up the Environment
 
 Before running the application copy/rename file `.env.example` as `.env`. The existent value should work already, so no further configuration should be required. When building for production, however, you may want to add a `.env.production` and copy the same variables you have in `.env`, replacing the *localhost* reference to a valid address on the internet, where the API will be available (e.g.: https://estante-virtual.herokuapp.com).
 
-Make sure to have **Node.js 12+** installed in your machine and **yarn** (or **npm**) commands available in your terminal, then use the following routines:
+Make sure to have **Node.js 18+** installed in your machine and **bun** (or **npm**) commands available in your terminal, then use the following routines:
 
 ```bash
-$ yarn         # Download dependencies
-$ yarn start   # Run JSON-Server
-$ yarn dev     # Run development server for front-end
-$ yarn build   # Build files for production
+$ bun         # Download dependencies
+$ bun start   # Run JSON-Server
+$ bun dev     # Run development server for front-end
+$ bun build   # Build files for production
 ```
