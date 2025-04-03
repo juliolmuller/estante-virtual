@@ -1,4 +1,8 @@
-import jlmConfig from 'eslint-config-jlm';
+import anyConfig from 'eslint-config-any';
 import { defineConfig } from 'eslint/config';
 
-export default defineConfig([...jlmConfig.vue]);
+export default defineConfig([...anyConfig.vue], {
+  rules: {
+    '@typescript-eslint/explicit-function-return-type': 'off',
+  },
+});
