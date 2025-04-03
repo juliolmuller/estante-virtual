@@ -1,30 +1,34 @@
 <script setup lang="ts">
-import { reactive, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuth } from '~/store'
+import { reactive, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
-const auth = useAuth()
-const router = useRouter()
+import { useAuth } from '~/store';
+
+const auth = useAuth();
+const router = useRouter();
 const state = reactive({
   email: '',
   password: '',
   rememberMe: false,
-})
+});
 
 async function handleSubmit() {
-  const isAuthenticated = await auth.signIn(state)
+  const isAuthenticated = await auth.signIn(state);
 
   if (isAuthenticated) {
-    router.push({ name: 'Home' })
-    return
+    router.push({ name: 'Home' });
+    return;
   }
 
-  state.password = ''
+  state.password = '';
 }
 
-watch(() => state.email, (newValue) => {
-  state.email = newValue.toLocaleLowerCase().trim()
-})
+watch(
+  () => state.email,
+  (newValue) => {
+    state.email = newValue.toLocaleLowerCase().trim();
+  },
+);
 </script>
 
 <template>
@@ -34,42 +38,34 @@ watch(() => state.email, (newValue) => {
       role="alert"
       :style="{ visibility: auth.errors.length ? 'visible' : 'hidden' }"
     >
-      <p class="text-danger" v-for="error in auth.errors" :key="error">
+      <p v-for="error in auth.errors" :key="error" class="text-danger">
         {{ error }}
       </p>
     </div>
 
-    <label for="email" class="visually-hidden">
-      Endereço de email
-    </label>
+    <label for="email" class="visually-hidden">Endereço de email</label>
     <input
       id="email"
+      v-model="state.email"
       type="email"
       class="form-control"
       placeholder="Endereço de email"
       required
       autofocus
-      v-model="state.email"
     />
 
-    <label for="password" class="visually-hidden">
-      Senha de acesso
-    </label>
+    <label for="password" class="visually-hidden">Senha de acesso</label>
     <input
       id="password"
+      v-model="state.password"
       type="password"
       class="form-control"
       placeholder="Senha de acesso"
       required
-      v-model="state.password"
     />
 
     <label class="mt-2 checkbox">
-      <input
-        type="checkbox"
-        value="remember-me"
-        v-model="state.rememberMe"
-      /> Mantenha-me conectado
+      <input v-model="state.rememberMe" type="checkbox" value="remember-me" /> Mantenha-me conectado
     </label>
 
     <button
@@ -82,9 +78,7 @@ watch(() => state.email, (newValue) => {
 
     <p class="mt-1 text-center">
       Não é cadastrado?
-      <router-link :to="{ name: 'SignUp' }">
-        Registre-se aqui
-      </router-link>
+      <router-link :to="{ name: 'SignUp' }"> Registre-se aqui </router-link>
     </p>
   </form>
 </template>

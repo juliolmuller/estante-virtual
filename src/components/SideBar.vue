@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import Logo from '~/components/Logo.vue'
-import { useAuth } from '~/store'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const auth = useAuth()
-const router = useRouter()
-const activated = ref(false)
+import Logo from '~/components/Logo.vue';
+import { useAuth } from '~/store';
+
+const auth = useAuth();
+const router = useRouter();
+const activated = ref(false);
 
 function handleSignOut() {
   if (confirm('Tem certeza de que quer sair da aplicação?')) {
-    auth.signOut()
-    router.push({ name: 'SignIn' })
+    auth.signOut();
+    router.push({ name: 'SignIn' });
   }
 }
 </script>
@@ -31,7 +32,6 @@ function handleSignOut() {
         Manu
       </button>
     </header>
-
 
     <nav class="nav-links d-lg-block" :class="{ 'd-none': !activated }">
       <router-link :to="{ name: 'Home' }" exact class="btn btn-light">Home</router-link>
@@ -64,7 +64,8 @@ function handleSignOut() {
   a {
     text-decoration: none;
 
-    &:hover, &:active {
+    &:hover,
+    &:active {
       text-decoration: none;
     }
   }
@@ -89,7 +90,8 @@ function handleSignOut() {
       color: #fff;
     }
 
-    &:hover, &.router-link-exact-active:hover {
+    &:hover,
+    &.router-link-exact-active:hover {
       background: var(--bs-hero);
       color: #fff;
     }

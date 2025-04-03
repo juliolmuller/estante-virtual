@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SideBar from '~/components/SideBar.vue'
+import SideBar from '~/components/SideBar.vue';
 </script>
 
 <template>
@@ -15,8 +15,8 @@ import SideBar from '~/components/SideBar.vue'
 
       <footer class="home-footer">
         <p class="text-muted">
-          Todos os Direitos Reservados
-          &copy; 2019-{{ new Date().getFullYear() }} <strong>LacusSoft</strong>
+          Todos os Direitos Reservados &copy; 2019-{{ new Date().getFullYear() }}
+          <strong>LacusSoft</strong>
         </p>
       </footer>
     </main>

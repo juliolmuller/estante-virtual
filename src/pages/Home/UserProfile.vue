@@ -1,82 +1,76 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
-import ViewTitle from '~/components/ViewTitle.vue'
-import { useAuth, useUserStore } from '~/store'
+import { computed, onMounted, ref, watch } from 'vue';
+
+import ViewTitle from '~/components/ViewTitle.vue';
+import { useAuth, useUserStore } from '~/store';
 
 interface UserFormData {
-  id: number
-  name: string
-  email: string
-  oldPassword: string
-  newPassword: string
-  newPasswordConfirmation: string
+  email: string;
+  id: number;
+  name: string;
+  newPassword: string;
+  newPasswordConfirmation: string;
+  oldPassword: string;
 }
 
-const auth = useAuth()
-const userStore = useUserStore()
-const user = ref({} as Partial<UserFormData>)
-const dataBackup = ref({} as Partial<UserFormData>)
-const isEditing = ref(false)
-const isLoading = ref(false)
+const auth = useAuth();
+const userStore = useUserStore();
+const user = ref({} as Partial<UserFormData>);
+const dataBackup = ref({} as Partial<UserFormData>);
+const isEditing = ref(false);
+const isLoading = ref(false);
 
 const passwordsMatch = computed(() => {
-  return user.value.newPassword === user.value.newPasswordConfirmation
-})
+  return user.value.newPassword === user.value.newPasswordConfirmation;
+});
 
 const inputStyle = computed(() => ({
   'form-control': isEditing.value,
   'form-control-plaintext': !isEditing.value,
   'font-weight-bold': !isEditing.value,
   'text-hero': !isEditing.value,
-}))
+}));
 
 watch(user, (newValue) => {
-  dataBackup.value = { ...newValue }
-})
+  dataBackup.value = { ...newValue };
+});
 
 function toggleEditing() {
-  isEditing.value = !isEditing.value
-  user.value = { ...dataBackup.value }
+  isEditing.value = !isEditing.value;
+  user.value = { ...dataBackup.value };
 }
 
 async function handleSubmit() {
   try {
-    isLoading.value = true
-    await auth.updateUserData(user.value as UserFormData)
-    isEditing.value = false
+    isLoading.value = true;
+    await auth.updateUserData(user.value as UserFormData);
+    isEditing.value = false;
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
 }
 
 onMounted(async () => {
   await new Promise((resolve) => {
     while (userStore.isLoading) {} // eslint-disable-line no-empty
-    resolve(null)
-  })
+    resolve(null);
+  });
 
   user.value = {
     ...auth.userData,
     oldPassword: '',
     newPassword: '',
     newPasswordConfirmation: '',
-  }
-})
+  };
+});
 </script>
 
 <template>
   <div id="user-profile">
     <header>
-      <ViewTitle>
-        Perfil do Usuário
-      </ViewTitle>
+      <ViewTitle>Perfil do Usuário</ViewTitle>
 
-      <button
-        type="button"
-        class="btn btn-sm btn-light"
-        v-if="!isEditing"
-        @click="toggleEditing"
-      >
+      <button v-if="!isEditing" type="button" class="btn btn-sm btn-light" @click="toggleEditing">
         Editar Dados
       </button>
     </header>
@@ -84,21 +78,15 @@ onMounted(async () => {
     <form @submit.prevent="handleSubmit">
       <div class="form-group">
         <label for="user-id">Código de Cadastro:</label>
-        <input
-          type="text"
-          id="user-id"
-          :class="inputStyle"
-          v-model.number="user.id"
-          readonly
-        />
+        <input id="user-id" v-model.number="user.id" type="text" :class="inputStyle" readonly />
       </div>
       <div class="form-group">
         <label for="user-name">Nome Completo:</label>
         <input
-          type="text"
           id="user-name"
-          :class="inputStyle"
           v-model.trim="user.name"
+          type="text"
+          :class="inputStyle"
           :readonly="!isEditing"
           required
           autofocus
@@ -107,47 +95,47 @@ onMounted(async () => {
       <div class="form-group">
         <label for="user-email">E-mail de Contato:</label>
         <input
-          type="email"
           id="user-email"
-          :class="inputStyle"
           v-model.trim="user.email"
+          type="email"
+          :class="inputStyle"
           :readonly="!isEditing"
           required
         />
       </div>
-      <div class="card border-hero" v-if="isEditing">
+      <div v-if="isEditing" class="card border-hero">
         <h5 class="card-header">Mudar Senha</h5>
         <div class="card-body">
           <div class="form-group">
             <label for="user-password">Senha Atual:</label>
             <input
-              type="password"
               id="user-password"
-              :class="inputStyle"
               v-model.trim="user.oldPassword"
+              type="password"
+              :class="inputStyle"
               :required="Boolean(user.newPassword || user.newPasswordConfirmation)"
             />
           </div>
           <div class="form-group">
             <label for="user-new-password">Nova Senha:</label>
             <input
-              type="password"
               id="user-new-password"
-              :class="inputStyle"
               v-model.trim="user.newPassword"
+              type="password"
+              :class="inputStyle"
               :required="Boolean(user.oldPassword || user.newPasswordConfirmation)"
             />
           </div>
           <div class="form-group">
             <label for="user-new-password-confirmation">Repetir a Nova Senha:</label>
             <input
-              type="password"
               id="user-new-password-confirmation"
-              :class="inputStyle"
               v-model.trim="user.newPasswordConfirmation"
+              type="password"
+              :class="inputStyle"
               :required="Boolean(user.oldPassword || user.newPassword)"
             />
-            <div class="error-feedback" v-if="!passwordsMatch">
+            <div v-if="!passwordsMatch" class="error-feedback">
               A nova senha e sua confirmação não conferem.
             </div>
           </div>
@@ -155,23 +143,21 @@ onMounted(async () => {
       </div>
 
       <div class="action-btn">
+        <button v-if="isEditing" type="button" class="btn btn-light" @click="toggleEditing">
+          Cancelar
+        </button>
         <button
-          type="button"
-          class="btn btn-light"
           v-if="isEditing"
-          @click="toggleEditing"
-        >Cancelar</button>
-        <button
           type="submit"
           class="btn btn-hero text-white"
           :disabled="!passwordsMatch || isLoading"
-          v-if="isEditing"
-        >Concluído</button>
+        >
+          Concluído
+        </button>
       </div>
     </form>
   </div>
 </template>
-
 
 <style lang="scss">
 #user-profile {
@@ -180,7 +166,7 @@ onMounted(async () => {
     align-items: center;
     justify-content: space-between;
 
-    & > [type="button"] {
+    & > [type='button'] {
       margin-bottom: 3rem;
 
       & > img {

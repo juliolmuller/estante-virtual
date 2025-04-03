@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import ViewTitle from '~/components/ViewTitle.vue'
-import type { Book } from '~/models'
-import { useBookStore } from '~/store'
+import { computed } from 'vue';
+
+import ViewTitle from '~/components/ViewTitle.vue';
+import type { Book } from '~/models';
+import { useBookStore } from '~/store';
 
 export interface BooksManagerProps {
-  title: string
-  type: 'userBooks' | 'userLoans'
+  title: string;
+  type: 'userBooks' | 'userLoans';
 }
 
-const props = defineProps<BooksManagerProps>()
+const props = defineProps<BooksManagerProps>();
 
-const bookStore = useBookStore()
-const books = computed<Book[]>(() => bookStore[props.type] ?? [])
+const bookStore = useBookStore();
+const books = computed<Book[]>(() => bookStore[props.type] ?? []);
 </script>
 
 <template>
@@ -23,22 +24,22 @@ const books = computed<Book[]>(() => bookStore[props.type] ?? [])
       </ViewTitle>
 
       <router-link
-        :to="{ name: 'BookDetails', params: { bookId: 'novo' }}"
-        class="btn btn-hero text-white"
         v-if="props.type === 'userBooks'"
-      >+ Cadastrar Novo Livro</router-link>
+        :to="{ name: 'BookDetails', params: { bookId: 'novo' } }"
+        class="btn btn-hero text-white"
+      >
+        + Cadastrar Novo Livro
+      </router-link>
     </header>
 
-    <div class="fallback-msg" v-if="!books.length">
-      Nenhum livro aqui 🙂
-    </div>
-    <div class="books-list" v-for="book in books" :key="book.id" v-else>
+    <div v-if="!books.length" class="fallback-msg">Nenhum livro aqui 🙂</div>
+    <div v-for="book in books" v-else :key="book.id" class="books-list">
       <img :src="book.image" alt="capa do livro" />
       <div class="book-title">
         {{ book.name }}
       </div>
       <router-link
-        :to="{ name: 'BookDetails', params: { bookId: book.id }}"
+        :to="{ name: 'BookDetails', params: { bookId: book.id } }"
         class="btn btn-sm btn-secondary"
       >
         <img src="/img/pencil.svg" alt="ícone de edição" />
