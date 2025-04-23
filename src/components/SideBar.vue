@@ -29,7 +29,7 @@ function handleSignOut() {
         class="btn btn-sm btn-outline-hero btn-menu d-block d-lg-none"
         @click="activated = !activated"
       >
-        Manu
+        Menu
       </button>
     </header>
 
