@@ -19,7 +19,7 @@
     "preview": "vite preview",
     "lint": "bun run lint:node && bun run lint:app",
     "lint:app": "eslint -c src/eslint.config.js --fix src/",
-    "lint:node": "eslint --fix server.js eslint.config.js vite.config.js",
+    "lint:node": "eslint --fix server.js eslint.config.js vite.config.ts",
     "start": "node server.js"
   },
   "dependencies": {
